@@ -1,0 +1,12 @@
+.nav-links{
+    display: none;
+}
+@media (max-width: 768px) {
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        position: fixed;
+        bottom:0;
+    }
+
+}
