@@ -11,7 +11,7 @@ html {
 
 body {
   margin: 0;
-  background: #ffffff;
+  background: #F4F4F4;
 }
 
 .slide-in-left-enter {
@@ -44,5 +44,10 @@ opacity: 1;
 ul {
   list-style: none;
   margin: 0;
+  padding: 0;
+}
+main{
+  display: flex;
+  margin-top: 0px;
   padding: 0;
 }
