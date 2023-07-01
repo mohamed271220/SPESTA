@@ -11,14 +11,12 @@ const productSchema = new Schema({
       required: true,
     },
   ],
+  addedBy: { type: mongoose.Types.ObjectId, ref: "Admin", required: true },
   category: [
     { type: mongoose.Types.ObjectId, ref: "Category", required: true },
   ],
 
-  tag: [
-    { type: mongoose.Types.ObjectId, ref: "Tag", required: true },
-  ],
-
+  tag: [{ type: mongoose.Types.ObjectId, ref: "Tag", required: true }],
 });
 
-module.exports= mongoose.model("Product", productSchema);
+module.exports = mongoose.model("Product", productSchema);

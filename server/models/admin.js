@@ -1,27 +1,30 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const uniqueValidator = require("mongoose-unique-validator");
 
 const adminSchema = new Schema({
   name: { type: String, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  adminKey: { type: String, required: true },
   addedProducts: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Product",
     },
   ],
   addedCategories: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Category",
     },
   ],
   addedTags: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Tag",
     },
   ],
 });
-
+adminSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("Admin", adminSchema);
