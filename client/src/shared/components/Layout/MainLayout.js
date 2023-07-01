@@ -1,18 +1,17 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import MainNavigation from "../Navigation/MainNavigation";
-import NavLinks from "../Navigation/NavLinks";
+import BottomMenu from "../Navigation/BottomMenu";
 
 const MainLayout = () => {
   return (
-    <>
+    <React.Fragment>
       <MainNavigation />
-
       <main>
         <Outlet />
       </main>
-      <NavLinks />
-    </>
+      <BottomMenu />
+    </React.Fragment>
   );
 };
 

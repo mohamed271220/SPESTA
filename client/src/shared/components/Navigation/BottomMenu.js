@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import NavLinks from "./NavLinks";
 
 const BottomMenu = () => {
   return (
-    <div>BottomMenu</div>
-  )
-}
+    <div>
+      <NavLinks />
+    </div>
+  );
+};
 
-export default BottomMenu
+export default BottomMenu;

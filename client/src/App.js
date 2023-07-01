@@ -7,14 +7,14 @@ const router = createBrowserRouter([
     path: "/",
     errorElement: <div>Error</div>,
     element: <MainLayout />,
-    id: "root",
+
     children: [
       {
         index: true,
         element: <div>Home</div>,
       },
       {
-        path: "categories",
+        path: "/categories",
         children: [
           { index: true, element: <div>Category</div> },
           {
@@ -24,11 +24,11 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "products/:productId",
+        path: "/products/:productId",
         element: <div>Product</div>,
       },
       {
-        path: "tags",
+        path: "/tags",
         children: [
           {
             index: true,
@@ -41,11 +41,11 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "auth",
+        path: "/auth",
         element: <div>Auth spa page</div>,
       },
       {
-        path: "cart",
+        path: "/cart",
         children: [
           {
             index: true,
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "profile",
+        path: "/profile",
         children: [
           {
             index: true,

@@ -1,39 +1,41 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { GoHome } from "react-icons/go";
 import { BsPerson } from "react-icons/bs";
 import { BiCartAdd } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
-// import "./NavLinks.css";
+import "./index.css";
 const NavLinks = () => {
   return (
-    <>
+<div className="nav-links-container">
       <ul className="nav-links">
         <li>
-          <NavLinks>
+          <NavLink>
             <GoHome />
             <p>Home</p>
-          </NavLinks>
+          </NavLink>
         </li>
         <li>
-          <NavLinks>
+          <NavLink>
             <BsPerson />
             <p>Profile</p>
-          </NavLinks>
+          </NavLink>
         </li>
         <li>
-          <NavLinks>
+          <NavLink>
             <BiCartAdd />
             <p>Cart</p>
-          </NavLinks>
+          </NavLink>
         </li>
         <li>
-          <NavLinks>
+          <NavLink>
             <AiOutlineMenu />
             <p>More</p>
-          </NavLinks>
+          </NavLink>
         </li>
       </ul>
-    </>
+</div>
+ 
   );
 };
 

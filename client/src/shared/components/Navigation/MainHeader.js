@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-// import './MainHeader.css'
+import './index.css'
 
 const MainHeader = (props) => {
   return (
