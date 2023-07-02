@@ -10,25 +10,25 @@ const NavLinks = () => {
 <div className="nav-links-container">
       <ul className="nav-links">
         <li>
-          <NavLink>
+          <NavLink to={'/'}>
             <GoHome />
             <p>Home</p>
           </NavLink>
         </li>
         <li>
-          <NavLink>
+          <NavLink to={'/profile'}>
             <BsPerson />
             <p>Profile</p>
           </NavLink>
         </li>
         <li>
-          <NavLink>
+          <NavLink to={'/cart'}>
             <BiCartAdd />
             <p>Cart</p>
           </NavLink>
         </li>
         <li>
-          <NavLink>
+          <NavLink to={'/categories'}>
             <AiOutlineMenu />
             <p>More</p>
           </NavLink>

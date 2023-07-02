@@ -35,6 +35,7 @@ const MainNavigation = () => {
           placeholder={`Search Spesta`}
         />
        
+        <Link to={'/profile'}>Account</Link>
         <div className="main-navigation__menu">PULL DOWN MENU</div>
       </MainHeader>
       <MainHeader className="secondary main-navigation__header-nav">

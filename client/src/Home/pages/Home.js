@@ -8,6 +8,8 @@ import "react-multi-carousel/lib/styles.css";
 import Product from "../components/Product";
 import { productData, responsive } from "../components/data";
 import "../index.css";
+import { Link } from "react-router-dom";
+import Cat from "./Cat.png";
 const Home = () => {
   const product = productData.map((item) => (
     <Product
@@ -43,6 +45,26 @@ const Home = () => {
               <h2>title</h2>
               <img src={ex} alt="ex" />
               <p>see more</p>
+            </div>
+            <div className="category-box">
+              <h2>title</h2>
+              <img src={ex} alt="ex" />
+              <p>see more</p>
+            </div>
+            <div className="category-box">
+              <h2>title</h2>
+              <img src={ex} alt="ex" />
+              <p>see more</p>
+            </div>
+            <div className="category-box">
+              <h2>title</h2>
+              <img src={ex} alt="ex" />
+              <p>see more</p>
+            </div>
+            <div className="category-box">
+              <Link to={"/categories"}>
+                <img src={Cat} alt="checkMoreCategories" />
+              </Link>
             </div>
           </div>
         </div>
