@@ -5,11 +5,21 @@
   /* padding: 2rem; */
   text-align: center;
   flex-direction: column;
-
 }
 .product-section {
-position: relative;
+  padding: 2rem;
+  z-index: 0;
+
   background-color: white;
+}
+.product-section-container{
+  margin-bottom: 0.5vh;
+}
+.product-section h1{
+  margin-left: 1rem;
+  display: flex;
+
+
 }
 .hero-section {
   position: relative;
@@ -22,7 +32,7 @@ position: relative;
 }
 .category-container {
   position: relative;
-  /* top: 20rem; */
+  top: -6rem;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -31,7 +41,7 @@ position: relative;
   gap: 1rem;
   margin: 1rem auto;
 }
-.category-box {
+.category-box ,.recommendations-box {
   background-color: white;
   padding: 1rem;
 }
@@ -47,7 +57,8 @@ position: relative;
   max-width: 320px;
   margin: auto 1rem;
   text-align: center;
-  font-family: arial;
+  
+  
 }
 
 .price {
@@ -60,7 +71,8 @@ position: relative;
   outline: 0;
   padding: 12px;
   color: white;
-  background-color: #000;
+  background-color: #161b35;
+
   text-align: center;
   cursor: pointer;
   width: 100%;
@@ -69,4 +81,32 @@ position: relative;
 
 .card button:hover {
   opacity: 0.7;
+}
+
+.recommendations-box{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  
+}
+.recommendations-box h1{
+display: flex;
+}
+
+
+.recommendations-box-picks{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+@media (max-width:768px) {
+  .category-container {
+    display: none;
+  }
+  .product-recommendations-container{
+    margin-bottom: 4rem;
+  }
+  
 }

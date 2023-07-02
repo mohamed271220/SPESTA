@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import MainNavigation from "../Navigation/MainNavigation";
 import BottomMenu from "../Navigation/BottomMenu";
+import Footer from "../Footer/Footer";
 
 const MainLayout = () => {
   return (
@@ -11,6 +12,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <BottomMenu />
+      <Footer/>
     </React.Fragment>
   );
 };

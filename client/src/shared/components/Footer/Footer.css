@@ -1,0 +1,17 @@
+.first-section {
+    display: flex;
+  height: 40vh;
+  background-color: #252d58;
+}
+.second-section {
+    display: flex;
+
+  height: 50vh;
+  background-color: #161b35;
+}
+@media (max-width: 768px) {
+  .first-section,
+  .second-section {
+    display: none;
+  }
+}
