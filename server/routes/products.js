@@ -1,22 +1,23 @@
 const express = require("express");
-const projectController = require("../controllers/project");
+const productController = require("../controllers/product");
+const isAuth = require("../middleware/is-auth");
 const router = express.Router();
 
 //TODO GET SINGLE PRODUCT INCLUDING REVIEWS AND RANDOM PRODUCTS FROM THE SAME CATEGORY AND FROM SAME TAGS
-router.get("/:id", projectController.getProduct);
+router.get("/:productId", productController.getProduct);
 //TODO ADD A REVIEW
-router.post("/:id/review", projectController.postReview);
+router.post("/:productId/review",isAuth, productController.postReview);
 //TODO ADD TO CART
-router.post("/:id/cart", projectController.addToCart);
+router.post("/:productId/cart", isAuth,productController.addToCart);
 //TODO REMOVE FROM CART
-router.put("/:id/cart/remove", projectController.removeFromCart);
+router.put("/:productId/cart/remove",isAuth, productController.removeFromCart);
 
 //TODO ADD TO ORDER
-router.post("/:id/order", projectController.addToOrder);
+router.post("/order",isAuth, productController.makeOrder);
 //TODO CANCEL AN ORDER
-router.put("/:id/order/cancel", projectController.cancelOrder);
+router.put("/:orderId/order/cancel", isAuth,productController.cancelOrder);
 
 //TODO CHECK ORDERS STATUS
-router.get("/:id/order/status", projectController.checkOrderStatus);
+router.get("/:orderId/order/status",isAuth, productController.checkOrderStatus);
 
 module.exports = router;

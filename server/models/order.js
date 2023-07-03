@@ -12,11 +12,13 @@ const orderSchema = new Schema(
       },
     ],
     madeBy: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-        required: true,
-    }
-    ,
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    status: {
+      type: String,
+    },
     totalPrice: {
       type: Number,
       required: true,

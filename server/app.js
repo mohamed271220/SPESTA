@@ -5,7 +5,7 @@ const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 var cors = require("cors");
-import * as fs from "fs";
+
 require("dotenv").config();
 const filesUpload = multer({ dest: "uploads/images" });
 
