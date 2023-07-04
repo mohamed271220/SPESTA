@@ -7,7 +7,7 @@ import hs from "../assets/hp.png";
 const UpperSec = () => {
   return (
     <>
-             <div className="product-upper-section">
+    <div className="product-upper-section">
         <div className="photos-slider">
           <img src={hs} alt="hp" className="photos-slider__photo" />
         </div>
@@ -70,6 +70,7 @@ const UpperSec = () => {
             </p>
           </div>
         </div>
+        <hr className='hello-im-under'/>
         <div className="purchase-controls">
           <div className="purchase-controls__header">
             <div className="purchase-controls__header-icon-container">

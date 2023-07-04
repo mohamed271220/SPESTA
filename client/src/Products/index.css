@@ -56,26 +56,90 @@
   margin: 0;
   margin-bottom: 2rem;
 }
-.stoke{
-    color: rgb(0, 161, 0);
-    font-weight: 400;
+.stoke {
+  color: rgb(0, 161, 0);
+  font-weight: 400;
 }
-.purchase-controls__add-to-cart, .purchase-controls__buy-now{
-    height: 3rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+.purchase-controls__add-to-cart,
+.purchase-controls__buy-now {
+  height: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: large;
+  border: none;
+  box-shadow: 1px 1px 3px black;
+  border-radius: 16px;
+}
+.purchase-controls__add-to-cart {
+  background-color: #ffd600;
+}
+.purchase-controls__buy-now {
+  background-color: #ff971e;
+}
+.hello-im-under{
+    display: none;
+}
+hr {
+  margin: 2rem auto;
+  color: #aaa;
+}
+@media (max-width: 1060px) {
+  .product-upper-section {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .product-info,
+  .purchase-controls {
+    width: 100%;
+    padding: 0 2rem;
+  }
+  .product-lower-section{
+margin-bottom: 4rem;
+  }
+  .product-info__name {
     font-size: large;
+  }
+  .product-info__price {
+    font-size: large;
+  }
+  .product-info__VAT {
+    font-size: medium;
+  }
+  .photos-slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .photos-slider {
+    width: 75%;
+  }
+  .purchase-controls {
+    margin: 0;
+    padding: 0;
     border: none;
-    box-shadow: 1px 1px 3px black;
-    border-radius: 16px;
+    width: 75%;
+  }
+  .purchase-controls__header-icon-container h2,
+  .purchase-controls__header-price {
+    font-size: large;
+  }
+  .purchase-controls__header-price-VAT{
+    font-size: medium;
+  }
+  .purchase-controls__header-icon {
+    display: none;
+  }
+  .hello-im-under{
+    display: flex;
+    margin: -1rem;
 }
-.purchase-controls__add-to-cart{
-    background-color: #FFD600;
+.product-info__description h2{
+font-size: large;
 }
-.purchase-controls__buy-now{
-    background-color: #FF971E;
+.product-info__description p{
+    font-size: medium;
 }
-hr{
-    margin: 2rem auto ;
-    color: #aaa;
 }
