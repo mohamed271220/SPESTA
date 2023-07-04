@@ -4,6 +4,7 @@ import MainLayout from "./shared/components/Layout/MainLayout";
 import Home from "./Home/pages/Home";
 import Categories from "./Category/Pages/Categories";
 import Category from "./Category/Pages/Category";
+import Product from "./Products/pages/Product";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/products/:productId",
-        element: <div>Product</div>,
+        element: <Product />,
       },
       {
         path: "/tags",

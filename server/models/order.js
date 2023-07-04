@@ -16,8 +16,13 @@ const orderSchema = new Schema(
       ref: "User",
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
+      default: "Pending",
     },
     totalPrice: {
       type: Number,

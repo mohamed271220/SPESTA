@@ -15,7 +15,6 @@ import { AiOutlineMenu } from "react-icons/ai";
 function DropdownItem(props){
   return(
     <li className = 'dropdownItem'>
-    
       <NavLink to={props.to} >   {props.img} {props.text} </NavLink>
     </li>
   );
