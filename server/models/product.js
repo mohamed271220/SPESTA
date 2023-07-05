@@ -5,7 +5,10 @@ const productSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  reviews:[],
+  reviews:[{
+    type: mongoose.Types.ObjectId,
+    ref: "Review"
+  }],
   images: [
     {
       type: String,
@@ -14,10 +17,10 @@ const productSchema = new Schema({
   ],
   addedBy: { type: mongoose.Types.ObjectId, ref: "Admin", required: true },
   category: [
-    { type: mongoose.Types.ObjectId, ref: "Category", required: true },
+    { type: mongoose.Types.ObjectId, ref: "Category"},
   ],
 
-  tag: [{ type: mongoose.Types.ObjectId, ref: "Tag", required: true }],
+  tag: [{ type: mongoose.Types.ObjectId, ref: "Tag" }],
 });
 
 module.exports = mongoose.model("Product", productSchema);
