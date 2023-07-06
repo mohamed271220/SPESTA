@@ -1,11 +1,9 @@
-const User = require("../models/user");
-
+const Admin = require("../models/admin");
 const { validationResult, body } = require("express-validator");
 const bcrypt = require("bcryptjs");
-
 const jwt = require("jsonwebtoken");
 
-exports.signup = async (req, res, next) => {
+exports.adminSignup = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -18,10 +16,17 @@ exports.signup = async (req, res, next) => {
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
+  const adminKey = req.body.adminKey;
+
+  if (adminKey != process.env.ADMIN_KEY) {
+    const error = new Error("Invalid Admin Key");
+    error.statusCode = 422;
+    return next(error);
+  }
 
   let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await Admin.findOne({ email: email });
   } catch (err) {
     const error = new Error("Signup failed");
     error.statusCode = 500;
@@ -34,11 +39,12 @@ exports.signup = async (req, res, next) => {
   }
   let hashedPassword;
   hashedPassword = await bcrypt.hash(password, 12);
-  const createdUser = new User({
+  const createdUser = new Admin({
     name,
     email,
+    adminKey,
     password: hashedPassword,
-    // image: req.file.path.replace("\\", "/")||"",
+    // image: req.file.path.replace("\\", "/"),
   });
 
   try {
@@ -48,7 +54,7 @@ exports.signup = async (req, res, next) => {
     error.statusCode = 500;
     return next(error);
   }
-  let token;
+  let token
   try {
     token = jwt.sign(
       {
@@ -72,11 +78,11 @@ exports.signup = async (req, res, next) => {
   });
 };
 
-exports.login = async (req, res, next) => {
+exports.adminLogin = async (req, res, next) => {
   const { email, password } = req.body;
   let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await Admin.findOne({ email: email });
   } catch (err) {
     const error = new Error("Login failed");
     error.statusCode = 500;

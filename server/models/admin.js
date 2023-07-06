@@ -5,6 +5,12 @@ const uniqueValidator = require("mongoose-unique-validator");
 const adminSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  image: {
+    type: String,
+    require: false,
+    default:
+      "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
+  },
   password: { type: String, required: true },
   adminKey: { type: String, required: true },
   addedProducts: [

@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const Product = require("../models/product");
-import * as mongoose from "mongoose";
+const { default: mongoose } = require("mongoose");
 const Admin = require("../models/admin");
 const Category = require("../models/category");
 const Tag = require("../models/tag");
@@ -16,11 +16,11 @@ exports.addProduct = async (req, res, next) => {
   // addedBy
   const errors = validationResult(req);
 
-  if (!req.files) {
-    const error = new Error("No Product images provided");
-    error.statusCode = 422;
-    throw error;
-  }
+  // if (!req.files) {
+  //   const error = new Error("No Product images provided");
+  //   error.statusCode = 422;
+  //   throw error;
+  // }
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed");
     error.statusCode = 422;
@@ -35,7 +35,8 @@ exports.addProduct = async (req, res, next) => {
     name,
     description,
     price,
-    images,
+    addedBy,
+    images:[],
     category,
     tag,
   });
@@ -45,20 +46,20 @@ exports.addProduct = async (req, res, next) => {
     sess.startTransaction();
     await product.save({ session: sess });
     const admin = await Admin.findById(addedBy);
-    category.forEach(async (cat) => {
-      const category = await Category.findById(cat);
-      category.products.push(product);
-    });
-    tag.forEach(async (tag) => {
-      const tag = await Tag.findById(tag);
-      tag.products.push(product);
-    });
+    // category.forEach(async (cat) => {
+    //   const category = await Category.findById(cat);
+    //   category.products.push(product);
+    // });
+    // tag.forEach(async (tagId) => {
+    //   const tagItem = await Tag.findById(tagId);
+    //   tagItem.products.push(product);
+    // });
     admin.addedProducts.push(product);
     await admin.save({ session: sess });
-    sess.commitTransaction();
+    await sess.commitTransaction();
     res.status(201).json({ message: "Product Added Successfully", product });
   } catch (err) {
-    const error = new Error("could not add product");
+    const error = new Error("could not add product "+err);
     error.statusCode = 500;
     return next(error);
   }
@@ -119,8 +120,8 @@ exports.editProduct = async (req, res, next) => {
       category.products.push(product);
     });
     tag.forEach(async (tag) => {
-      const tag = await Tag.findById(tag);
-      tag.products.push(product);
+      const tagItem = await Tag.findById(tag);
+      tagItem.products.push(product);
     });
     admin.addedProducts.push(product);
     await admin.save({ session: sess });

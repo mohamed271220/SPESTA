@@ -1,5 +1,5 @@
 const express = require("express");
-const adminController = require("../controllers/admin");
+const adminController = require("../../controllers/admin");
 const isAdmin = require("../../middleware/is-admin");
 
 const fileUpload = require("../../middleware/file-upload");

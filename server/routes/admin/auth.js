@@ -1,6 +1,6 @@
 const express = require("express");
 const { body } = require("express-validator");
-const adminController = require("../controllers/admin");
+const adminController = require("../../controllers/adminAuth");
 const router = express.Router();
 
 //ADMIN SHOULD HAVE A SPECIAL KEY IF NOT RETURN AN ERROR ALSO SPECIAL MIDDLEWARE AFTER THE isAuth middleware
@@ -15,19 +15,14 @@ router.post(
     body("password")
       .trim()
       .isLength({ min: 5 })
-      .withMessage("Password must be at least 5 characters"),
-    body("adminKey")
-      .trim()
-      .isLength({ min: 5 })
-      .withMessage("Admin key must be at least 10 characters"),
+      .withMessage("Password must be at least 5 characters")
   ],
-  isAuth,
-  isAdmin,
-  adminController.login
+
+  adminController.adminLogin
 );
 //TODO: ADMIN REGISTRATION
 router.post(
-  "/register",
+  "/signup",
   [
     body("email")
       .isEmail()
@@ -37,11 +32,13 @@ router.post(
       .trim()
       .isLength({ min: 5 })
       .withMessage("Password must be at least 5 characters"),
+    body("adminKey")
+      .trim()
+      .isLength({ min: 5 })
+      .withMessage("Admin key must be at least 10 characters"),
   ],
-  isAuth,
-  isAdmin,
-  adminController.register
-);
 
+  adminController.adminSignup
+);
 
 module.exports = router;
