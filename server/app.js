@@ -44,12 +44,13 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/category", require("./routes/categories"));
 //TESTED✅only testing add product
 app.use("/api/product", require("./routes/products"));
-//TESTED❌
+//TESTED✅
 app.use("/api/tags", require("./routes/tags"));
 //TODO ADMIN ROUTES
 
 //TESTED ✅
 app.use("/api/admin/auth", require("./routes/admin/auth"));
+//TESTED
 app.use("/api/admin/dashboard", require("./routes/admin/dashboard"));
 
 app.use((error, req, res, next) => {

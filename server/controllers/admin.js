@@ -68,11 +68,11 @@ exports.addProduct = async (req, res, next) => {
 exports.editProduct = async (req, res, next) => {
   const productId = req.params.productId;
   const errors = validationResult(req);
-  if (!req.files) {
-    const error = new Error("No Product images provided");
-    error.statusCode = 422;
-    throw error;
-  }
+  // if (!req.files) {
+  //   const error = new Error("No Product images provided");
+  //   error.statusCode = 422;
+  //   throw error;
+  // }
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed");
     error.statusCode = 422;

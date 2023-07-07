@@ -6,6 +6,7 @@ const fileUpload = require("../middleware/file-upload");
 const router = express.Router();
 
 //TODO: USERS lOGIN
+//TESTED✅
 router.post(
   "/login",
   [
@@ -19,7 +20,7 @@ router.post(
 );
 
 //TODO: USERS REGISTER
-
+//TESTED✅
 router.post(
   "/signup",
   fileUpload.single("image"),

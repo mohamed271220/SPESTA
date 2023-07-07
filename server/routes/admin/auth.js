@@ -5,6 +5,7 @@ const router = express.Router();
 
 //ADMIN SHOULD HAVE A SPECIAL KEY IF NOT RETURN AN ERROR ALSO SPECIAL MIDDLEWARE AFTER THE isAuth middleware
 //TODO: ADMIN LOGIN
+//TESTED✅
 router.post(
   "/login",
   [
@@ -21,6 +22,7 @@ router.post(
   adminController.adminLogin
 );
 //TODO: ADMIN REGISTRATION
+//TESTED✅
 router.post(
   "/signup",
   [
