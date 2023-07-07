@@ -7,6 +7,8 @@ import Category from "./Category/Pages/Category";
 import Product from "./Products/pages/Product";
 import Login from "./features/auth/Login";
 import RequireAuth from "./features/auth/RequireAuth";
+import Profile from "./Profile/pages/Profile";
+import Secondary from "./shared/components/Layout/Secondary";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,15 +20,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-      {
-        path: "/auth", 
-        children:[
-          {
-            path:"login",
-            element:<Login/>
-          }
-        ]
-      },
+     
       {
         path: "/categories",
         children: [
@@ -76,7 +70,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>Profile</div>,
+            element: <Profile/>,
           },
           {
             path: "orders",
@@ -97,6 +91,16 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/auth", 
+    element: <Secondary/>,
+    children:[
+      {
+        path:"login",
+        element:<Login/>
+      }
+    ]
   },
 ]);
 

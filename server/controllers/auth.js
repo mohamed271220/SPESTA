@@ -77,10 +77,11 @@ exports.signup = async (req, res, next) => {
 // USER LOGIN
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
-
+console.log(email + " " +password);
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
+    console.log(existingUser);
   } catch (err) {
     const error = new Error("Login failed");
     error.statusCode = 500;

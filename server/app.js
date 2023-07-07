@@ -18,7 +18,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "*",
+    origin: "http://localhost:3000",
   })
 );
 
