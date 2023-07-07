@@ -5,6 +5,8 @@ import Home from "./Home/pages/Home";
 import Categories from "./Category/Pages/Categories";
 import Category from "./Category/Pages/Category";
 import Product from "./Products/pages/Product";
+import Login from "./features/auth/Login";
+import RequireAuth from "./features/auth/RequireAuth";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,6 +17,15 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/auth", 
+        children:[
+          {
+            path:"login",
+            element:<Login/>
+          }
+        ]
       },
       {
         path: "/categories",

@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
+// SIGNUP 
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -72,8 +73,11 @@ exports.signup = async (req, res, next) => {
   });
 };
 
+
+// USER LOGIN
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
+
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -104,23 +108,28 @@ exports.login = async (req, res, next) => {
     return next(error);
   }
 
-  let token;
+  let accessToken;
   try {
-    token = jwt.sign(
+    accessToken = jwt.sign(
       { userId: existingUser._id.toString(), email: existingUser.email },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+
+
+
+    // Send authorization roles and access token to user
+    res.json({
+      message: "User logged in",
+      accessToken,
+      userId: existingUser.id,
+      email: existingUser.email,
+      name: existingUser.name,
+    });
   } catch (err) {
     const error = new Error("Login failed");
     error.statusCode = 500;
     return next(error);
   }
-
-  res.status(200).json({
-    message: "User logged in",
-    userId: existingUser.id,
-    email: existingUser.email,
-    token: token,
-  });
 };
+

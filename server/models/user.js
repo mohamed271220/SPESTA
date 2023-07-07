@@ -26,6 +26,7 @@ const userSchema = new Schema(
       },
     ],
     status: { type: String, required: true, default: "USER" },
+    refreshToken: [String]
   },
   {
     timestamps: true,

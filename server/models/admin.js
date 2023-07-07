@@ -31,6 +31,7 @@ const adminSchema = new Schema({
       ref: "Tag",
     },
   ],
+  refreshToken: [String]
 });
 adminSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("Admin", adminSchema);

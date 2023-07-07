@@ -46,14 +46,14 @@ exports.addProduct = async (req, res, next) => {
     sess.startTransaction();
     await product.save({ session: sess });
     const admin = await Admin.findById(addedBy);
-    // category.forEach(async (cat) => {
-    //   const category = await Category.findById(cat);
-    //   category.products.push(product);
-    // });
-    // tag.forEach(async (tagId) => {
-    //   const tagItem = await Tag.findById(tagId);
-    //   tagItem.products.push(product);
-    // });
+    category.forEach(async (cat) => {
+      const category = await Category.findById(cat);
+      category.products.push(product);
+    });
+    tag.forEach(async (tagId) => {
+      const tagItem = await Tag.findById(tagId);
+      tagItem.products.push(product);
+    });
     admin.addedProducts.push(product);
     await admin.save({ session: sess });
     await sess.commitTransaction();
