@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainLayout from "./shared/components/Layout/MainLayout";
 import Home from "./Home/pages/Home";
 import Categories from "./Category/Pages/Categories";
 import Category from "./Category/Pages/Category";
 import Product from "./Products/pages/Product";
-import Login from "./features/auth/Login";
-import RequireAuth from "./features/auth/RequireAuth";
+import Login from "./auth/Login";
+import RequireAuth from "./auth/RequireAuth";
 import Profile from "./Profile/pages/Profile";
 import Secondary from "./shared/components/Layout/Secondary";
+import { AuthContext } from "./shared/context/auth-context";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-     
+
       {
         path: "/categories",
         children: [
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Profile/>,
+            element: <Profile />,
           },
           {
             path: "orders",
@@ -93,19 +94,76 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/auth", 
-    element: <Secondary/>,
-    children:[
+    path: "/auth",
+    element: <Secondary />,
+    children: [
       {
-        path:"login",
-        element:<Login/>
-      }
-    ]
+        path: "login",
+        element: <Login />,
+      },
+    ],
   },
 ]);
-
+let LogoutTimer;
 function App() {
-  return <RouterProvider router={router} />;
+  const [token, setToken] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState();
+
+  const login = useCallback((userId, token, expirationDate) => {
+    setToken(token);
+    setUserId(userId);
+    const tokenExpirationDate =
+      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+    setTokenExpirationDate(tokenExpirationDate);
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        userId: userId,
+        token: token,
+        expiration: tokenExpirationDate.toISOString(),
+      })
+    );
+  }, []);
+  const logout = useCallback(() => {
+    setToken(null);
+    setTokenExpirationDate(null);
+    setUserId(null);
+    localStorage.removeItem("userData");
+  }, []);
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+
+    if (
+      storedData &&
+      storedData.token &&
+      new Date(storedData.expiration) > new Date()
+    ) {
+      login(
+        storedData.userId,
+        storedData.token,
+        new Date(storedData.expiration)
+      );
+    }
+  }, [login]);
+
+  useEffect(() => {
+    if (token && tokenExpirationDate) {
+      const remainingTime =
+        tokenExpirationDate.getTime() - new Date().getTime();
+      LogoutTimer = setTimeout(logout, remainingTime);
+    } else {
+      clearTimeout(LogoutTimer);
+    }
+  }, [token, logout, tokenExpirationDate]);
+
+  return (
+    <AuthContext.Provider
+      value={{ isLoggedIn: !!token, token, userId, login, logout }}
+    >
+      <RouterProvider router={router} />;
+    </AuthContext.Provider>
+  );
 }
 
 export default App;
