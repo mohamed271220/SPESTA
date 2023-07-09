@@ -10,6 +10,12 @@ import RequireAuth from "./auth/RequireAuth";
 import Profile from "./Profile/pages/Profile";
 import Secondary from "./shared/components/Layout/Secondary";
 import { AuthContext } from "./shared/context/auth-context";
+import axios from "axios";
+
+axios.defaults.baseURL = 'http://localhost:8080/api';
+axios.defaults.withCredentials = true;
+
+
 const router = createBrowserRouter([
   {
     path: "/",

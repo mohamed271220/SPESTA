@@ -25,6 +25,11 @@ const productSchema = new Schema({
     type: Number,
     default: 0,
   },
+  status:{
+    type:String,
+    default:"available"
+  
+  }
 });
 
 module.exports = mongoose.model("Product", productSchema);

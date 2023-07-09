@@ -1,0 +1,83 @@
+.login {
+  border: 1px #aaa solid;
+  display: flex;
+  flex-direction: column;
+
+  width: 30rem;
+  margin: 0 auto;
+  margin-top: 3rem;
+  padding: 3rem;
+  justify-content: flex-start;
+}
+.errmsg {
+  color: red;
+}
+.offscreen {
+  display: none;
+}
+.login h2 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+.login-form label {
+  font-weight: 500;
+}
+
+/* .form-input{
+    height: 4vh;
+    width: 50vh;
+    border-color: #aaa;
+} */
+.login-form button {
+  margin: 2rem 0;
+  height: 2.5rem;
+  font-weight: 600;
+  font-size: larger;
+  background-color: #ffe485;
+  border :1px solid black
+}
+.form-control {
+  margin: 1rem 0;
+}
+
+.form-control label,
+.form-control input,
+.form-control textarea {
+  display: block;
+}
+
+.form-control label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-control input,
+.form-control textarea {
+  width: 100%;
+  font: inherit;
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 0.5rem 0.65rem;
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+  outline: none;
+  background: #ebebeb;
+  border-color: #ff8400;
+}
+
+.form-control--invalid label,
+.form-control--invalid p {
+  color: red;
+}
+
+.form-control--invalid input,
+.form-control--invalid textarea {
+  border-color: red;
+  background: #ffd1d1;
+}
