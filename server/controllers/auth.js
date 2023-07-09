@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
-// SIGNUP 
+// SIGNUP
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -39,7 +39,7 @@ exports.signup = async (req, res, next) => {
     name,
     email,
     password: hashedPassword,
-    // image: req.file.path.replace("\\", "/")||"",
+    image: req.file.path.replace("\\", "/") || "",
   });
 
   try {
@@ -73,15 +73,15 @@ exports.signup = async (req, res, next) => {
   });
 };
 
-
 // USER LOGIN
 exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
-console.log(email + " " +password);
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log(email + " " + password);
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
-    console.log(existingUser);
+    // console.log(existingUser);
   } catch (err) {
     const error = new Error("Login failed");
     error.statusCode = 500;
@@ -117,8 +117,6 @@ console.log(email + " " +password);
       { expiresIn: "1h" }
     );
 
-
-
     // Send authorization roles and access token to user
     res.json({
       message: "User logged in",
@@ -133,4 +131,3 @@ console.log(email + " " +password);
     return next(error);
   }
 };
-

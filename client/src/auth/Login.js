@@ -1,104 +1,106 @@
-import axios from "axios";
 import React, { useContext } from "react";
-import { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import Input from "../shared/components/UI/Input/Input";
+import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_REQUIRE,
+  VALIDATOR_MINLENGTH,
+} from "../shared/util/validators";
+import { useForm } from "../shared/hooks/form-hook";
 import { AuthContext } from "../shared/context/auth-context";
 import LoadingSpinner from "../shared/Loading/LoadingSpinner/LoadingSpinner";
-import './index.css'
-const Login = () => {
+
+import { Link, useNavigate } from "react-router-dom";
+import "./index.css";
+import axios from "axios";
+const Login = (props) => {
   const auth = useContext(AuthContext);
-  const emailRef = useRef();
-  const errRef = useRef();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState();
 
-  useEffect(() => {
-    emailRef.current.focus();
-  }, []);
+  const [formState, inputHandler] = useForm(
+    {
+      email: {
+        value: "",
+        invalid: false,
+      },
+      password: {
+        value: "",
+        invalid: false,
+      },
+    },
+    false
+  );
 
-  useEffect(() => {
-    setErrMsg("");
-  }, [email, password]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const loginSubmitHandler = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const response = await axios.post("/auth/login", {
-        email,
-        password,
-      });
-      if (!response.ok) {
-        throw new Error("Request failed: " + response.message);
-      }
-      auth.login(response.userId, response.token);
-      setEmail("");
-      setPassword("");
+      const response = await axios.post(
+        `/auth/login`,
+        {
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value,
+        },
+   
+      );
       console.log(response);
       setIsLoading(false);
+      auth.login(response.userId, response.token);
+      // props.onCancel();
+      navigate("/");
     } catch (err) {
-      console.log(err);
-      setErrMsg(
-        "Login failed - Please try again error message: " +
-          err.response.data.message
-      );
-      //   errRef.current.focus();
-      setIsLoading(false);
+      setError(err.message)
     }
+    setIsLoading(false);
+
   };
 
-  const handleEmailInput = (e) => {
-    setEmail(e.target.value);
-  };
+  return (
+    <>
 
-  const handlePasswordInput = (e) => {
-    setPassword(e.target.value);
-  };
-  const content = isLoading ? (
-    <LoadingSpinner />
-  ) : (
-    <section className="login">
-      <p
-        ref={errRef}
-        className={errMsg ? "errmsg" : "offscreen"}
-        aria-live="assertive"
-      >
-        {errMsg}
-      </p>
-
-      <h1>Sign In</h1>
-
-      <form className="form-control login-form" onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input
-        className="form-input"
-          type="text"
+    <div className="login-container">
+      
+      {isLoading && <LoadingSpinner asOverlay />}
+      {error && <p className="errmsg">{error}</p>}
+      <form className="login" onSubmit={loginSubmitHandler}>
+        <Input
           id="email"
-          ref={emailRef}
-          value={email}
-          onInput={handleEmailInput}
-          autoComplete="off"
-          required
+          type="email"
+          placeholder="example@example.com"
+          label="E-mail"
+          validators={[VALIDATOR_EMAIL(), VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid email address."
+          element="input"
+          onInput={inputHandler}
         />
-
-        <label htmlFor="password">Password:</label>
-        <input 
-          className="form-input"
-          type="password"
+        <Input
           id="password"
-          onChange={handlePasswordInput}
-          value={password}
-          required
+          type="password"
+          label="Password"
+          placeholder="Make sure that your password is strong"
+          validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
+          errorText="Invalid password"
+          element="input"
+          onInput={inputHandler}
         />
-        <button>Sign In</button>
+        <button
+          type="submit"
+          size="small"
+          className="center button login-button"
+          disabled={!formState.isValid}
+       
+        >
+          Login
+        </button>
       </form>
-    </section>
-  )
+      <Link to={"/auth/signup"}>
+        <button className="sec-acc-btn">Don't have an account? Sign up</button>
+      </Link>
+    </div>
+    </>
 
-  return content;
+  );
 };
 
 export default Login;

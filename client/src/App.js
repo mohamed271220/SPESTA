@@ -6,6 +6,7 @@ import Categories from "./Category/Pages/Categories";
 import Category from "./Category/Pages/Category";
 import Product from "./Products/pages/Product";
 import Login from "./auth/Login";
+import Signup from "./auth/Signup";
 import RequireAuth from "./auth/RequireAuth";
 import Profile from "./Profile/pages/Profile";
 import Secondary from "./shared/components/Layout/Secondary";
@@ -107,6 +108,10 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
       },
+      {
+        path: "signup",
+        element:<Signup/>
+      }
     ],
   },
 ]);
