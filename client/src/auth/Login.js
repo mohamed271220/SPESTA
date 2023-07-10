@@ -36,31 +36,23 @@ const Login = (props) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `/auth/login`,
-        {
-          email: formState.inputs.email.value,
-          password: formState.inputs.password.value,
-        },
-   
-      );
+      const response = await axios.post(`/auth/login`, {
+        email: formState.inputs.email.value,
+        password: formState.inputs.password.value,
+      });
       console.log(response);
       setIsLoading(false);
-      auth.login(response.userId, response.token);
+      auth.login(response.data.userId, response.data.token,response.data);
       // props.onCancel();
       navigate("/");
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     }
     setIsLoading(false);
-
   };
 
   return (
-    <>
-
     <div className="login-container">
-      
       {isLoading && <LoadingSpinner asOverlay />}
       {error && <p className="errmsg">{error}</p>}
       <form className="login" onSubmit={loginSubmitHandler}>
@@ -89,7 +81,6 @@ const Login = (props) => {
           size="small"
           className="center button login-button"
           disabled={!formState.isValid}
-       
         >
           Login
         </button>
@@ -98,8 +89,6 @@ const Login = (props) => {
         <button className="sec-acc-btn">Don't have an account? Sign up</button>
       </Link>
     </div>
-    </>
-
   );
 };
 

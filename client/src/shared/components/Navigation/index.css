@@ -222,7 +222,7 @@ h3 span{
   border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.dropdown-menu ul li:hover a{
+.dropdown-menu ul li:hover a ,.dropdown-menu ul li:hover button {
   color: #FE6B00;
   cursor: pointer;
 }
@@ -247,4 +247,20 @@ h3 span{
   color: #161b35;
 
   transition: var(--speed);
+}
+.main-navigation__user-img{
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+}
+.dropdownItem button{
+  background-color: transparent;
+  border:none;
+  max-width: 100px;
+  margin-left: 10px;
+  text-decoration: none;
+  color: #161b35;
+   font-weight: 600;
+  transition: var(--speed);
+
 }

@@ -54,7 +54,8 @@ const Signup = (props) => {
       const data = await axios.post(`/auth/signup`, formData);
 
       setIsLoading(false);
-      auth.login(data.userId, data.token);
+      auth.login(data.data.userId, data.data.token,data.data);
+
 
       navigate("/");
       props.onCancel();
@@ -68,7 +69,7 @@ const Signup = (props) => {
     <div className="login-container">
       {/* <ErrorModal error={error} onClear={clearError} /> */}
       <p className={error ? "errMsg" : ""}>{error}</p>
-      {isLoading && <LoadingSpinner asOverlay />}
+      {isLoading && <LoadingSpinner  />}
       <form className="login" onSubmit={signupSubmitHandler}>
         <h2>SignUp</h2>
         <Input

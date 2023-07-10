@@ -68,7 +68,7 @@ exports.signup = async (req, res, next) => {
     message: "User created",
     userId: createdUser._id,
     email: createdUser.email,
-
+    image: createdUser.image,
     token: token,
   });
 };
@@ -112,7 +112,7 @@ exports.login = async (req, res, next) => {
   let accessToken;
   try {
     accessToken = jwt.sign(
-      { userId: existingUser._id.toString(), email: existingUser.email },
+      { userId: existingUser.id.toString(), email: existingUser.email },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -120,10 +120,11 @@ exports.login = async (req, res, next) => {
     // Send authorization roles and access token to user
     res.json({
       message: "User logged in",
-      accessToken,
+      token: accessToken,
       userId: existingUser.id,
       email: existingUser.email,
       name: existingUser.name,
+      image: existingUser.image,
     });
   } catch (err) {
     const error = new Error("Login failed");

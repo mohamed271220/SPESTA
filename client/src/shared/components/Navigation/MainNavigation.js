@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import MainHeader from "./MainHeader";
 import Logo from "../Logo";
 import { Link } from "react-router-dom";
@@ -10,41 +10,54 @@ import { GoHome } from "react-icons/go";
 import { BsPerson } from "react-icons/bs";
 import { BiCartAdd } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
+import { AuthContext } from "../../context/auth-context";
 
+function DropdownItem(props) {
+  if (props.text === "Logout") {
+    return (
+      <li className="dropdownItem">
+        <button onClick={props.onClick}>
+          {" "}
+          {props.img} {props.text}
+        </button>
+      </li>
+    );
+  }
 
-function DropdownItem(props){
-  return(
-    <li className = 'dropdownItem'>
-      <NavLink to={props.to} >   {props.img} {props.text} </NavLink>
+  return (
+    <li className="dropdownItem">
+      <NavLink to={props.to}>
+        {" "}
+        {props.img} {props.text}{" "}
+      </NavLink>
     </li>
   );
 }
 
-
 const MainNavigation = () => {
+  const auth = useContext(AuthContext);
+  const [open, setOpen] = React.useState(false);
 
-  const [open,setOpen] = React.useState(false)
   let menuRef = React.useRef();
 
-
-  
   React.useEffect(() => {
-    let handler = (e)=>{
-      if(!menuRef.current.contains(e.target)){
+    let handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
         setOpen(false);
         console.log(menuRef.current);
-      }      
+      }
     };
 
     document.addEventListener("mousedown", handler);
-    
 
-    return() =>{
+    return () => {
       document.removeEventListener("mousedown", handler);
-    }
-
+    };
   });
 
+  const logoutHandler = () => {
+    auth.logout();
+  };
 
   return (
     <React.Fragment>
@@ -60,9 +73,8 @@ const MainNavigation = () => {
               </div>
             </IconContext.Provider>
             <div className="main-navigation__location-text">
-
-            <p className="main-navigation__location-text-dimmed">Location</p>
-            <p>Egypt</p>
+              <p className="main-navigation__location-text-dimmed">Location</p>
+              <p>Egypt</p>
             </div>
           </div>
         </div>
@@ -73,28 +85,52 @@ const MainNavigation = () => {
           id="search"
           placeholder={`Search Spesta`}
         />
-       
-        <Link to={'/profile'}>Account</Link>
+        {auth.token && (
+          <Link to={"/profile"}>
+            <img
+              className="main-navigation__user-img"
+              src={"http://localhost:8080/" + auth.data.image}
+              alt={auth.data.name}
+            />{" "}
+          </Link>
+        )}{" "}
         {/* pull down menu  */}
-        <div className='menu-container' ref={menuRef}>
-        <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
-          <p className="main-navigation__location-text-dimmed menu-small">Hello & sign in</p>
-          <p>Account & List</p>
-        </div>
+        <div className="menu-container" ref={menuRef}>
+          <div
+            className="menu-trigger"
+            onClick={() => {
+              setOpen(!open);
+            }}
+          >
+            <p className="main-navigation__location-text-dimmed menu-small">
+              {auth.token ? "hello " + auth.data.name : "Hello & sign in"}
+            </p>
+            <p>Account & List</p>
+          </div>
 
-        <div className={`dropdown-menu ${open? 'active' : 'inactive'}`} >
-          <h3>Welcome<br/><span>Some acc name</span></h3>
-          <ul>
-            <DropdownItem to={''} img = {<BsPerson/>} text = {"My Profile"}/>
-            <DropdownItem to={'/'} img = {<GoHome/>} text = {"Home"}/>
-            <DropdownItem to={''} img = {<BiCartAdd/>} text = {"Cart"}/>
-        
-            <DropdownItem to={''} img = {''} text = {"Categories"}/>
-            <DropdownItem to={''} img = {''} text = {"Logout or login"}/>
-          </ul>
-        </div>
-      </div>
+          <div className={`dropdown-menu ${open ? "active" : "inactive"}`}>
+            <h3>
+              Welcome
+              <br />
+              <span>Some acc name</span>
+            </h3>
+            <ul>
+              <DropdownItem to={"/profile"} img={<BsPerson />} text={"My Profile"} />
+              <DropdownItem to={"/"} img={<GoHome />} text={"Home"} />
 
+              <DropdownItem to={"/categories"} img={""} text={"Categories"} />
+              {auth.token && <DropdownItem to={""} img={""} text={"Orders"} />}
+              {auth.token && (
+                <DropdownItem to={""} img={<BiCartAdd />} text={"Cart"} />
+              )}
+              {!auth.token ? (
+                <DropdownItem to={"/auth/login"} img={""} text={"Login"} />
+              ) : (
+                <DropdownItem to={""} img={""} text={"Logout"} onClick={logoutHandler} />
+              )}
+            </ul>
+          </div>
+        </div>
       </MainHeader>
       <MainHeader className="secondary main-navigation__header-nav">
         <div className="main-navigation__location-mobile">
@@ -103,20 +139,24 @@ const MainNavigation = () => {
               <IoLocationOutline />
             </div>
           </IconContext.Provider>
-          <p className="main-navigation__location-text-dimmed">Delivery to <span className="main-navigation__location-text-location">Egypt🥲</span></p>
+          <p className="main-navigation__location-text-dimmed">
+            Delivery to{" "}
+            <span className="main-navigation__location-text-location">
+              Egypt🥲
+            </span>
+          </p>
         </div>
-      
       </MainHeader>
       <MainHeader className="secondary main-navigation__header-nav-port">
-     <div className="tags">
-      <Link>Tag #</Link>
-      <Link>Tag #</Link>
-      <Link>Tag #</Link>
-      <Link>Tag #</Link>
-      <Link>Tag #</Link>
-      <Link>Tag #</Link>
-      <Link>Tag #</Link>
-     </div>
+        <div className="tags">
+          <Link>Tag #</Link>
+          <Link>Tag #</Link>
+          <Link>Tag #</Link>
+          <Link>Tag #</Link>
+          <Link>Tag #</Link>
+          <Link>Tag #</Link>
+          <Link>Tag #</Link>
+        </div>
       </MainHeader>
     </React.Fragment>
   );

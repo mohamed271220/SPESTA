@@ -13,9 +13,8 @@ import Secondary from "./shared/components/Layout/Secondary";
 import { AuthContext } from "./shared/context/auth-context";
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://localhost:8080/api';
+axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
-
 
 const router = createBrowserRouter([
   {
@@ -110,8 +109,8 @@ const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element:<Signup/>
-      }
+        element: <Signup />,
+      },
     ],
   },
 ]);
@@ -119,11 +118,13 @@ let LogoutTimer;
 function App() {
   const [token, setToken] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [data, setData] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
-  const login = useCallback((userId, token, expirationDate) => {
+  const login = useCallback((userId, token, data, expirationDate) => {
     setToken(token);
     setUserId(userId);
+    setData(data);
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
     setTokenExpirationDate(tokenExpirationDate);
@@ -132,6 +133,7 @@ function App() {
       JSON.stringify({
         userId: userId,
         token: token,
+        data: data,
         expiration: tokenExpirationDate.toISOString(),
       })
     );
@@ -140,6 +142,7 @@ function App() {
     setToken(null);
     setTokenExpirationDate(null);
     setUserId(null);
+    setData(null);
     localStorage.removeItem("userData");
   }, []);
   useEffect(() => {
@@ -153,6 +156,7 @@ function App() {
       login(
         storedData.userId,
         storedData.token,
+        storedData.data,
         new Date(storedData.expiration)
       );
     }
@@ -170,7 +174,14 @@ function App() {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: !!token, token, userId, login, logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        data: data,
+        login,
+        logout,
+      }}
     >
       <RouterProvider router={router} />;
     </AuthContext.Provider>
