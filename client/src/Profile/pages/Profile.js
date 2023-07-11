@@ -5,20 +5,22 @@ import address from "../assets/address.png";
 import payment from "../assets/payment.png";
 import security from "../assets/security.png";
 import "../index.css";
+import Orders from "../components/Orders";
+import Addresses from "../components/Addresses";
 const Profile = () => {
   return (
     <div className="profile-container">
       <h1 className="profile-title">Your Account</h1>
       <div className="profile-control">
         <div className="profile-control-item">
-          <Link>
+          <a href={"#orders"}>
             <img src={orders} alt="orders" /> <h2>Your Orders</h2>
-          </Link>
+          </a>
         </div>
         <div className="profile-control-item">
-          <Link>
+          <a href={'#addresses'}>
             <img src={address} alt="address" /> <h2>Your addresses</h2>
-          </Link>
+          </a>
         </div>
         <div className="profile-control-item">
           <Link>
@@ -31,8 +33,12 @@ const Profile = () => {
           </Link>
         </div>
       </div>
-      <div className="m-orders"></div>
-      <div className="m-buy-again"></div>
+      <div className="m-orders"  id="orders">
+        <Orders />
+      </div>
+      <div className="m-addresses" id="addresses">
+        <Addresses />
+      </div>
     </div>
   );
 };

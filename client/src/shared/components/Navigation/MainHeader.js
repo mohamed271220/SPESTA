@@ -1,14 +1,13 @@
-import React from 'react'
+import React from "react";
 
-
-import './index.css'
+import "./index.css";
 
 const MainHeader = (props) => {
   return (
     <header className={`main-header ${props.className}`}>
-        {props.children}
+      {props.children}
     </header>
-  )
-}
+  );
+};
 
-export default MainHeader
+export default MainHeader;

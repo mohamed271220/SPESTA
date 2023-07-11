@@ -1,73 +1,168 @@
-.profile-container{
-    display: flex;
+.profile-container {
+  display: flex;
+  background-color: white;
+  margin-top: 3rem;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+}
+.profile-control {
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-evenly;
+}
+.profile-control-item {
+  width: 20rem;
+  padding: 0.3rem;
+  border: 1px #aaa solid;
+  border-radius: 12px;
+}
+.profile-control-item a {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1vh;
+}
+.profile-control-item h2 {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 0;
+    background-color: transparent;
+  }
+  .profile-control {
+    gap: 0.5rem;
+    padding: 0%;
+    margin-bottom: 0.75rem;
+  }
+  .profile-control-item a img,
+  .profile-title {
+    display: none;
+  }
+
+  .profile-control-item h2 {
+    font-size: 13px;
+  }
+  .profile-control-item {
+    width: 10rem;
     background-color: white;
-    margin-top:3rem;
-    flex-direction: column;
-    width: 100%;
-    padding: 1rem;
-
-    
-}.profile-control{
-    padding: 0 2rem;
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-gap: 1.5rem;
-justify-content: space-evenly;
-
-}
-.profile-control-item{
-    width: 20rem;
-    padding: .3rem;
-    border: 1px #aaa solid;
-    border-radius: 12px;
-
-}
-.profile-control-item a{
-    text-decoration: none;
-    color: black;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 1vh;
-}
-.profile-control-item h2{
-    font-weight: 500;
+    height: 3rem;
+  }
+  .profile-control-item a {
+    align-items: center;
+    justify-content: center;
+  }
+.m-orders, .m-addresses{
+  background-color: white;
 }
 
-@media (max-width:768px) {
-    .profile-container{
-        padding: 0;
-        background-color:transparent;
-    }
-    .profile-control{
-        gap: 0.5rem;
-        padding: 0%;
-    }
-    .profile-control-item a img,.profile-title{
-        display: none;
-    }
-    .profile-control-item h2{
-        font-size: 13px;
-    }
-    .profile-control-item{
-        width: 10rem;
-        background-color: white;
-        height: 3rem;
-    }
-    .profile-control-item a{
-        align-items: center;
-        justify-content: center;
-    }
 }
-@media (max-width:360px) {
-    .profile-control{
+@media (max-width: 360px) {
+  .profile-control {
+    padding: 0;
+    gap: 0.2;
+  }
+  .profile-control-item {
+    width: 10rem;
+    height: 3rem;
+  }
+}
 
-        padding: 0;
-        gap: 0.2;
-    }
-    .profile-control-item{
-        width: 10rem;
-        height: 3rem;
-    }
+.order-container {
+  display: flex;
+  margin: 1rem auto;
+}
+
+.orders-controls {
+  display: flex;
+  gap: 3rem;
+
+  border-bottom: 1px #aaa solid;
+  padding: 0.5rem 2rem;
+}
+.orders-controls a {
+  text-decoration: none;
+  color: #8ca5ff;
+}
+.orders-controls a:active,
+.orders-controls a:hover {
+  color: black;
+  font-weight: 600;
+
+  /* border-bottom: 1px #FE6B00 solid; */
+}
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem auto;
+  padding: 0 2rem;
+}
+.orders-numbers span {
+  font-weight: 600;
+}
+.orders-numbers select {
+  margin: 1rem;
+  padding: 0.3rem;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px #aaa;
+}
+.orders-table table {
+  width: 100%;
+}
+
+.addresses-container {
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.address-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed #aaa;
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 296px;
+  background-color: white;
+}
+.address-controls{
+  
+}
+.address-card h3 {
+  padding: 1rem;
+  font-weight: 600;
+  margin: 0;
+  border-bottom: 1px solid #aaa;
+}
+.address-controls button {
+  border: none;
+  background-color: transparent;
+  color: #8ca5ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.add-address-button {
+  cursor: pointer;
+  width: fit-content;
+}
+.add-address-button button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+.m-orders, .m-addresses{
+  margin: 2rem 0;
+}
+.orders-table td {
+  text-align: center;
 }

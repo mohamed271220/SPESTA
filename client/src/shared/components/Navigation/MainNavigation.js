@@ -115,18 +115,27 @@ const MainNavigation = () => {
               <span>Some acc name</span>
             </h3>
             <ul>
-              <DropdownItem to={"/profile"} img={<BsPerson />} text={"My Profile"} />
+              <DropdownItem
+                to={"/profile"}
+                img={<BsPerson />}
+                text={"My Profile"}
+              />
               <DropdownItem to={"/"} img={<GoHome />} text={"Home"} />
 
               <DropdownItem to={"/categories"} img={""} text={"Categories"} />
-              {auth.token && <DropdownItem to={""} img={""} text={"Orders"} />}
+              {auth.token && <DropdownItem to={"/profile"} img={""} text={"Orders"} />}
               {auth.token && (
-                <DropdownItem to={""} img={<BiCartAdd />} text={"Cart"} />
+                <DropdownItem to={"/cart"} img={<BiCartAdd />} text={"Cart"} />
               )}
               {!auth.token ? (
                 <DropdownItem to={"/auth/login"} img={""} text={"Login"} />
               ) : (
-                <DropdownItem to={""} img={""} text={"Logout"} onClick={logoutHandler} />
+                <DropdownItem
+                  to={""}
+                  img={""}
+                  text={"Logout"}
+                  onClick={logoutHandler}
+                />
               )}
             </ul>
           </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, Suspense } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainLayout from "./shared/components/Layout/MainLayout";
 import Home from "./Home/pages/Home";
@@ -12,6 +12,8 @@ import Profile from "./Profile/pages/Profile";
 import Secondary from "./shared/components/Layout/Secondary";
 import { AuthContext } from "./shared/context/auth-context";
 import axios from "axios";
+import LoadingSpinner from "./shared/Loading/LoadingSpinner/LoadingSpinner";
+import Cart from "./Cart/page/Cart";
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
@@ -56,15 +58,11 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/auth",
-        element: <div>Auth spa page</div>,
-      },
-      {
         path: "/cart",
         children: [
           {
             index: true,
-            element: <div>Cart</div>,
+            element: <Cart/>,
           },
           {
             path: "checkout",
@@ -78,14 +76,6 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Profile />,
-          },
-          {
-            path: "orders",
-            element: <div>Orders</div>,
-          },
-          {
-            path: "addresses",
-            element: <div>Addresses</div>,
           },
           {
             path: "payment-methods",
@@ -183,9 +173,12 @@ function App() {
         logout,
       }}
     >
-      <RouterProvider router={router} />;
+      <Suspense fallback={<LoadingSpinner />}>
+        <RouterProvider router={router} />;
+      </Suspense>
     </AuthContext.Provider>
   );
 }
 
 export default App;
+// document.querySelector("#root > div.first-section")

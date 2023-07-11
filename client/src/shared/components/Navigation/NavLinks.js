@@ -7,35 +7,34 @@ import { AiOutlineMenu } from "react-icons/ai";
 import "./index.css";
 const NavLinks = () => {
   return (
-<div className="nav-links-container">
+    <div className="nav-links-container">
       <ul className="nav-links">
         <li>
-          <NavLink to={'/'}>
+          <NavLink to={"/"}>
             <GoHome />
             <p>Home</p>
           </NavLink>
         </li>
         <li>
-          <NavLink to={'/profile'}>
+          <NavLink to={"/profile"}>
             <BsPerson />
             <p>Profile</p>
           </NavLink>
         </li>
         <li>
-          <NavLink to={'/cart'}>
+          <NavLink to={"/cart"}>
             <BiCartAdd />
             <p>Cart</p>
           </NavLink>
         </li>
         <li>
-          <NavLink to={'/categories'}>
+          <NavLink to={"/categories"}>
             <AiOutlineMenu />
             <p>More</p>
           </NavLink>
         </li>
       </ul>
-</div>
- 
+    </div>
   );
 };
 

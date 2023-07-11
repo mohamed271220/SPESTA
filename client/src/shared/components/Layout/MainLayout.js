@@ -12,7 +12,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <BottomMenu />
-      <Footer/>
+      <Footer />
     </React.Fragment>
   );
 };
