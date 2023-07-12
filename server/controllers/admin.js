@@ -4,8 +4,21 @@ const { default: mongoose } = require("mongoose");
 const Admin = require("../models/admin");
 const Category = require("../models/category");
 const Tag = require("../models/tag");
-
+const User = require("../models/user");
 //TODO PRODUCT CONTROLLERS
+
+//TODO GET ALL PRODUCTS
+exports.getProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json({ message: "Products fetched", products });
+  } catch (err) {
+    const error = new Error("Could not fetch products");
+    error.statusCode = 500;
+    return next(error);
+  }
+};
+
 exports.addProduct = async (req, res, next) => {
   //     name
   // description
@@ -36,7 +49,7 @@ exports.addProduct = async (req, res, next) => {
     description,
     price,
     addedBy,
-    images:[],
+    images: [],
     category,
     tag,
   });
@@ -59,7 +72,7 @@ exports.addProduct = async (req, res, next) => {
     await sess.commitTransaction();
     res.status(201).json({ message: "Product Added Successfully", product });
   } catch (err) {
-    const error = new Error("could not add product "+err);
+    const error = new Error("could not add product " + err);
     error.statusCode = 500;
     return next(error);
   }
@@ -215,6 +228,10 @@ exports.removeCategory = async (req, res, next) => {
   }
 };
 
+exports.addProductToCategory = async (req, res, next) => {};
+
+//TODO TAGS CATEGORY
+
 exports.addTag = async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -265,6 +282,60 @@ exports.removeTag = async (req, res, next) => {
     res.status(200).json({ message: "Tag Deleted Successfully" });
   } catch (err) {
     const error = new Error("Could not delete tag");
+    error.statusCode = 500;
+    return next(error);
+  }
+};
+
+exports.addProductToTag = async (req, res, next) => {};
+
+//TODO GET ALL USERS
+exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({ message: "Users fetched", users });
+  } catch (err) {
+    const error = new Error("Could not fetch users");
+    error.statusCode = 500;
+    return next(error);
+  }
+};
+
+//TODO GET USER BY ID
+exports.getUserById = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      const error = new Error("No User Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({ message: "User fetched", user });
+  } catch (err) {
+    const error = new Error("Could not fetch user");
+    error.statusCode = 500;
+    return next(error);
+  }
+};
+
+//TODO Delete USER
+exports.deleteUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      const error = new Error("No User Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await user.deleteOne({ session: sess });
+    sess.commitTransaction();
+    res.status(200).json({ message: "User Deleted Successfully" });
+  } catch (err) {
+    const error = new Error("Could not delete user");
     error.statusCode = 500;
     return next(error);
   }

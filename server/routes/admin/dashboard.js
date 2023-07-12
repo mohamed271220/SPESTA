@@ -1,10 +1,16 @@
 const express = require("express");
 const adminController = require("../../controllers/admin");
+const productController = require("../../controllers/product");
 const isAdmin = require("../../middleware/is-admin");
 
 const fileUpload = require("../../middleware/file-upload");
 
 const router = express();
+
+// TODO GET ALL PRODUCTS
+router.get("/products", isAdmin, adminController.getProducts);
+// TODO GET A PRODUCT BY ID
+router.get("/:productId", productController.getProduct);
 
 //TODO ADD A PRODUCT WITH CERTAIN TAG AND A CATEGORY
 //TESTED✅
@@ -32,9 +38,6 @@ router.delete(
   adminController.removeProduct
 );
 
-
-
-
 //TODO ADD A CATEGORY
 //TESTED✅
 router.post("/addCategory", isAdmin, adminController.addCategory);
@@ -46,6 +49,14 @@ router.delete(
   isAdmin,
   adminController.removeCategory
 );
+
+//TODO ADD A PRODUCT TO A CATEGORY
+router.put(
+  "/addProductToCategory/:categoryId",
+  isAdmin,
+  adminController.addProductToCategory
+);
+
 //TODO ADD A TAG
 //TESTED✅
 router.post("/addTag", isAdmin, adminController.addTag);
@@ -53,12 +64,16 @@ router.post("/addTag", isAdmin, adminController.addTag);
 //TODO REMOVE A TAG
 //TESTED✅
 router.delete("/removeTag/:tagId", isAdmin, adminController.removeTag);
-
+//TODO ADD PRODUCT TO TAG
+// you will have the product id on the product page
+router.put("/addProductToTag/:tagId", isAdmin, adminController.addProductToTag);
 
 //TODO GET USERS
+router.get("/users", isAdmin, adminController.getUsers);
 
+//TODO GET USER BY ID
+router.get("/user/:userId", isAdmin, adminController.getUserById);
 //TODO DELETE A USER
-
-
+router.delete("/deleteUser/:userId", isAdmin, adminController.deleteUser);
 
 module.exports = router;

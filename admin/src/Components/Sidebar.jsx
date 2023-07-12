@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   Typography,
   useTheme,
@@ -27,8 +28,46 @@ import {
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
   PieChartOutlined,
+  CategoryOutlined,
 } from "@mui/icons-material";
+import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 import FlexBetween from "./FlexBetween";
+import Logo from "./Logo";
+
+const navItems = [
+  {
+    text: "Dashboard",
+    icon: <HomeOutlined />,
+  },
+  {
+    text: "Admin",
+    icon: null,
+  },
+  {
+    text: "Products",
+    icon: <ShoppingCartOutlined />,
+  },
+  {
+    text: "Users",
+    icon: <Groups2Outlined />,
+  },
+  {
+    text: "Orders",
+    icon: <ReceiptLongOutlined />,
+  },
+  {
+    text: "Categories",
+    icon: <CategoryOutlined />,
+  },
+  {
+    text: "Tags",
+    icon: <TagOutlinedIcon />,
+  },
+  {
+    text: "Settings",
+    icon: <SettingsOutlined />,
+  },
+];
 
 const Sidebar = ({
   drawerWidth,
@@ -42,7 +81,7 @@ const Sidebar = ({
   const theme = useTheme();
   useEffect(() => setActive(pathname.substring(1)), [pathname]);
   return (
-    <Box component={"nav"}>
+    <Box component="nav">
       {isSidebarOpen && (
         <Drawer
           open={isSidebarOpen}
@@ -54,7 +93,7 @@ const Sidebar = ({
             "& .MuiDrawer-paper": {
               color: theme.palette.secondary[200],
               backgroundColor: theme.palette.background.alt,
-              boxSizing: "border-box",
+              boxSixing: "border-box",
               borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
             },
@@ -62,14 +101,74 @@ const Sidebar = ({
         >
           <Box width={"100%"}>
             <Box m="1.5rem 2rem 3rem">
-              <FlexBetween color={theme.palette.secondary.main}>
+              <FlexBetween
+                sx={{
+                  justifyContent: "center",
+                }}
+                color={theme.palette.secondary.main}
+              >
                 <Box display="flex" alignItems="center" gap="0.5rem">
-                  {/* <Typography variant="h4" fontWeight="bold">
-LOGO
-                  </Typography> */}
+                  <Logo />
                 </Box>
+                {!isNonMobile && (
+                  <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                    <ChevronLeft />
+                  </IconButton>
+                )}
               </FlexBetween>
             </Box>
+            <List>
+              {navItems.map(({ text, icon }) => {
+                if (!icon) {
+                  return (
+                    <Typography
+                      key={text}
+                      variant="h6"
+                      sx={{ m: "2.25rem 0 1rem 3rem" }}
+                    >
+                      {text}
+                    </Typography>
+                  );
+                }
+                const lcText = text.toLowerCase();
+                return (
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton
+                      onClick={() => {
+                        navigate(`/${lcText}`);
+                        setActive(lcText);
+                      }}
+                      sx={{
+                        backgroundColor:
+                          active === lcText
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === lcText
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "2rem",
+                          color:
+                            active === lcText
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        {icon}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                      {active === lcText && (
+                        <ChevronRightOutlined sx={{ ml: "auto" }} />
+                      )}
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
+            </List>
           </Box>
         </Drawer>
       )}
