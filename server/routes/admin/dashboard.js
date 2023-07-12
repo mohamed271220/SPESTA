@@ -72,7 +72,7 @@ router.put("/addProductToTag/:tagId", isAdmin, adminController.addProductToTag);
 router.get("/users", isAdmin, adminController.getUsers);
 
 //TODO GET USER BY ID
-router.get("/user/:userId", isAdmin, adminController.getUserById);
+router.get("/users/:userId", isAdmin, adminController.getUserById);
 //TODO DELETE A USER
 router.delete("/deleteUser/:userId", isAdmin, adminController.deleteUser);
 
