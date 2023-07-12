@@ -107,7 +107,7 @@ function App() {
             ):(
               <Routes>
               
-              <Route
+              <Route    
                   path="/"
                   element={<Navigate to="/auth/Login" replace />}
                 />
@@ -121,6 +121,6 @@ function App() {
       </AuthContext.Provider>
     </div>
   );
-}
+} 
 
 export default App;
