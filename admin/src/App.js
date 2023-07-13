@@ -15,7 +15,6 @@ let LogoutTimer;
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
 
-
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = React.useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -93,34 +92,19 @@ function App() {
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {auth.token ? (
             <Routes>
               <Route element={<Layout />}>
-                <Route
-                  path="/"
-                  element={<Navigate to="/dashboard" replace />}
-                />
+                <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
               </Route>
-            </Routes>
-
-            ):(
-              <Routes>
-              
-              <Route    
-                  path="/"
-                  element={<Navigate to="/auth/Login" replace />}
-                />
                 <Route path="/auth/login" element={<Login />} />
                 <Route path="/auth/signup" element={<Signup />} />
-            
             </Routes>
-            ) }
           </ThemeProvider>
         </BrowserRouter>
       </AuthContext.Provider>
     </div>
   );
-} 
+}
 
 export default App;

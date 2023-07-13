@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Input from "../../Components/Input/Input";
 import {
   VALIDATOR_EMAIL,
@@ -15,7 +15,9 @@ import "./index.css";
 
 const Login = (props) => {
   const auth = useContext(AuthContext);
+
   const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState();
 
@@ -33,17 +35,23 @@ const Login = (props) => {
     false
   );
 
+  useEffect(() => {
+    if (auth.token) {
+      navigate("/dashboard");
+    }
+  }, [auth.token, navigate]);
+
   const loginSubmitHandler = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`/auth/login`, {
+      const response = await axios.post(`/admin/auth/login`, {
         email: formState.inputs.email.value,
         password: formState.inputs.password.value,
       });
       console.log(response);
       setIsLoading(false);
-      auth.login(response.data.userId, response.data.token,response.data);
+      auth.login(response.data.userId, response.data.token, response.data);
       // props.onCancel();
       navigate("/");
     } catch (err) {
