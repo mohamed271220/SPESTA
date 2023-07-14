@@ -72,7 +72,7 @@ const Login = (props) => {
     <div className="login-container">
       <Logo />
       {isLoading && <LoadingSpinner asOverlay />}
-      {error && <p className="errmsg">{error}</p>}
+      {error && <p className="errMsg">{error}</p>}
       <form className="login" onSubmit={loginSubmitHandler}>
         <Input
           id="email"

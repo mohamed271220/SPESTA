@@ -11,11 +11,31 @@ import FlexBetween from "./FlexBetween";
 import { useDispatch } from "react-redux";
 import { setMode } from "../state";
 import { useTheme } from "@emotion/react";
-import { AppBar, IconButton, InputBase, Toolbar } from "@mui/material";
-import {AuthContext} from "../context/auth-context";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  InputBase,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { AuthContext } from "../context/auth-context";
+import { authActions } from "../state/authSlice";
 
-const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const auth = useContext(AuthContext);
+const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
+  // const auth = useContext(AuthContext);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isOpen = Boolean(anchorEl);
+  const handleClick = (e) => setAnchorEl(e.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+  const logout = () => {
+    setAnchorEl(null);
+    dispatch(authActions.logout());
+  };
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -63,6 +83,55 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           <IconButton>
             <SettingsOutlined />
           </IconButton>
+          <FlexBetween>
+            <Button
+              variant="text"
+              onClick={handleClick}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                textTransform: "none",
+                gap: "1rem",
+              }}
+            >
+              <Box
+                component="img"
+                alt="pfp"
+                src={`http://localhost:8080/${user.image}`}
+                width="32px"
+                height="32px"
+                borderRadius="50%"
+                sx={{ objectFit: "cover" }}
+              />
+              <Box textAlign="left">
+                <Typography
+                  fontWeight="bold"
+                  fontSize="0.85rem"
+                  sx={{ color: theme.palette.secondary[100] }}
+                >
+                  {user.name}
+                </Typography>
+                <Typography
+                  fontSize="0.7rem"
+                  sx={{ color: theme.palette.secondary[200] }}
+                >
+                  {user.email}
+                </Typography>
+              </Box>
+              <ArrowDownwardOutlined
+                sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
+              />
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={isOpen}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </Menu>
+          </FlexBetween>
         </FlexBetween>
       </Toolbar>
     </AppBar>

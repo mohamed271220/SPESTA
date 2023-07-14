@@ -74,6 +74,7 @@ exports.adminSignup = async (req, res, next) => {
     userId: createdUser._id,
     email: createdUser.email,
     image: createdUser.image,
+    name: createdUser.name,
     token: token,
   });
 };
@@ -127,6 +128,7 @@ exports.adminLogin = async (req, res, next) => {
     message: "User logged in",
     image: existingUser.image,
     userId: existingUser.id,
+    name: existingUser.name,
     email: existingUser.email,
     token: token,
   });

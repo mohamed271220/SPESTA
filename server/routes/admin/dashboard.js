@@ -68,11 +68,17 @@ router.delete("/removeTag/:tagId", isAdmin, adminController.removeTag);
 // you will have the product id on the product page
 router.put("/addProductToTag/:tagId", isAdmin, adminController.addProductToTag);
 
+
+//TODO GET ADMIN DATA
+router.get("/admin/:adminId", isAdmin, adminController.getAdminById);
+
 //TODO GET USERS
 router.get("/users", isAdmin, adminController.getUsers);
 
 //TODO GET USER BY ID
-router.get("/users/:userId", isAdmin, adminController.getUserById);
+router.get("/users/:userId", adminController.getUserById);
+
+
 //TODO DELETE A USER
 router.delete("/deleteUser/:userId", isAdmin, adminController.deleteUser);
 

@@ -23,13 +23,13 @@ const productSchema = new Schema({
   tag: [{ type: mongoose.Types.ObjectId, ref: "Tag" }],
   sale: {
     type: Number,
+    min: 1.0,
     default: 0,
   },
-  status:{
-    type:String,
-    default:"available"
-  
-  }
+  status: {
+    type: String,
+    default: "available",
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);

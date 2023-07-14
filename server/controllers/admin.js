@@ -340,3 +340,22 @@ exports.deleteUser = async (req, res, next) => {
     return next(error);
   }
 };
+
+//TODO GET ADMIN BY ID
+
+exports.getAdminById = async (req, res, next) => {
+  const adminId = req.params.adminId;
+  try {
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      const error = new Error("No Admin Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({ message: "Admin fetched", admin });
+  } catch (err) {
+    const error = new Error("Could not fetch admin");
+    error.statusCode = 500;
+    return next(error);
+  }
+};

@@ -8,8 +8,6 @@ const adminSchema = new Schema({
   image: {
     type: String,
     require: false,
-    default:
-      "https://www.pngitem.com/pimgs/m/35-350426_profile-icon-png-default-profile-picture-png-transparent.png",
   },
   password: { type: String, required: true },
   adminKey: { type: String, required: true },
@@ -31,7 +29,7 @@ const adminSchema = new Schema({
       ref: "Tag",
     },
   ],
-  refreshToken: [String]
+  refreshToken: [String],
 });
 adminSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("Admin", adminSchema);

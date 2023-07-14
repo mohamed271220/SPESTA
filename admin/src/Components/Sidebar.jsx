@@ -70,6 +70,7 @@ const navItems = [
 ];
 
 const Sidebar = ({
+  user,
   drawerWidth,
   isSidebarOpen,
   setIsSidebarOpen,
@@ -169,6 +170,48 @@ const Sidebar = ({
                 );
               })}
             </List>
+          </Box>
+          <Box position="absolute" bottom="2rem">
+            <Divider />
+            <FlexBetween
+              textTransform="none"
+              gap="1rem"
+              m="1.5rem 2rem 0rem 3rem"
+            >
+              <Box
+                component="img"
+                alt="pfp"
+                src={`http://localhost:8080/${user.image}`}
+                width="40px"
+                height="40px"
+                borderRadius="50%"
+                sx={{ objectFit: "cover" }}
+              />
+              <Box textAlign="left">
+                <Typography
+                  fontWeight="bold"
+                  fontSize="1rem"
+                  sx={{ color: theme.palette.secondary[100] }}
+                >
+                  {user.name}
+                </Typography>
+                <Typography
+                  fontSize="0.8rem"
+                  sx={{ color: theme.palette.secondary[200] }}
+                  
+                >
+                  {user.email}
+                </Typography>
+              </Box>
+              <SettingsOutlined
+                sx={{
+                  color: theme.palette.secondary[300],
+                  fontSize: "1.5rem",
+                  ml: "auto",
+                  cursor: "pointer",
+                }}
+              />
+            </FlexBetween>
           </Box>
         </Drawer>
       )}

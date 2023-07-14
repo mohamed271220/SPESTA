@@ -23,41 +23,13 @@ let LogoutTimer;
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
+let logoutTimer;
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = React.useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
-  //TODO AUTH LOGIC
-  // const [token, setToken] = useState(false);
-  // const [userId, setUserId] = useState(null);
-  // const [data, setData] = useState(null);
-  // const [tokenExpirationDate, setTokenExpirationDate] = useState();
-
-  // const login = useCallback((userId, token, data, expirationDate) => {
-  //   setToken(token);
-  //   setUserId(userId);
-  //   setData(data);
-  //   const tokenExpirationDate =
-  //     expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
-  //   setTokenExpirationDate(tokenExpirationDate);
-  //   localStorage.setItem(
-  //     "userData",
-  //     JSON.stringify({
-  //       userId: userId,
-  //       token: token,
-  //       data: data,
-  //       expiration: tokenExpirationDate.toISOString(),
-  //     })
-  //   );
-  // }, []);
-  // const logout = useCallback(() => {
-  //   setToken(null);
-  //   setTokenExpirationDate(null);
-  //   setUserId(null);
-  //   setData(null);
-  //   localStorage.removeItem("userData");
-  // }, []);
+  
   const dispatch = useDispatch();
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
@@ -77,21 +49,27 @@ function App() {
       );
     }
   }, [dispatch]);
-  let logoutTimer;
-  var tokenExpirationDate =  useSelector(
+  var tokenExpirationDate = useSelector(
     (state) => state.auth.tokenExpirationDate
   );
   useEffect(() => {
-    if (tokenExpirationDate) {
-      const remainingTime =
-        tokenExpirationDate.getTime() - new Date().getTime();
-      logoutTimer = setTimeout(() => {
-        dispatch(authActions.logout());
-      }, remainingTime);
-    } else {
-      clearTimeout(logoutTimer);
-    }
-  }, [dispatch]);
+    const checkDate = async () => {
+      try {
+        if (tokenExpirationDate) {
+          const remainingTime =
+            new Date(tokenExpirationDate).getTime() - new Date().getTime();
+          logoutTimer = setTimeout(() => {
+            dispatch(authActions.logout());
+          }, remainingTime);
+        } else {
+          clearTimeout(logoutTimer);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    checkDate();
+  }, [dispatch, tokenExpirationDate]);
 
   return (
     <div className="app">

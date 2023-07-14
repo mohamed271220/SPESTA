@@ -20,7 +20,7 @@ app.use(
     credentials: true,
     origin: "http://localhost:3000",
   })
-  );
+);
 
 app.post("/upload", isAdmin, filesUpload.array("photos", 40), (req, res) => {
   console.log(req.files);
@@ -70,9 +70,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://SPECTER:KWoLlfbG07EzQM9F@cluster0.cyhx7wh.mongodb.net/"
-  )
+  .connect(process.env.MONGO_DB)
   .then((result) => {
     app.listen(8080, () => {
       console.log("server running on port 8080");

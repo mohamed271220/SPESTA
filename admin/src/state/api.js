@@ -1,15 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
     prepareHeaders: (headers, { getState }) => {
-      const { token } = getState().auth;
-      // If we have a token set in state, let's assume that we should be passing it.
+      // Authorization header
+      const token = getState().auth.token;
+ 
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
-
       return headers;
     },
   }),
@@ -19,19 +19,21 @@ export const api = createApi({
     getUsers: builder.query({
       query: () => ({
         url: "admin/dashboard/users",
-       
       }),
       providesTags: ["Admin"],
-      invalidatesTags: ["Admin"],
+    }),
+    getAdminData: builder.query({
+      query: (adminId) => ({
+        url: `admin/dashboard/admin/${adminId}`,
+      })
     }),
     getUser: builder.query({
-      query: (id, token) => ({
+      query: (id) => ({
         url: `admin/dashboard/users/${id}`,
-       
       }),
       providesTags: ["Admin"],
     }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserQuery } = api;
+export const { useGetUsersQuery, useGetUserQuery ,useGetAdminDataQuery } = api;
