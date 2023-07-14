@@ -2,12 +2,13 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin");
 
 module.exports = async (req, res, next) => {
-  const authHeader = req.get("Authorization");
+  const authHeader = req.get("authorization");
   if (!authHeader) {
     const error = new Error("Not authenticated");
     error.statusCode = 401;
     next(error);
   }
+  console.log(authHeader);
   const token = authHeader.split(" ")[1];
   let decodedToken;
   try {

@@ -1,0 +1,44 @@
+/* .form-control-auth  {
+  margin: 1rem 0;
+}
+
+.form-control-auth  label,
+.form-control-auth  input,
+.form-control-auth  textarea {
+  display: block;
+}
+
+.form-control-auth  label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-control-auth  input,
+.form-control-auth  textarea {
+  width: 100%;
+  font: inherit;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 0.5rem 0.65rem;
+ 
+}
+
+.form-control-auth  input:focus,
+.form-control-auth  textarea:focus {
+  outline: none;
+  background: #ebebeb00;
+  border-color: #ff8400;
+}
+
+.form-control-auth --invalid label,
+.form-control-auth --invalid p {
+  color: red;
+  
+}
+
+
+.form-control-auth --invalid input,
+.form-control-auth --invalid textarea {
+  border-color: red;
+  background: #ffd1d1;
+} */

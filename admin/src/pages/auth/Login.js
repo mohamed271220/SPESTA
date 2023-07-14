@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import Input from "../../Components/Input/Input";
+import Input from "./Input/Input";
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_REQUIRE,
@@ -12,10 +12,12 @@ import ImageUpload from "./ImageUpload";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
-
+import Logo from "../../Components/Logo";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../state/authSlice";
 const Login = (props) => {
   const auth = useContext(AuthContext);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -34,12 +36,12 @@ const Login = (props) => {
     },
     false
   );
-
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
-    if (auth.token) {
+    if (token) {
       navigate("/dashboard");
     }
-  }, [auth.token, navigate]);
+  }, [token, navigate]);
 
   const loginSubmitHandler = async (event) => {
     event.preventDefault();
@@ -51,7 +53,13 @@ const Login = (props) => {
       });
       console.log(response);
       setIsLoading(false);
-      auth.login(response.data.userId, response.data.token, response.data);
+      dispatch(
+        authActions.login({
+          userId: response.data.userId,
+          token: response.data.token,
+          data: response.data,
+        })
+      );
       // props.onCancel();
       navigate("/");
     } catch (err) {
@@ -62,14 +70,14 @@ const Login = (props) => {
 
   return (
     <div className="login-container">
+      <Logo />
       {isLoading && <LoadingSpinner asOverlay />}
       {error && <p className="errmsg">{error}</p>}
       <form className="login" onSubmit={loginSubmitHandler}>
         <Input
           id="email"
           type="email"
-          placeholder="example@example.com"
-          label="E-mail"
+          placeholder="Email"
           validators={[VALIDATOR_EMAIL(), VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid email address."
           element="input"
@@ -78,8 +86,7 @@ const Login = (props) => {
         <Input
           id="password"
           type="password"
-          label="Password"
-          placeholder="Make sure that your password is strong"
+          placeholder="Password"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid password"
           element="input"
@@ -88,14 +95,16 @@ const Login = (props) => {
         <button
           type="submit"
           size="small"
-          className="center button login-button"
+          className="center button submit-btn"
           disabled={!formState.isValid}
         >
           Login
         </button>
       </form>
-      <Link to={"/auth/signup"}>
-        <button className="sec-acc-btn">Don't have an account? Sign up</button>
+      <Link className="" to={"/auth/signup"}>
+        <button className="change-mode-btn">
+          Don't have an account? Sign up
+        </button>
       </Link>
     </div>
   );

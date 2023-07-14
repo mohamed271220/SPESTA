@@ -1,18 +1,19 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { useNavigate,redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const auth = useContext(AuthContext);
-
+  const token=useSelector((state)=>state.auth.token)
+  
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!auth.token) {
+    if (!token) {
       navigate("/auth/login");
-     return redirect("/auth/login");
+    redirect("/auth/login");
     }
-  }, [auth.token, navigate]);
+  }, [token, navigate]);
   return <div>Dashboard</div>;
 };
 

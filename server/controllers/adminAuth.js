@@ -12,13 +12,13 @@ exports.adminSignup = async (req, res, next) => {
     error.data = errors.array();
     throw error;
   }
-
+  console.log(req.body);
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
   const adminKey = req.body.adminKey;
 
-  if (adminKey != process.env.ADMIN_KEY) {
+  if (adminKey !== process.env.ADMIN_KEY) {
     const error = new Error("Invalid Admin Key");
     error.statusCode = 422;
     return next(error);
@@ -44,7 +44,7 @@ exports.adminSignup = async (req, res, next) => {
     email,
     adminKey,
     password: hashedPassword,
-    // image: req.file.path.replace("\\", "/"),
+    image: req.file.path.replace("\\", "/"),
   });
 
   try {
@@ -54,7 +54,7 @@ exports.adminSignup = async (req, res, next) => {
     error.statusCode = 500;
     return next(error);
   }
-  let token
+  let token;
   try {
     token = jwt.sign(
       {
@@ -73,7 +73,7 @@ exports.adminSignup = async (req, res, next) => {
     message: "User created",
     userId: createdUser._id,
     email: createdUser.email,
-
+    image: createdUser.image,
     token: token,
   });
 };
@@ -125,6 +125,7 @@ exports.adminLogin = async (req, res, next) => {
 
   res.status(200).json({
     message: "User logged in",
+    image: existingUser.image,
     userId: existingUser.id,
     email: existingUser.email,
     token: token,

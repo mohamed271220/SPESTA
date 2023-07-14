@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   LightModeOutlined,
   DarkModeOutlined,
@@ -12,8 +12,11 @@ import { useDispatch } from "react-redux";
 import { setMode } from "../state";
 import { useTheme } from "@emotion/react";
 import { AppBar, IconButton, InputBase, Toolbar } from "@mui/material";
+import {AuthContext} from "../context/auth-context";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+  const auth = useContext(AuthContext);
+
   const dispatch = useDispatch();
   const theme = useTheme();
   return (

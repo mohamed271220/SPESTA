@@ -1,14 +1,18 @@
+.login-container{
+margin-top: 3rem;
+}
 .login {
   border: 1px #aaa solid;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   width: 30rem;
   margin: 0 auto;
-  margin-top: 3rem;
-  padding: 3rem;
+  margin-top: 2rem;
+  padding: 2.5rem;
   justify-content: flex-start;
 }
-.errmsg {
+.errMsg {
   color: red;
 }
 .offscreen {
@@ -25,83 +29,87 @@
 .login-form label {
   font-weight: 500;
 }
-.sec-acc-btn{
-margin: 1rem auto;
-align-items: center;
+.change-mode-btn {
+  margin: 1rem auto;
+  align-items: center;
   height: 2.5rem;
   font-weight: 500;
-  font-size: large;
-  background-color: #aaa;
-  border :1px solid black
+  font-size: 12px;
+  padding: 0 1rem;
+  border-radius: 6px;
+  background-color: #aaaaaa46;
+  box-shadow: 1px 1px rgba(255, 255, 255, 0.203);
+
+  border: 1px solid rgba(255, 255, 255, 0.203);
+  cursor: pointer;
 }
-/* .form-input{
-    height: 4vh;
-    width: 50vh;
-    border-color: #aaa;
-} */
-.login-button {
+
+.submit-btn {
   margin: 2rem 0;
-  height: 2.5rem;
+  cursor: pointer;
   font-weight: 600;
-  color: black;
   font-size: larger;
-  background-color: #ffe485;
-  border :1px solid black
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.358);
+  border: 1px solid rgba(0, 0, 0, 0.358);
+  border-radius: 6px;
+  height: 2rem;
+  background-color: #fe6b00;
+  color: white;
 }
-.form-control {
+.form-control-auth {
   margin: 1rem 0 0;
 }
 
-.form-control label,
-.form-control input,
-.form-control textarea {
+.form-control-auth label,
+.form-control-auth input,
+.form-control-auth textarea {
   display: block;
 }
 
-.form-control label {
+.form-control-auth label {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.form-control input,
-.form-control textarea {
+.form-control-auth input,
+.form-control-auth textarea {
   width: 100%;
   font: inherit;
-  border: 1px solid #ccc;
-  background-color: white;
+  color: white;
+  border: 1px solid #aaa;
+  background-color: rgba(255, 255, 255, 0);
   padding: 0.5rem 0.65rem;
 }
 
-.form-control input:focus,
-.form-control textarea:focus {
+.form-control-auth input:focus,
+.form-control-auth textarea:focus {
   outline: none;
-  background: #ebebeb;
+  background: #ebebeb00;
   border-color: #ff8400;
 }
 
-.form-control--invalid label,
-.form-control--invalid p {
+.form-control-auth--invalid label,
+.form-control-auth--invalid p {
   color: red;
 }
 
-.form-control--invalid input,
-.form-control--invalid textarea {
+.form-control-auth--invalid input,
+.form-control-auth--invalid textarea {
   border-color: red;
-  background: #ffd1d1;
+  background: #ffd1d131;
 }
-.login-container{
+.login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 }
-.btn-small{
+
+.btn-small {
   font-size: small;
   font-weight: 400;
 }
-@media (max-width:768px) {
-
+@media (max-width: 768px) {
   .login {
     width: 20rem;
   }

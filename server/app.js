@@ -20,11 +20,10 @@ app.use(
     credentials: true,
     origin: "http://localhost:3000",
   })
-);
+  );
 
 app.post("/upload", isAdmin, filesUpload.array("photos", 40), (req, res) => {
   console.log(req.files);
-
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
     const { path, originalname } = req.files[i];

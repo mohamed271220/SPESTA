@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Input from "../../Components/Input/Input";
+import Input from "./Input/Input";
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_REQUIRE,
@@ -12,7 +12,11 @@ import ImageUpload from "./ImageUpload";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
+import Logo from "../../Components/Logo";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../state/authSlice";
 const Signup = (props) => {
+  const dispatch=useDispatch()
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -48,20 +52,27 @@ const Signup = (props) => {
   const signupSubmitHandler = async (event) => {
     event.preventDefault();
 
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const formData = new FormData();
       formData.append("name", formState.inputs.name.value);
       formData.append("email", formState.inputs.email.value);
       formData.append("password", formState.inputs.password.value);
+      formData.append("adminKey", formState.inputs.adminKey.value);
       formData.append("image", formState.inputs.image.value);
-      const data = await axios.post(`/auth/signup`, formData);
-
+      console.log(formData.entries());
+      const data = await axios.post(`/admin/auth/signup`,  formData );
       setIsLoading(false);
-      auth.login(data.data.userId, data.data.token, data.data);
+      dispatch(
+        authActions.login({
+          userId: data.data.userId,
+          token: data.data.token,
+          data: data.data,
+        })
+      );
 
       navigate("/");
-      props.onCancel();
+      // props.onCancel();
     } catch (err) {
       setError(err.message);
     }
@@ -70,16 +81,16 @@ const Signup = (props) => {
 
   return (
     <div className="login-container">
+      <Logo />
       {/* <ErrorModal error={error} onClear={clearError} /> */}
-      <p className={error ? "errMsg" : ""}>{error}</p>
-      {isLoading && <LoadingSpinner />}
+
+      {isLoading && <LoadingSpinner asOverlay />}
       <form className="login" onSubmit={signupSubmitHandler}>
         <h2>SignUp</h2>
         <Input
           id="email"
           type="email"
           placeholder="example@example.com"
-          label="E-mail"
           validators={[VALIDATOR_EMAIL()]}
           errorText="Please enter a valid email address."
           element="input"
@@ -88,7 +99,6 @@ const Signup = (props) => {
         <Input
           id="password"
           type="password"
-          label="Password"
           placeholder="Make sure that your password is strong"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid password"
@@ -98,7 +108,6 @@ const Signup = (props) => {
         <Input
           id="adminKey"
           type="password"
-          label="Admin Key"
           placeholder="Ask someone in management for it"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid Key"
@@ -108,7 +117,6 @@ const Signup = (props) => {
         <Input
           id="name"
           type="name"
-          label=" Name"
           placeholder="Please enter your name"
           validators={[VALIDATOR_REQUIRE()]}
           element="input"
@@ -123,17 +131,16 @@ const Signup = (props) => {
         <button
           disabled={!formState.isValid}
           type="submit"
-          size="small"
-          className="center button login-button"
-          danger
-          //   onClick={signupSubmitHandler}
+          className="center button submit-btn"
+ 
         >
           Signup
         </button>
       </form>
 
+      <p className={error ? "errMsg" : ""}>{error}</p>
       <Link to={"/auth/login"}>
-        <button className="sec-acc-btn">
+        <button className="change-mode-btn">
           Already have an account? Sign in
         </button>
       </Link>

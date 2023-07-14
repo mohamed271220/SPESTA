@@ -43,7 +43,7 @@ const ImageUpload = (props) => {
   };
 
   return (
-    <div className="form-control ">
+    <div className="form-control-auth">
       <input
         type="file"
         name="image"
