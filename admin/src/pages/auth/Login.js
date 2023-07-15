@@ -6,7 +6,6 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../../util/validators";
 import { useForm } from "../../hooks/form-hook";
-import { AuthContext } from "../../context/auth-context";
 import LoadingSpinner from "../../Components/Loading/LoadingSpinner/LoadingSpinner";
 import ImageUpload from "./ImageUpload";
 import axios from "axios";
@@ -16,7 +15,6 @@ import Logo from "../../Components/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../state/authSlice";
 const Login = (props) => {
-  const auth = useContext(AuthContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

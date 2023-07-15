@@ -6,7 +6,6 @@ import Navbar from "../../Components/Navbar";
 import Sidebar from "../../Components/Sidebar";
 
 import { useGetAdminDataQuery, useGetUserQuery } from "../../state/api";
-import { AuthContext } from "../../context/auth-context";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");

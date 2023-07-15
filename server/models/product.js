@@ -11,10 +11,14 @@ const productSchema = new Schema({
       ref: "Review",
     },
   ],
+  rating: {
+    type: Number,
+    max:5
+  },
   images: [
     {
       type: String,
-      required: true,
+      // required: true,
     },
   ],
   addedBy: { type: mongoose.Types.ObjectId, ref: "Admin", required: true },
@@ -23,7 +27,7 @@ const productSchema = new Schema({
   tag: [{ type: mongoose.Types.ObjectId, ref: "Tag" }],
   sale: {
     type: Number,
-    min: 1.0,
+    max: 1.0,
     default: 0,
   },
   status: {

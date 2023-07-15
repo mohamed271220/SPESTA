@@ -6,7 +6,7 @@ export const api = createApi({
     prepareHeaders: (headers, { getState }) => {
       // Authorization header
       const token = getState().auth.token;
- 
+
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -14,26 +14,38 @@ export const api = createApi({
     },
   }),
   reducerPath: "adminApi",
-  tagTypes: ["Admin"],
+  tagTypes: ["Admin", "Products", "User","Users"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => ({
         url: "admin/dashboard/users",
       }),
-      providesTags: ["Admin"],
+      providesTags: ["Users"],
     }),
     getAdminData: builder.query({
       query: (adminId) => ({
         url: `admin/dashboard/admin/${adminId}`,
-      })
+      }),
+      providesTags: ["Admin"],
     }),
     getUser: builder.query({
       query: (id) => ({
         url: `admin/dashboard/users/${id}`,
       }),
-      providesTags: ["Admin"],
+      providesTags: ["User"],
+    }),
+    getProducts: builder.query({
+      query: () => ({
+        url: "admin/dashboard/products",
+        providesTags: ["Products"],
+      }),
     }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserQuery ,useGetAdminDataQuery } = api;
+export const {
+  useGetUsersQuery,
+  useGetUserQuery,
+  useGetAdminDataQuery,
+  useGetProductsQuery,
+} = api;

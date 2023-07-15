@@ -9,6 +9,10 @@ const orderSchema = new Schema(
         type: mongoose.Types.ObjectId,
         ref: "Product",
         required: true,
+        // numberOfSame:{
+        //   type: Number,
+        //   default: 1
+        // },
       },
     ],
     madeBy: {

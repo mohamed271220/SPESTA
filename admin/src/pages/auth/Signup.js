@@ -6,7 +6,6 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../../util/validators";
 import { useForm } from "../../hooks/form-hook";
-import { AuthContext } from "../../context/auth-context";
 import LoadingSpinner from "../../Components/Loading/LoadingSpinner/LoadingSpinner";
 import ImageUpload from "./ImageUpload";
 import axios from "axios";
@@ -18,7 +17,6 @@ import { authActions } from "../../state/authSlice";
 const Signup = (props) => {
   const dispatch=useDispatch()
   const navigate = useNavigate();
-  const auth = useContext(AuthContext);
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();

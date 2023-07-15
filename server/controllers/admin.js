@@ -4,6 +4,7 @@ const { default: mongoose } = require("mongoose");
 const Admin = require("../models/admin");
 const Category = require("../models/category");
 const Tag = require("../models/tag");
+const Order = require("../models/order");
 const User = require("../models/user");
 //TODO PRODUCT CONTROLLERS
 
@@ -41,16 +42,19 @@ exports.addProduct = async (req, res, next) => {
     throw error;
   }
 
-  const { name, description, price, images, category, tag } = req.body;
+  const { name, description, price, images, category, tag, rating, sale } =
+    req.body;
   const addedBy = req.userId;
 
   const product = new Product({
     name,
     description,
     price,
+    rating,
     addedBy,
     images: [],
     category,
+    sale,
     tag,
   });
 
@@ -59,14 +63,19 @@ exports.addProduct = async (req, res, next) => {
     sess.startTransaction();
     await product.save({ session: sess });
     const admin = await Admin.findById(addedBy);
-    category.forEach(async (cat) => {
-      const category = await Category.findById(cat);
-      category.products.push(product);
-    });
-    tag.forEach(async (tagId) => {
-      const tagItem = await Tag.findById(tagId);
-      tagItem.products.push(product);
-    });
+
+    if (category) {
+      category.forEach(async (cat) => {
+        const category = await Category.findById(cat);
+        category.products.push(product);
+      });
+    }
+    if (tag) {
+      tag.forEach(async (tagId) => {
+        const tagItem = await Tag.findById(tagId);
+        tagItem.products.push(product);
+      });
+    }
     admin.addedProducts.push(product);
     await admin.save({ session: sess });
     await sess.commitTransaction();
@@ -292,10 +301,11 @@ exports.addProductToTag = async (req, res, next) => {};
 //TODO GET ALL USERS
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-password");
+    console.log(users);
     res.status(200).json({ message: "Users fetched", users });
   } catch (err) {
-    const error = new Error("Could not fetch users");
+    const error = new Error("Could not fetch users " + err);
     error.statusCode = 500;
     return next(error);
   }
@@ -355,6 +365,42 @@ exports.getAdminById = async (req, res, next) => {
     res.status(200).json({ message: "Admin fetched", admin });
   } catch (err) {
     const error = new Error("Could not fetch admin");
+    error.statusCode = 500;
+    return next(error);
+  }
+};
+
+exports.getOrders = async (req, res, next) => {
+  try {
+    const { page = 1, pageSize = 20, sort = null, search = "" } = req.query;
+
+    const generaetSort = () => {
+      const sortParsed = JSON.parse(sort);
+      const sortFormatted = {
+        [sortParsed.field]: sortParsed.sort === "asc" ? 1 : -1,
+      };
+      return sortFormatted;
+    };
+    const sortFormatted = Boolean(sort) ? generateSort() : null;
+
+    const orders = await Order.find({
+      // For searching totalPrice
+      $or: [
+        { totalPrice: { $regex: new RegExp(search, "i") } },
+        { madeBy: { $regex: new RegExp(search, "i") } },
+      ],
+    })
+      .sort(sortFormatted)
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    const total = await Order.countDocuments({
+      name: { $regex: search, $options: "i" },
+    });
+
+    res.status(200).json({ orders, total });
+  } catch (err) {
+    const error = new Error("Could not fetch orders");
     error.statusCode = 500;
     return next(error);
   }

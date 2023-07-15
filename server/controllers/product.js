@@ -4,6 +4,7 @@ const Product = require("../models/product");
 const Review = require("../models/review");
 const User = require("../models/user");
 const Order = require("../models/order");
+const mongoose = require("mongoose");
 // exports.getProducts = async (req, res, next) => {
 //   try {
 //     const currentPage = req.query.page || 1;
@@ -111,6 +112,7 @@ exports.addToCart = async (req, res, next) => {
       next(error);
     }
     user.cart.push(productId);
+    await user.save();
     res.status(201).json({ message: "Product added to cart" });
   } catch (err) {
     if (!err.statusCode) {
@@ -158,23 +160,26 @@ exports.makeOrder = async (req, res, next) => {
   let products;
   try {
     const user = await User.findById(userId);
-    if (!user) {
-      const error = new Error("Could not find user");
+    if (!user || user.cart.length === 0) {
+      const error = new Error("Something went wrong , please check your cart");
       error.statusCode = 404;
       next(error);
     }
     products = user.cart;
-
+    console.log(products);
     const sess = await mongoose.startSession();
     sess.startTransaction();
     const order = new Order({
       products: products,
-      user: userId,
+      address: req.body.address,
+      madeBy: userId,
       status: "pending",
-      totalPrice: products.reduce((acc, prod) => {
-        return acc + prod.price;
-      }),
+      totalPrice: 2,
+      // products.reduce((acc, prod) => {
+      //   return acc + prod.price;
+      // }),
     });
+    console.log(order);
     await order.save({ session: sess });
     user.cart = [];
     await user.save({ session: sess });
@@ -203,7 +208,7 @@ exports.cancelOrder = async (req, res, next) => {
     error.statusCode = 404;
     next(error);
   }
-}
+};
 
 exports.checkOrderStatus = async (req, res, next) => {
   const orderId = req.params.orderId;
@@ -220,4 +225,4 @@ exports.checkOrderStatus = async (req, res, next) => {
     error.statusCode = 404;
     next(error);
   }
-}
+};

@@ -22,12 +22,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { AuthContext } from "../context/auth-context";
 import { authActions } from "../state/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   // const auth = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (e) => setAnchorEl(e.currentTarget);
@@ -35,6 +35,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const logout = () => {
     setAnchorEl(null);
     dispatch(authActions.logout());
+    navigate("/");
   };
 
   const dispatch = useDispatch();

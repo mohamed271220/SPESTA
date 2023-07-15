@@ -12,24 +12,25 @@ import React, {
   useContext,
   Suspense,
 } from "react";
-import { AuthContext } from "./context/auth-context";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
+import Products from "./pages/Products";
+import Users from "./pages/Users";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { authActions } from "./state/authSlice";
 import LoadingSpinner from "./Components/Loading/LoadingSpinner/LoadingSpinner";
-let LogoutTimer;
+
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
+
 let logoutTimer;
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = React.useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
-  
   const dispatch = useDispatch();
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
@@ -81,6 +82,8 @@ function App() {
               <Route element={<Layout />}>
                 <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/users" element={<Users />} />
               </Route>
               <Route path="/auth/login" element={<Login />} />
               <Route path="/auth/signup" element={<Signup />} />

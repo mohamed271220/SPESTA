@@ -8,9 +8,12 @@ const fileUpload = require("../../middleware/file-upload");
 const router = express();
 
 // TODO GET ALL PRODUCTS
-router.get("/products", isAdmin, adminController.getProducts);
+router.get(
+  "/products", //isAdmin,
+  adminController.getProducts
+);
 // TODO GET A PRODUCT BY ID
-router.get("/:productId", productController.getProduct);
+router.get("/products/:productId", productController.getProduct);
 
 //TODO ADD A PRODUCT WITH CERTAIN TAG AND A CATEGORY
 //TESTED✅
@@ -37,6 +40,9 @@ router.delete(
   isAdmin,
   adminController.removeProduct
 );
+
+
+
 
 //TODO ADD A CATEGORY
 //TESTED✅
@@ -68,18 +74,21 @@ router.delete("/removeTag/:tagId", isAdmin, adminController.removeTag);
 // you will have the product id on the product page
 router.put("/addProductToTag/:tagId", isAdmin, adminController.addProductToTag);
 
-
 //TODO GET ADMIN DATA
 router.get("/admin/:adminId", isAdmin, adminController.getAdminById);
 
 //TODO GET USERS
-router.get("/users", isAdmin, adminController.getUsers);
+router.get("/users",// isAdmin,
+ adminController.getUsers);
 
 //TODO GET USER BY ID
 router.get("/users/:userId", adminController.getUserById);
 
-
 //TODO DELETE A USER
 router.delete("/deleteUser/:userId", isAdmin, adminController.deleteUser);
+
+
+//TODO GET ORDERS
+router.get("/orders", isAdmin, adminController.getOrders);
 
 module.exports = router;
