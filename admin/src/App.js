@@ -16,11 +16,11 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import Products from "./pages/Products";
 import Users from "./pages/Users";
+import Orders from "./pages/Orders";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { authActions } from "./state/authSlice";
 import LoadingSpinner from "./Components/Loading/LoadingSpinner/LoadingSpinner";
-
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
@@ -84,6 +84,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/users" element={<Users />} />
+                <Route path="/orders" element={<Orders />} />
               </Route>
               <Route path="/auth/login" element={<Login />} />
               <Route path="/auth/signup" element={<Signup />} />

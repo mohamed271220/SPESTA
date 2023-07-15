@@ -17,6 +17,9 @@ const userSchema = new Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "Product",
+        number: {
+          type: Number,
+        },
       },
     ],
     orders: [
@@ -26,7 +29,6 @@ const userSchema = new Schema(
       },
     ],
     // status: { type: String, required: true, default: "USER" },
-
   },
   {
     timestamps: true,

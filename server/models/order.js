@@ -9,10 +9,10 @@ const orderSchema = new Schema(
         type: mongoose.Types.ObjectId,
         ref: "Product",
         required: true,
-        // numberOfSame:{
-        //   type: Number,
-        //   default: 1
-        // },
+        number:{
+          type: Number,
+          default: 1
+        },
       },
     ],
     madeBy: {
@@ -29,7 +29,7 @@ const orderSchema = new Schema(
       default: "Pending",
     },
     totalPrice: {
-      type: Number,
+      type: String,
       required: true,
     },
   },

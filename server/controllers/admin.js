@@ -372,36 +372,41 @@ exports.getAdminById = async (req, res, next) => {
 
 exports.getOrders = async (req, res, next) => {
   try {
+    // sort should look like this: { "field": "userId", "sort": "desc"}
     const { page = 1, pageSize = 20, sort = null, search = "" } = req.query;
 
-    const generaetSort = () => {
+    // formatted sort should look like { userId: -1 }
+    const generateSort = () => {
       const sortParsed = JSON.parse(sort);
       const sortFormatted = {
-        [sortParsed.field]: sortParsed.sort === "asc" ? 1 : -1,
+        [sortParsed.field]: (sortParsed.sort = "asc" ? 1 : -1),
       };
+
       return sortFormatted;
     };
-    const sortFormatted = Boolean(sort) ? generateSort() : null;
+    const sortFormatted = Boolean(sort) ? generateSort() : {};
 
-    const orders = await Order.find({
-      // For searching totalPrice
+    const transactions = await Order.find({
       $or: [
         { totalPrice: { $regex: new RegExp(search, "i") } },
         { madeBy: { $regex: new RegExp(search, "i") } },
       ],
     })
       .sort(sortFormatted)
-      .skip((page - 1) * pageSize)
+      .skip(page * pageSize)
       .limit(pageSize);
 
     const total = await Order.countDocuments({
       name: { $regex: search, $options: "i" },
     });
 
-    res.status(200).json({ orders, total });
+    res.status(200).json({
+      transactions,
+      total,
+    });
   } catch (err) {
     const error = new Error("Could not fetch orders");
     error.statusCode = 500;
-    return next(error);
+    return next(error + " real err " + err);
   }
 };

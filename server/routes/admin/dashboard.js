@@ -89,6 +89,7 @@ router.delete("/deleteUser/:userId", isAdmin, adminController.deleteUser);
 
 
 //TODO GET ORDERS
-router.get("/orders", isAdmin, adminController.getOrders);
+router.get("/orders", //isAdmin,
+ adminController.getOrders);
 
 module.exports = router;

@@ -14,7 +14,7 @@ export const api = createApi({
     },
   }),
   reducerPath: "adminApi",
-  tagTypes: ["Admin", "Products", "User","Users"],
+  tagTypes: ["Admin", "Products", "User", "Users", "Orders"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => ({
@@ -37,8 +37,16 @@ export const api = createApi({
     getProducts: builder.query({
       query: () => ({
         url: "admin/dashboard/products",
-        providesTags: ["Products"],
       }),
+      providesTags: ["Products"],
+    }),
+    getOrders: builder.query({
+      query: ({ page, pageSize, sort, search }) => ({
+        url: "admin/dashboard/orders",
+        method: "GET",
+        params: { page, pageSize, sort, search },
+      }),
+      providesTags: ["Orders"],
     }),
   }),
 });
@@ -48,4 +56,5 @@ export const {
   useGetUserQuery,
   useGetAdminDataQuery,
   useGetProductsQuery,
+  useGetOrdersQuery,
 } = api;
