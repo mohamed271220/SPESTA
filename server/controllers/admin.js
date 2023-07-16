@@ -379,27 +379,29 @@ exports.getOrders = async (req, res, next) => {
     const generateSort = () => {
       const sortParsed = JSON.parse(sort);
       const sortFormatted = {
-        [sortParsed.field]: (sortParsed.sort = "asc" ? 1 : -1),
+        [sortParsed.field]: sortParsed.sort === "asc" ? 1 : -1,
       };
 
       return sortFormatted;
     };
     const sortFormatted = Boolean(sort) ? generateSort() : {};
+// console.log(sortFormatted);
 
     const transactions = await Order.find({
-      $or: [
-        { totalPrice: { $regex: new RegExp(search, "i") } },
-        { madeBy: { $regex: new RegExp(search, "i") } },
-      ],
+      // $or: [
+      //   { totalPrice: { '$regex': new RegExp(search, "i") } },
+      //    { madeBy: { '$regex': new RegExp(search, "i") } },
+      // ],
     })
       .sort(sortFormatted)
       .skip(page * pageSize)
       .limit(pageSize);
-
+    console.log(transactions);
     const total = await Order.countDocuments({
+      // name: { $regex: search, $options: "i" },
       name: { $regex: search, $options: "i" },
     });
-
+    console.log(total);
     res.status(200).json({
       transactions,
       total,
