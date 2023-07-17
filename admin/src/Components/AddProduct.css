@@ -1,3 +1,4 @@
+
 .chapter-form__control{
   padding: 2rem;
 }
@@ -12,6 +13,7 @@
 
 .chapter-form__control .form-control__collection {
   display: grid;
+  cursor: pointer;
   margin-top: 0.5rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
@@ -38,6 +40,7 @@
 .form-control__uploader {
   display: flex;
   position: relative;
+  cursor: pointer;
   height: 8rem;
 }
 .form-control__uploader img {

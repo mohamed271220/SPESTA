@@ -19,6 +19,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
 
 import "./AddProduct.css";
+import { Button } from "@mui/material";
 const AddProduct = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ const AddProduct = (props) => {
   const [addedPhotos, setAddedPhotos] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [tags, setTags] = React.useState([]);
+  const [categoriesId, setCategoriesId] = React.useState([]);
+  const [tagsId, setTagsId] = React.useState([]);
 
   const [formState, inputHandler] = useForm(
     {
@@ -42,18 +45,6 @@ const AddProduct = (props) => {
       },
       price: {
         value: "",
-        isValid: false,
-      },
-      images: {
-        value: [],
-        isValid: false,
-      },
-      category: {
-        value: [],
-        isValid: false,
-      },
-      tag: {
-        value: [],
         isValid: false,
       },
       sale: {
@@ -86,15 +77,28 @@ const AddProduct = (props) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`/admin/auth/login`, {
-        email: formState.inputs.email.value,
-        password: formState.inputs.password.value,
-      });
+      const response = await axios.post(
+        `/admin/dashboard/addProduct`,
+        {
+          name: formState.inputs.name.value,
+          price: formState.inputs.price.value,
+          description: formState.inputs.description.value,
+          sale: formState.inputs.sale.value,
+          category: categoriesId,
+          tag: tagsId,
+          images: addedPhotos,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       console.log(response);
       setIsLoading(false);
-      dispatch();
-      // props.onCancel();
-      navigate("/");
+      navigate("/products");
+      props.onClose();
     } catch (err) {
       setError(err.message);
     }
@@ -103,7 +107,6 @@ const AddProduct = (props) => {
 
   function uploadPhoto(ev) {
     setIsLoading(true);
-
     const files = ev.target.files;
     const data = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -113,7 +116,7 @@ const AddProduct = (props) => {
       .post("/upload", data, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization": "Bearer " + token
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
@@ -145,9 +148,6 @@ const AddProduct = (props) => {
       ...addedPhotos.filter((photo) => photo !== filename),
     ]);
   }
-
-  const [categoriesId, setCategoriesId] = React.useState([]);
-  const [tagsId, setTagsId] = React.useState([]);
 
   const handleChange = (event) => {
     if (event.target.checked) {
@@ -201,7 +201,7 @@ const AddProduct = (props) => {
           label="Sale"
           placeholder="In percentage eg. 00.20 "
           validators={[VALIDATOR_REQUIRE()]}
-          //   errorText="Please enter product price"
+          errorText="Please enter product price"
           element="input"
           onInput={inputHandler}
         />
@@ -219,10 +219,7 @@ const AddProduct = (props) => {
           {addedPhotos.length > 0 &&
             addedPhotos.map((link) => (
               <div className="form-control__uploader" key={link}>
-                <img
-                  src={`${process.env.REACT_APP_BACKEND_URL}/uploads/` + link}
-                  alt=""
-                />
+                <img src={`http://localhost:8080/uploads/` + link} alt="" />
                 <button
                   onClick={(ev) => removePhoto(ev, link)}
                   className="btn-1 "
@@ -346,13 +343,19 @@ const AddProduct = (props) => {
           <FormHelperText>Be careful</FormHelperText>
         </FormControl>
 
-        <button
+        <Button
           type="submit"
-          className="center button submit-btn"
-          disabled={!formState.isValid}
+          className="submit-btn"
+          sx={{
+            cursor: "pointer",
+            fontWeight: 600,
+            fontSize: "larger",
+            backgroundColor: "#fe6b00",
+          }}
+          //   disabled={!formState.isValid}
         >
           Add Product
-        </button>
+        </Button>
       </form>
     </div>
   );

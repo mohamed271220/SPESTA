@@ -26,22 +26,25 @@ const Orders = () => {
     {
       field: "_id",
       headerName: "ID",
-      flex: 1,
+      width:200
     },
     {
       field: "madeBy",
-      headerName: "User ID",
-      flex: 1,
+      headerName: "Made By",
+      width:200
+
     },
     {
       field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
+      headerName: "Created At",
+      width:200
+
     },
     {
       field: "products",
       headerName: "# of Products",
-      flex: 0.5,
+      width:200
+,
       sortable: false,
       renderCell: (params) => params.value.length,
     },

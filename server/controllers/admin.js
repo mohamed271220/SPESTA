@@ -21,20 +21,9 @@ exports.getProducts = async (req, res, next) => {
 };
 
 exports.addProduct = async (req, res, next) => {
-  //     name
-  // description
-  // price
-  // images
-  // category
-  // tag
-  // addedBy
+
   const errors = validationResult(req);
 
-  // if (!req.files) {
-  //   const error = new Error("No Product images provided");
-  //   error.statusCode = 422;
-  //   throw error;
-  // }
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed");
     error.statusCode = 422;
@@ -42,48 +31,92 @@ exports.addProduct = async (req, res, next) => {
     throw error;
   }
 
-  const { name, description, price, images, category, tag, rating, sale } =
-    req.body;
+  const { name, description, price, images, category, tag, sale } = req.body;
+  console.log(name, description, price, images, category, tag, sale);
   const addedBy = req.userId;
 
   const product = new Product({
     name,
     description,
     price,
-    rating,
     addedBy,
-    images: [],
+    images: images,
     category,
     sale,
     tag,
   });
 
+  // try {
+  //   const sess = await mongoose.startSession();
+  //   sess.startTransaction();
+  //   await product.save({ session: sess });
+  //   const admin = await Admin.findById(addedBy);
+
+  //   if (category) {
+  //     category.forEach(async (cat) => {
+  //       const category = await Category.findById(cat);
+  //       category.products.push(product);
+  //       await category.save({ session: sess });
+  //     });
+  //   }
+  //   if (tag) {
+  //     tag.forEach(async (tagId) => {
+  //       const tagItem = await Tag.findById(tagId);
+  //       tagItem.products.push(product);
+  //       await tagItem.save({ session: sess });
+  //     });
+  //   }
+  //   admin.addedProducts.push(product);
+  //   await admin.save({ session: sess });
+  //   await sess.commitTransaction();
+  // } catch (err) {
+  //   const error = new Error("could not add product " + err);
+  //   error.statusCode = 500;
+  //   return next(error);
+  // }
+  /*
+
+It’s possible that the issue with your code was that you were committing the transaction twice. When you call sess.commitTransaction(), it commits the transaction and ends it. If you call it again, it will try to commit the transaction again, which could result in duplicate data being added to the database.
+
+The code I provided uses the withTransaction() method to ensure that the transaction is committed only once. It also uses a try-catch-finally block to handle any errors that might occur during the transaction.
+
+I hope this helps! Let me know if you have any other questions.
+
+*/
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await product.save({ session: sess });
+    await product.save({ session });
     const admin = await Admin.findById(addedBy);
 
     if (category) {
       category.forEach(async (cat) => {
         const category = await Category.findById(cat);
         category.products.push(product);
+        await category.save({ session });
       });
     }
+
     if (tag) {
       tag.forEach(async (tagId) => {
         const tagItem = await Tag.findById(tagId);
         tagItem.products.push(product);
+        await tagItem.save({ session });
       });
     }
+
     admin.addedProducts.push(product);
-    await admin.save({ session: sess });
-    await sess.commitTransaction();
+    await admin.save({ session });
+
+    await session.commitTransaction();
     res.status(201).json({ message: "Product Added Successfully", product });
-  } catch (err) {
-    const error = new Error("could not add product " + err);
-    error.statusCode = 500;
-    return next(error);
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
   }
 };
 
@@ -385,7 +418,7 @@ exports.getOrders = async (req, res, next) => {
       return sortFormatted;
     };
     const sortFormatted = Boolean(sort) ? generateSort() : {};
-// console.log(sortFormatted);
+    // console.log(sortFormatted);
 
     const transactions = await Order.find({
       // $or: [

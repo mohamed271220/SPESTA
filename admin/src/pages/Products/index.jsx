@@ -121,6 +121,7 @@ const style = {
   bgcolor: "#141937",
   border: "2px solid #000",
   boxShadow: 24,
+  overflow: "hidden",
   p: 4,
 };
 
@@ -139,11 +140,14 @@ const AddProductModal = ({ handleClose, open }) => {
             timeout: 500,
           },
         }}
+        sx={{
+          overflow: "scroll",
+        }}
       >
         <Fade in={open}>
           <Box sx={style}>
             <Logo />
-            <AddProduct />
+            <AddProduct onClose={handleClose} />
           </Box>
         </Fade>
       </Modal>

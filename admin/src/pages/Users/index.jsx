@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useTheme } from "@mui/material";
+import { Avatar, Box, useTheme } from "@mui/material";
 import { useGetUsersQuery } from "../../state/api";
 import Header from "../../Components/Header";
 import { DataGrid } from "@mui/x-data-grid";
@@ -11,19 +11,37 @@ const Users = () => {
   const users = data || [];
 
   console.log(data);
-  const columns = [
-    { field: "_id", headerName: "ID", width: 200},
-    {
-      field: "name",
-      headerName: "Name",
-      width: 200
-    },
-    {
-      field: "email",
-      headerName: "email",
-      width: 200
-    },
-  ];
+  const columns = React.useMemo(
+    () => [
+      {
+        field: "image",
+        headerName: "Avatar",
+        width: 60,
+        renderCell: (params) => (
+          <Avatar src={`http://localhost:8080/${params.row.image}`} />
+        ),
+        sortable: false,
+        filterable: false,
+      },
+      { field: "_id", headerName: "ID", width: 220 },
+      {
+        field: "name",
+        headerName: "Name",
+        width: 200,
+      },
+      {
+        field: "email",
+        headerName: "email",
+        width: 200,
+      },
+      {
+        field: "createdAt",
+        headerName: "Created At",
+        width: 200,
+      },
+    ],
+    []
+  );
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="USERS" subtitle="List of Users" />
