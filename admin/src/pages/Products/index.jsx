@@ -8,13 +8,18 @@ import {
   Button,
   Typography,
   Rating,
+  Backdrop,
+  Modal,
+  Fade,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 import Header from "../../Components/Header";
 import { useGetProductsQuery } from "../../state/api";
 import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
-
+import AddP from "./AddP.png";
+import AddProduct from "../../Components/AddProduct";
+import Logo from "../../Components/Logo";
 const Product = ({
   id,
   name,
@@ -81,14 +86,12 @@ const Product = ({
             id: {id}
           </Typography>
           {sale && (
-           
-              <Typography
-                variant="body2"
-                sx={{ color: theme.palette.secondary[700] }}
-              >
-                {sale * 100} off
-              </Typography>
-          
+            <Typography
+              variant="body2"
+              sx={{ color: theme.palette.secondary[700] }}
+            >
+              {sale * 100} off
+            </Typography>
           )}
           <Typography
             variant="body2"
@@ -102,12 +105,69 @@ const Product = ({
   );
 };
 
+//ADD PRODUCT FORM MODAL MODAL
+
+const style = {
+  position: "absolute",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "#141937",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const AddProductModal = ({ handleClose, open }) => {
+  return (
+    <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <Logo />
+            <AddProduct />
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
+  );
+};
+
 const Products = () => {
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width:1000px)");
   console.log(data);
+
   return (
     <Box m="1.5rem 2.5rem">
+      <AddProductModal
+        open={open}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+      />
       <Header title="PRODUCTS" subtitle="List of products details" />
       {data === undefined && <p>Error</p>}
       {data || !isLoading ? (
@@ -122,6 +182,33 @@ const Products = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
+          <Card
+            sx={{
+              backgroundImage: "none",
+              backgroundColor: theme.palette.background.alt,
+              borderRadius: "0.55rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+            onClick={handleOpen}
+          >
+            <CardContent
+              sx={{
+                display: "flex",
+                borderRadius: "0.55rem",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={AddP}
+                alt="add"
+                style={{ width: "90%", height: "90%" }}
+              />
+            </CardContent>
+          </Card>
           {data.products.map(
             ({
               _id,

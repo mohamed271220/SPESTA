@@ -14,12 +14,16 @@ import "./index.css";
 import Logo from "../../Components/Logo";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../state/authSlice";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import TransitionsModal from "../../Components/LoadingModal";
+
 const Signup = (props) => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();
+  const [showPWD, setShowPWD] = React.useState(false);
 
   // console.log(error);
   const [formState, inputHandler, setFormData] = useForm(
@@ -59,7 +63,7 @@ const Signup = (props) => {
       formData.append("adminKey", formState.inputs.adminKey.value);
       formData.append("image", formState.inputs.image.value);
       console.log(formData.entries());
-      const data = await axios.post(`/admin/auth/signup`,  formData );
+      const data = await axios.post(`/admin/auth/signup`, formData);
       setIsLoading(false);
       dispatch(
         authActions.login({
@@ -82,7 +86,7 @@ const Signup = (props) => {
       <Logo />
       {/* <ErrorModal error={error} onClear={clearError} /> */}
 
-      {isLoading && <LoadingSpinner asOverlay />}
+      {isLoading && <TransitionsModal />}
       <form className="login" onSubmit={signupSubmitHandler}>
         <h2>SignUp</h2>
         <Input
@@ -96,13 +100,22 @@ const Signup = (props) => {
         />
         <Input
           id="password"
-          type="password"
+          type={showPWD ? "text" : "password"}
           placeholder="Make sure that your password is strong"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid password"
           element="input"
           onInput={inputHandler}
         />
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setShowPWD(!showPWD);
+          }}
+          className="pwd-btn"
+        >
+          <VisibilityOffIcon /> {showPWD ? "Hide" : "Show"}
+        </button>
         <Input
           id="adminKey"
           type="password"
@@ -130,7 +143,6 @@ const Signup = (props) => {
           disabled={!formState.isValid}
           type="submit"
           className="center button submit-btn"
- 
         >
           Signup
         </button>

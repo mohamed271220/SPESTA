@@ -6,20 +6,23 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../../util/validators";
 import { useForm } from "../../hooks/form-hook";
-import LoadingSpinner from "../../Components/Loading/LoadingSpinner/LoadingSpinner";
-import ImageUpload from "./ImageUpload";
+
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import Logo from "../../Components/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../state/authSlice";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import TransitionsModal from "../../Components/LoadingModal";
+
 const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState();
+  const [showPWD, setShowPWD] = React.useState(false);
 
   const [formState, inputHandler] = useForm(
     {
@@ -69,7 +72,7 @@ const Login = (props) => {
   return (
     <div className="login-container">
       <Logo />
-      {isLoading && <LoadingSpinner asOverlay />}
+      {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
       <form className="login" onSubmit={loginSubmitHandler}>
         <Input
@@ -83,13 +86,22 @@ const Login = (props) => {
         />
         <Input
           id="password"
-          type="password"
+          type={showPWD ? "text" : "password"}
           placeholder="Password"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid password"
           element="input"
           onInput={inputHandler}
-        />
+        ></Input>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setShowPWD(!showPWD);
+          }}
+          className="pwd-btn"
+        >
+          <VisibilityOffIcon /> {showPWD ? "Hide" : "Show"}
+        </button>
         <button
           type="submit"
           size="small"

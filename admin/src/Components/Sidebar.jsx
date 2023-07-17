@@ -171,7 +171,7 @@ const Sidebar = ({
               })}
             </List>
           </Box>
-          <Box position="absolute" bottom="2rem">
+          <Box position="absolute" bottom="0rem" backgroundColor={theme.palette.background.alt} zIndex={'999'}>
             <Divider />
             <FlexBetween
               textTransform="none"

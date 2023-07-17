@@ -1,8 +1,9 @@
-.login-container{
-margin-top: 3rem;
+.login-container {
+  margin-top: 3rem;
 }
 .login {
-  border: 1px #aaa solid;
+  /* border: 1px #aaa solid; */
+  background-color: #252d58;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -113,4 +114,12 @@ margin-top: 3rem;
   .login {
     width: 20rem;
   }
+}
+.pwd-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: white;
+  background-color: transparent;
+  border: none;
 }
