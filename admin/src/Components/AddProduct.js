@@ -113,6 +113,7 @@ const AddProduct = (props) => {
       .post("/upload", data, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization": "Bearer " + token
         },
       })
       .then((response) => {

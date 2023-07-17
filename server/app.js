@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-app.post("/upload", isAdmin, filesUpload.array("photos", 40), (req, res) => {
+app.post("/api/upload", isAdmin, filesUpload.array("photos", 40), (req, res) => {
   console.log(req.files);
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
