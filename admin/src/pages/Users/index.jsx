@@ -38,6 +38,7 @@ const Users = () => {
         field: "createdAt",
         headerName: "Created At",
         width: 200,
+        
       },
     ],
     []

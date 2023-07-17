@@ -111,11 +111,13 @@ I hope this helps! Let me know if you have any other questions.
     await admin.save({ session });
 
     await session.commitTransaction();
-    res.status(201).json({ message: "Product Added Successfully", product });
   } catch (error) {
     await session.abortTransaction();
-    throw error;
+    const err = new Error("Something went wrong "+err);
+    err.statusCode = 500;
+    return next(err);
   } finally {
+    res.status(201).json({ message: "Product Added Successfully", product });
     session.endSession();
   }
 };

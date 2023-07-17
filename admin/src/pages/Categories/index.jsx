@@ -7,31 +7,15 @@ import {
   Collapse,
   Button,
   Typography,
-  Rating,
-  Backdrop,
-  Modal,
-  Fade,
   useTheme,
   useMediaQuery,
+  Avatar,
 } from "@mui/material";
 import Header from "../../Components/Header";
-import { useGetProductsQuery } from "../../state/api";
+import { useGetCategoriesQuery } from "../../state/api";
 import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
-import AddP from "./AddP.png";
-import AddProduct from "../../Components/AddProduct";
-import Logo from "../../Components/Logo";
-import AddProductModal from './components/AddProductModal'
-const Product = ({
-  id,
-  name,
-  description,
-  price,
-  category,
-  tag,
-  sale,
-  status,
-  rating,
-}) => {
+
+const Category = ({ id, name, image, addedBy, products }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -50,17 +34,11 @@ const Product = ({
           color={theme.palette.secondary[700]}
           gutterBottom
         >
-          {category}
+          Added by: {addedBy}
         </Typography>
         <Typography variant="h5" component="div">
           {name}
         </Typography>
-        <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
-          ${Number(price).toFixed(2)}
-        </Typography>
-        <Rating value={rating} readOnly />
-
-        <Typography variant="body2">{description}</Typography>
       </CardContent>
       <CardActions>
         <Button
@@ -80,49 +58,33 @@ const Product = ({
         }}
       >
         <CardContent>
-          <Typography
-            variant="body2"
-            sx={{ color: theme.palette.secondary[700] }}
-          >
-            id: {id}
+          <Avatar
+            src={`http://localhost:8080/${image}`}
+            sx={{ width: "100px", height: "100px" }}
+          />
+          <Typography variant="h5" component="div">
+            Products:
           </Typography>
-          {sale && (
-            <Typography
-              variant="body2"
-              sx={{ color: theme.palette.secondary[700] }}
-            >
-              {sale * 100} off
+          {products.map((product) => (
+            <Typography variant="h5" component="div">
+              {product}
             </Typography>
-          )}
-          <Typography
-            variant="body2"
-            sx={{ color: theme.palette.secondary[700] }}
-          >
-            status: {status}
-          </Typography>
+          ))}
         </CardContent>
       </Collapse>
     </Card>
   );
 };
 
-const Products = () => {
+const Categories = () => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
-  const { data, isLoading } = useGetProductsQuery();
+  const { data, isLoading } = useGetCategoriesQuery();
   const isNonMobile = useMediaQuery("(min-width:1000px)");
   console.log(data);
 
   return (
     <Box m="1.5rem 2.5rem">
-      <AddProductModal
-        open={open}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-      />
       <Header title="PRODUCTS" subtitle="List of products details" />
       {data === undefined && <p>Error</p>}
       {data || !isLoading ? (
@@ -134,7 +96,13 @@ const Products = () => {
           rowGap="20px"
           columnGap="1.33%"
           sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            "& > div": {
+              gridColumn: "span 4",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection:'column'
+            },
           }}
         >
           <Card
@@ -147,7 +115,7 @@ const Products = () => {
               justifyContent: "center",
               cursor: "pointer",
             }}
-            onClick={handleOpen}
+            onClick={() => {}}
           >
             <CardContent
               sx={{
@@ -157,39 +125,18 @@ const Products = () => {
                 justifyContent: "center",
               }}
             >
-              <img
-                src={AddP}
-                alt="add"
-                style={{ width: "90%", height: "90%" }}
-              />
+              <img />
             </CardContent>
           </Card>
-          {data.products.map(
-            ({
-              _id,
-              name,
-              description,
-              price,
-              category,
-              tag,
-              sale,
-              status,
-              rating,
-            }) => (
-              <Product
-                key={_id}
-                id={_id}
-                name={name}
-                description={description}
-                price={price}
-                category={category}
-                tag={tag}
-                sale={sale}
-                status={status}
-                rating={rating}
-              />
-            )
-          )}
+          {data.data.map(({ _id, name, addedBy, products }) => (
+            <Category
+              key={_id}
+              id={_id}
+              name={name}
+              addedBy={addedBy}
+              products={products}
+            />
+          ))}
         </Box>
       ) : (
         <>
@@ -200,4 +147,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Categories;
