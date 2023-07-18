@@ -19,12 +19,12 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
 import { Button, Typography } from "@mui/material";
 
-const AddCategory = (props) => {
+const AddTag = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();
   const token = useSelector((state) => state.auth.token);
-  console.log(token);
+  //   console.log(token);
   const userId = useSelector((state) => state.auth.userId);
   const [products, setProducts] = React.useState([]);
   const [productIds, setProductIds] = React.useState([]);
@@ -32,11 +32,6 @@ const AddCategory = (props) => {
   // console.log(error);
   const [formState, inputHandler, setFormData] = useForm(
     {
-   
-
-      image: {
-        value: null,
-      },
       name: {
         value: "",
         isValid: false,
@@ -55,7 +50,7 @@ const AddCategory = (props) => {
       }
     };
     getProducts();
-    console.log(products);
+    // console.log(products);
   }, []);
 
   const handleChange = (event) => {
@@ -75,14 +70,21 @@ const AddCategory = (props) => {
     try {
       const formData = new FormData();
       formData.append("name", formState.inputs.name.value);
-      formData.append("image", formState.inputs.image.value);
+      //   console.log(productIds);
       formData.append("productIds", JSON.stringify(productIds));
       console.log(formData.entries());
-      const data = await axios.post(`/admin/dashboard/addCategory`, formData, {
-        headers: {
-          Authorization: "Bearer " + token,
+      const data = await axios.post(
+        `/admin/dashboard/addTag`,
+        {
+          name: formState.inputs.name.value,
+          productIds: JSON.stringify(productIds),
         },
-      });
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       setIsLoading(false);
 
       props.onClose();
@@ -107,13 +109,6 @@ const AddCategory = (props) => {
           errorText="Please enter product name"
           element="input"
           onInput={inputHandler}
-        />
-
-        <ImageUpload
-          id="image"
-          center
-          onInput={inputHandler}
-          errorText="please provide an image"
         />
 
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
@@ -149,9 +144,9 @@ const AddCategory = (props) => {
             fontSize: "larger",
             backgroundColor: "#fe6b00",
           }}
-            disabled={!formState.isValid}
+          disabled={!formState.isValid}
         >
-          Add Category
+          Add Tag
         </Button>
       </form>
 
@@ -160,4 +155,4 @@ const AddCategory = (props) => {
   );
 };
 
-export default AddCategory;
+export default AddTag;

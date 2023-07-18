@@ -294,22 +294,32 @@ exports.addTag = async (req, res, next) => {
     next(error);
   }
   const { name } = req.body;
+  const productIds=req.body.productIds
+  console.log(productIds);
   const addedBy = req.userId;
   const tag = new Tag({
     name,
     addedBy,
+    products:JSON.parse(productIds)
   });
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await tag.save({ session: sess });
+    if (productIds) {
+      JSON.parse(productIds).map(async (productId) => {
+        const productItem = await Product.findById(productId);
+        productItem.tag.push(tag);
+        await productItem.save({ sess });
+      });
+    }
     const admin = await Admin.findById(addedBy);
     admin.addedTags.push(tag);
     await admin.save({ session: sess });
     sess.commitTransaction();
-    res.status(201).json({ message: "Tag Added Successfully", tag });
+    res.status(201).json({ message: "Category Added Successfully", tag });
   } catch (err) {
-    const error = new Error("could not add tag");
+    const error = new Error("could not add category" +err);
     error.statusCode = 500;
     return next(error);
   }

@@ -9,7 +9,7 @@ const style = {
   position: "absolute",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
+  // justifyContent: "center",
   flexDirection: "column",
   flexWrap: "nowrap",
   top: "50%",
@@ -19,7 +19,10 @@ const style = {
   bgcolor: "#141937",
   border: "2px solid #000",
   boxShadow: 24,
-  overflow: "hidden",
+  // overflow: "scroll",
+  
+  overflowY:"scroll",
+  height: "80%",
   p: 4,
 };
 

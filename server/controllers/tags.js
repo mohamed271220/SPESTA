@@ -1,7 +1,7 @@
 const Tags = require("../models/tag");
 exports.getAllTags = async (req, res, next) => {
   try {
-    const Tag = await Tags.find();
+    const Tag = await Tags.find().populate("products");
     res.status(200).json({ message: "success", data: Tag });
   } catch (err) {
     const error = new Error("Fetching Tags failed.");

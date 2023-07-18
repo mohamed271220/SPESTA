@@ -53,6 +53,11 @@ export const api = createApi({
         url: "category/",
       }),
     }),
+    getTags: builder.query({
+      query: () => ({
+        url: "tags/",
+      }),
+    }),
   }),
 });
 
@@ -62,5 +67,6 @@ export const {
   useGetAdminDataQuery,
   useGetProductsQuery,
   useGetOrdersQuery,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
+  useGetTagsQuery
 } = api;

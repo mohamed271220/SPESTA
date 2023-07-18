@@ -2,7 +2,7 @@ const Category = require("../models/category");
 
 exports.getAllCategories = async (req, res, next) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find().populate("products");
     res.status(200).json({ message: "success", data: categories });
   } catch (err) {
     const error = new Error("Fetching categories failed.");

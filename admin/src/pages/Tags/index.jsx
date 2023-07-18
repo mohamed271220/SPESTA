@@ -7,21 +7,24 @@ import {
   Collapse,
   Button,
   Typography,
+  Rating,
+  Backdrop,
+  Modal,
+  Fade,
   useTheme,
   useMediaQuery,
-  Avatar,
 } from "@mui/material";
 import Header from "../../Components/Header";
-import { useGetCategoriesQuery } from "../../state/api";
+import { useGetProductsQuery, useGetTagsQuery } from "../../state/api";
 import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
-import Cate from "./Cate.png";
+// import AddP from "./AddP.png";
+import AddTag from "../../Components/AddTag";
+import Logo from "../../Components/Logo";
 import AddProductModal from "../../Components/AddProductModal";
-import AddCategory from "../../Components/AddCategory";
-const Category = ({ id, name, image, addedBy, products }) => {
+const Tag = ({ id, name, products, addedBy }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  console.log(image);
 
   return (
     <Card
@@ -29,79 +32,51 @@ const Category = ({ id, name, image, addedBy, products }) => {
         backgroundImage: "none",
         backgroundColor: theme.palette.background.alt,
         borderRadius: "0.55rem",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
       }}
     >
-      <Box>
-        <CardContent>
-          <Typography
-            sx={{ fontSize: 14 }}
-            color={theme.palette.secondary[700]}
-            gutterBottom
-          >
-            Added by: {addedBy}
-          </Typography>
-          <Typography variant="h5" component="div">
-            {name}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            See More
-          </Button>
-          <Button variant="primary" size="small">
-            Edit
-          </Button>
-        </CardActions>
-
-        <Collapse
-          in={isExpanded}
-          timeout="auto"
-          unmountOnExit
-          sx={{
-            color: theme.palette.neutral[300],
-          }}
+      <CardContent>
+        <Typography variant="h5" component="div">
+          {name}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => setIsExpanded(!isExpanded)}
         >
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Products:
-            </Typography>
-            {products.map((product) => (
+          See More
+        </Button>
+      </CardActions>
+      <Collapse
+        in={isExpanded}
+        timeout="auto"
+        unmountOnExit
+        sx={{
+          color: theme.palette.neutral[300],
+        }}
+      >
+        <CardContent>
+          <Typography variant="h4">added by: {addedBy}</Typography>
+          <Typography variant="h5" component="div">Products:</Typography>
+          {products.map((product) => (
               <Typography variant="h5" component="div">
                 {product.name} with id: {product._id}
               </Typography>
             ))}
-          </CardContent>
-        </Collapse>
-      </Box>
-      <Box
-        sx={{ width: "40%", height: "100px" }}
-        objectFit="contain"
-      >
-        <img
-       
-          src={`http://localhost:8080/${image}`}
-          
-          alt="Category"
-        />
-      </Box>
+        </CardContent>
+      </Collapse>
     </Card>
   );
 };
 
-const Categories = () => {
+const Tags = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { data, isLoading } = useGetCategoriesQuery();
+  const { data, isLoading } = useGetTagsQuery();
   const isNonMobile = useMediaQuery("(min-width:1000px)");
   console.log(data);
 
@@ -112,7 +87,7 @@ const Categories = () => {
         handleOpen={handleOpen}
         handleClose={handleClose}
       >
-        <AddCategory onClose={handleClose} />
+        <AddTag onClose={handleClose} />
       </AddProductModal>
       <Header title="PRODUCTS" subtitle="List of products details" />
       {data === undefined && <p>Error</p>}
@@ -125,15 +100,13 @@ const Categories = () => {
           rowGap="20px"
           columnGap="1.33%"
           sx={{
-            "& > div": {
-              gridColumn: "span 4",
-            },
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
           <Card
             sx={{
               backgroundImage: "none",
-              backgroundColor: "#909090",
+              backgroundColor: theme.palette.background.alt,
               borderRadius: "0.55rem",
               display: "flex",
               alignItems: "center",
@@ -150,17 +123,20 @@ const Categories = () => {
                 justifyContent: "center",
               }}
             >
-              <img src={Cate} alt="Categories" height="200px" width="200px" />
+              {/* <img
+                src={AddP}
+                alt="add"
+                style={{ width: "90%", height: "90%" }}
+              /> */}
             </CardContent>
           </Card>
-          {data.data.map(({ _id, name, addedBy, products, image }) => (
-            <Category
+          {data.data.map(({ _id, name, products, addedBy }) => (
+            <Tag
               key={_id}
               id={_id}
               name={name}
               addedBy={addedBy}
               products={products}
-              image={image}
             />
           ))}
         </Box>
@@ -173,4 +149,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Tags;
