@@ -8,8 +8,10 @@
   .image-upload__preview {
     width: 13rem;
     height: 13rem;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc6b;
+    border-radius: 6px;
     display: flex;
+
     justify-content: center;
     align-items: center;
     text-align: center;

@@ -78,7 +78,7 @@
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   background-color: rgb(0, 0, 0, 0.3);
-  color: #ffffff;
+  color: hsl(103, 96%, 44%);
   border-radius: 1rem;
   cursor: pointer;
 }

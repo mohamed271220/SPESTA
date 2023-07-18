@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 // import {BsCloudUploadFill} from 'react-icons/bs'
 // import Button from "./Button";
 import "./ImageUpload.css";
-
-
+import { Button } from "@mui/material";
+import upload from "./upload.png";
 const ImageUpload = (props) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
@@ -58,12 +58,21 @@ const ImageUpload = (props) => {
           {previewUrl ? (
             <img src={previewUrl} alt="preview" />
           ) : (
-            <p> Upload Image</p>
+            <img onClick={pickImageHandler} src={upload} alt="upload" />
           )}
         </div>
-        <button className="btn-small" type="button" onClick={pickImageHandler}>
+        <Button
+          sx={{
+            "&:hover": {
+              color: "white",
+            },
+          }}
+          className="btn-small"
+          type="button"
+          onClick={pickImageHandler}
+        >
           PICK IMAGE
-        </button>
+        </Button>
       </div>
       {!isValid && <p>{props.errorText}</p>}
     </div>

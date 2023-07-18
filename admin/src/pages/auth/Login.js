@@ -15,7 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../state/authSlice";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import TransitionsModal from "../../Components/LoadingModal";
-
+import { Button } from "@mui/material";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,15 +94,27 @@ const Login = (props) => {
           element="input"
           onInput={inputHandler}
         ></Input>
-        <button
+        <Button
           onClick={(e) => {
             e.preventDefault();
             setShowPWD(!showPWD);
           }}
-          className="pwd-btn"
+          sx={{
+            "&:hover": {
+              color: "white",
+            },
+          }}
         >
-          <VisibilityOffIcon /> {showPWD ? "Hide" : "Show"}
-        </button>
+          {showPWD ? (
+            <>
+              <VisibilityOffIcon /> Hide
+            </>
+          ) : (
+            <>
+              <RemoveRedEyeIcon /> Show
+            </>
+          )}
+        </Button>
         <button
           type="submit"
           size="small"
@@ -112,9 +125,18 @@ const Login = (props) => {
         </button>
       </form>
       <Link className="" to={"/auth/signup"}>
-        <button className="change-mode-btn">
+        <Button
+          sx={{
+            m: "1rem",
+            color: "ghostwhite",
+            "&:hover": {
+              color: "#252d58",
+              backgroundColor: "white",
+            },
+          }}
+        >
           Don't have an account? Sign up
-        </button>
+        </Button>
       </Link>
     </div>
   );

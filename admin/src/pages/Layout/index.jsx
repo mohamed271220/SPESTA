@@ -4,14 +4,25 @@ import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar";
 import Sidebar from "../../Components/Sidebar";
-
+import { authActions } from "../../state/authSlice";
+import { useDispatch } from "react-redux";
 import { useGetAdminDataQuery, useGetUserQuery } from "../../state/api";
 
 const Layout = () => {
+  const dispatch=useDispatch()
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const data = useSelector((state) => state.auth.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const data = useSelector((state) => state.auth.data);
+  React.useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+  
+    if ( !storedData) {
+      dispatch(authActions.logout());
+    }
+  
+  })
+
 
 
   return (

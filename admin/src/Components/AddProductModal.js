@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Backdrop, Modal, Fade } from "@mui/material";
-import Logo from "../../../Components/Logo";
-import AddProduct from "../../../Components/AddProduct";
+import Logo from "./Logo";
+import AddProduct from "./AddProduct";
+import { Outlet } from "react-router-dom";
 //ADD PRODUCT FORM MODAL MODAL
 
 const style = {
@@ -22,7 +23,7 @@ const style = {
   p: 4,
 };
 
-const AddProductModal = ({ handleClose, open }) => {
+const AddProductModal = ({ children, handleClose, open }) => {
   return (
     <div>
       <Modal
@@ -44,7 +45,8 @@ const AddProductModal = ({ handleClose, open }) => {
         <Fade in={open}>
           <Box sx={style}>
             <Logo />
-            <AddProduct onClose={handleClose} />
+            {/* <AddProduct onClose={handleClose} /> */}
+            {children}
           </Box>
         </Fade>
       </Modal>

@@ -20,7 +20,7 @@ import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
 import AddP from "./AddP.png";
 import AddProduct from "../../Components/AddProduct";
 import Logo from "../../Components/Logo";
-import AddProductModal from './components/AddProductModal'
+import AddProductModal from "../../Components/AddProductModal";
 const Product = ({
   id,
   name,
@@ -122,7 +122,9 @@ const Products = () => {
         open={open}
         handleOpen={handleOpen}
         handleClose={handleClose}
-      />
+      >
+        <AddProduct onClose={handleClose} />
+      </AddProductModal>
       <Header title="PRODUCTS" subtitle="List of products details" />
       {data === undefined && <p>Error</p>}
       {data || !isLoading ? (

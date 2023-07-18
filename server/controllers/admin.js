@@ -21,7 +21,6 @@ exports.getProducts = async (req, res, next) => {
 };
 
 exports.addProduct = async (req, res, next) => {
-
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -113,7 +112,7 @@ I hope this helps! Let me know if you have any other questions.
     await session.commitTransaction();
   } catch (error) {
     await session.abortTransaction();
-    const err = new Error("Something went wrong "+err);
+    const err = new Error("Something went wrong " + error);
     err.statusCode = 500;
     return next(err);
   } finally {
@@ -225,24 +224,33 @@ exports.addCategory = async (req, res, next) => {
     error.data = errors.array();
     next(error);
   }
-  const { name, image } = req.body;
+  const { name,productIds } = req.body;
+  console.log(productIds);
   const addedBy = req.userId;
   const category = new Category({
     name,
-    image,
+    image:req.file.path.replace("\\", "/"),
     addedBy,
+    products:JSON.parse(productIds)
   });
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await category.save({ session: sess });
+    if (productIds) {
+      JSON.parse(productIds).map(async (productId) => {
+        const productItem = await Product.findById(productId);
+        productItem.category.push(category);
+        await productItem.save({ sess });
+      });
+    }
     const admin = await Admin.findById(addedBy);
     admin.addedCategories.push(category);
     await admin.save({ session: sess });
     sess.commitTransaction();
     res.status(201).json({ message: "Category Added Successfully", category });
   } catch (err) {
-    const error = new Error("could not add category");
+    const error = new Error("could not add category" +err);
     error.statusCode = 500;
     return next(error);
   }
@@ -434,7 +442,7 @@ exports.getOrders = async (req, res, next) => {
     console.log(transactions);
     const total = await Order.countDocuments({
       // name: { $regex: search, $options: "i" },
-      name: { $regex: search, $options: "i" },
+      // name: { $regex: search, $options: "i" },
     });
     console.log(total);
     res.status(200).json({
@@ -443,6 +451,20 @@ exports.getOrders = async (req, res, next) => {
     });
   } catch (err) {
     const error = new Error("Could not fetch orders");
+    error.statusCode = 500;
+    return next(error + " real err " + err);
+  }
+};
+
+exports.updateOrder = async (req, res, next) => {
+  const orderId = req.params.orderId;
+  const { status } = req.body;
+  try {
+    const order = await Order.findById(orderId);
+    order.status = status;
+    await order.save();
+  } catch (err) {
+    const error = new Error("Could not update order");
     error.statusCode = 500;
     return next(error + " real err " + err);
   }

@@ -41,12 +41,14 @@ router.delete(
   adminController.removeProduct
 );
 
-
-
-
 //TODO ADD A CATEGORY
 //TESTED✅
-router.post("/addCategory", isAdmin, adminController.addCategory);
+router.post(
+  "/addCategory",
+  fileUpload.single("image"),
+  isAdmin,
+  adminController.addCategory
+);
 
 //TODO REMOVE A CATEGORY
 //TESTED✅
@@ -78,8 +80,10 @@ router.put("/addProductToTag/:tagId", isAdmin, adminController.addProductToTag);
 router.get("/admin/:adminId", isAdmin, adminController.getAdminById);
 
 //TODO GET USERS
-router.get("/users",// isAdmin,
- adminController.getUsers);
+router.get(
+  "/users", // isAdmin,
+  adminController.getUsers
+);
 
 //TODO GET USER BY ID
 router.get("/users/:userId", adminController.getUserById);
@@ -87,9 +91,11 @@ router.get("/users/:userId", adminController.getUserById);
 //TODO DELETE A USER
 router.delete("/deleteUser/:userId", isAdmin, adminController.deleteUser);
 
-
 //TODO GET ORDERS
-router.get("/orders", //isAdmin,
- adminController.getOrders);
+router.get(
+  "/orders", //isAdmin,
+  adminController.getOrders
+);
 
+router.put("/orders/:orderId", isAdmin, adminController.updateOrder);
 module.exports = router;
