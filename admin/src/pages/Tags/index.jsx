@@ -21,6 +21,7 @@ import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
 import AddTag from "../../Components/AddTag";
 import Logo from "../../Components/Logo";
 import AddProductModal from "../../Components/AddProductModal";
+import TagP from './Tag.png'
 const Tag = ({ id, name, products, addedBy }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
@@ -100,13 +101,13 @@ const Tags = () => {
           rowGap="20px"
           columnGap="1.33%"
           sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            "& > div": { gridColumn:  "span 4" },
           }}
         >
           <Card
             sx={{
               backgroundImage: "none",
-              backgroundColor: theme.palette.background.alt,
+              backgroundColor: "#909090",
               borderRadius: "0.55rem",
               display: "flex",
               alignItems: "center",
@@ -123,11 +124,11 @@ const Tags = () => {
                 justifyContent: "center",
               }}
             >
-              {/* <img
-                src={AddP}
+              <img
+                src={TagP}
                 alt="add"
                 style={{ width: "90%", height: "90%" }}
-              /> */}
+              />
             </CardContent>
           </Card>
           {data.data.map(({ _id, name, products, addedBy }) => (

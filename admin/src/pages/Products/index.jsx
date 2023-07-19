@@ -21,6 +21,7 @@ import AddP from "./AddP.png";
 import AddProduct from "../../Components/AddProduct";
 import Logo from "../../Components/Logo";
 import AddProductModal from "../../Components/AddProductModal";
+import EditProduct from "../../Components/EditProduct";
 const Product = ({
   id,
   name,
@@ -36,73 +37,95 @@ const Product = ({
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  return (
-    <Card
-      sx={{
-        backgroundImage: "none",
-        backgroundColor: theme.palette.background.alt,
-        borderRadius: "0.55rem",
-      }}
-    >
-      <CardContent>
-        <Typography
-          sx={{ fontSize: 14 }}
-          color={theme.palette.secondary[700]}
-          gutterBottom
-        >
-          {category}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {name}
-        </Typography>
-        <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
-          ${Number(price).toFixed(2)}
-        </Typography>
-        <Rating value={rating} readOnly />
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
 
-        <Typography variant="body2">{description}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          variant="primary"
-          size="small"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          See More
-        </Button>
-      </CardActions>
-      <Collapse
-        in={isExpanded}
-        timeout="auto"
-        unmountOnExit
+  return (
+    <>
+      <AddProductModal
+        open={openEdit}
+        handleOpen={handleOpenEdit}
+        handleClose={handleCloseEdit}
+      >
+        <EditProduct id={id} onClose={handleCloseEdit} />
+      </AddProductModal>
+
+      <Card
         sx={{
-          color: theme.palette.neutral[300],
+          backgroundImage: "none",
+          backgroundColor: theme.palette.background.alt,
+          borderRadius: "0.55rem",
         }}
       >
         <CardContent>
-          <Typography
-            variant="body2"
-            sx={{ color: theme.palette.secondary[700] }}
-          >
-            id: {id}
+          {category.map((catId) => (
+            <Typography
+              sx={{ fontSize: 14 }}
+              color={theme.palette.secondary[300]}
+              gutterBottom
+            >
+              {catId}
+            </Typography>
+          ))}
+          <Typography variant="h5" component="div">
+            {name}
           </Typography>
-          {sale && (
+          <Typography
+            sx={{ mb: "1.5rem" }}
+            color={theme.palette.secondary[400]}
+          >
+            ${Number(price).toFixed(2)}
+          </Typography>
+          <Rating value={rating} readOnly />
+
+          <Typography variant="body2">{description}</Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            See More
+          </Button>
+          <Button variant="primary" size="small" onClick={handleOpenEdit}>
+            Edit
+          </Button>
+        </CardActions>
+        <Collapse
+          in={isExpanded}
+          timeout="auto"
+          unmountOnExit
+          sx={{
+            color: theme.palette.neutral[300],
+          }}
+        >
+          <CardContent>
             <Typography
               variant="body2"
-              sx={{ color: theme.palette.secondary[700] }}
+              sx={{ color: theme.palette.secondary[200] }}
             >
-              {sale * 100} off
+              id: {id}
             </Typography>
-          )}
-          <Typography
-            variant="body2"
-            sx={{ color: theme.palette.secondary[700] }}
-          >
-            status: {status}
-          </Typography>
-        </CardContent>
-      </Collapse>
-    </Card>
+            {sale && (
+              <Typography
+                variant="body2"
+                sx={{ color: theme.palette.secondary[300] }}
+              >
+                {sale * 100} off
+              </Typography>
+            )}
+            <Typography
+              variant="body2"
+              sx={{ color: theme.palette.secondary[400] }}
+            >
+              status: {status}
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
+    </>
   );
 };
 
@@ -113,7 +136,7 @@ const Products = () => {
   const handleClose = () => setOpen(false);
 
   const { data, isLoading } = useGetProductsQuery();
-  const isNonMobile = useMediaQuery("(min-width:1000px)");
+  const isNonMobile = useMediaQuery("(min-width:1024px)");
   console.log(data);
 
   return (
@@ -132,11 +155,14 @@ const Products = () => {
           mt="20px"
           display="grid"
           gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          justifyContent="space-between"
+          justifyContent={isNonMobile ? "space-between" : "center"}
+          alignItems={!isNonMobile && 'center'}
           rowGap="20px"
           columnGap="1.33%"
           sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" 
+            , 
+            },
           }}
         >
           <Card
@@ -162,7 +188,7 @@ const Products = () => {
               <img
                 src={AddP}
                 alt="add"
-                style={{ width: "90%", height: "90%" }}
+                style={{ width: "100%", height: "100%" }}
               />
             </CardContent>
           </Card>

@@ -28,7 +28,7 @@ const style = {
 
 const AddProductModal = ({ children, handleClose, open }) => {
   return (
-    <div>
+    <>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -53,7 +53,7 @@ const AddProductModal = ({ children, handleClose, open }) => {
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 };
 

@@ -106,7 +106,7 @@ exports.adminLogin = async (req, res, next) => {
   }
 
   if (!isValidPassword) {
-    const error = new Error("Invalid Password");
+    const error = new Error( " Invalid Password");
     error.statusCode = 401;
     return next(error);
   }
@@ -119,7 +119,7 @@ exports.adminLogin = async (req, res, next) => {
       { expiresIn: "1h" }
     );
   } catch (err) {
-    const error = new Error("Login failed");
+    const error = new Error(err + " Login failed");
     error.statusCode = 500;
     return next(error);
   }

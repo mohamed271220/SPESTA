@@ -78,7 +78,7 @@ const Signup = (props) => {
       navigate("/");
       // props.onCancel();
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.message || "Something went wrong");
     }
     setIsLoading(false);
   };

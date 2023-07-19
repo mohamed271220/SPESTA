@@ -26,7 +26,7 @@ const AddProduct = (props) => {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState();
-  const [showPWD, setShowPWD] = React.useState(false);
+
   const [addedPhotos, setAddedPhotos] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [tags, setTags] = React.useState([]);

@@ -65,7 +65,8 @@ const Login = (props) => {
       // props.onCancel();
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.message|| 'Something went wrong');
+      // console.log(err);
     }
     setIsLoading(false);
   };
