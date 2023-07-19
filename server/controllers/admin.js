@@ -11,7 +11,7 @@ const User = require("../models/user");
 //TODO GET ALL PRODUCTS
 exports.getProducts = async (req, res, next) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('category');
     res.status(200).json({ message: "Products fetched", products });
   } catch (err) {
     const error = new Error("Could not fetch products");

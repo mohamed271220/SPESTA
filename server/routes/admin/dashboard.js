@@ -8,6 +8,7 @@ const fileUpload = require("../../middleware/file-upload");
 const router = express();
 
 // TODO GET ALL PRODUCTS
+//TESTED✅
 router.get(
   "/products", //isAdmin,
   adminController.getProducts

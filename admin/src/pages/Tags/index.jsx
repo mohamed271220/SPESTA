@@ -20,9 +20,13 @@ import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
 // import AddP from "./AddP.png";
 import AddTag from "../../Components/AddTag";
 import Logo from "../../Components/Logo";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import ConfirmDelete from "../../Components/ConfirmCategoryDelete";
+
 import AddProductModal from "../../Components/AddProductModal";
 import TagP from './Tag.png'
-const Tag = ({ id, name, products, addedBy }) => {
+const Tag = ({ setSnackbar, id, name, products, addedBy }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -48,6 +52,8 @@ const Tag = ({ id, name, products, addedBy }) => {
         >
           See More
         </Button>
+        <ConfirmDelete tagMode={true} setSnackbar={setSnackbar}  id={id} />
+
       </CardActions>
       <Collapse
         in={isExpanded}
@@ -73,13 +79,17 @@ const Tag = ({ id, name, products, addedBy }) => {
 
 const Tags = () => {
   const theme = useTheme();
+  const [snackbar, setSnackbar] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleProcessRowUpdateError = React.useCallback((error) => {
+    setSnackbar({ children: error.message, severity: "error" });
+  }, []);
   const { data, isLoading } = useGetTagsQuery();
   const isNonMobile = useMediaQuery("(min-width:1000px)");
-  console.log(data);
+  // console.log(data);
 
   return (
     <Box m="1.5rem 2.5rem">
@@ -138,8 +148,19 @@ const Tags = () => {
               name={name}
               addedBy={addedBy}
               products={products}
+              setSnackbar={setSnackbar}
             />
           ))}
+          {!!snackbar && (
+            <Snackbar
+              open
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClose={handleCloseSnackbar}
+              autoHideDuration={6000}
+            >
+              <Alert {...snackbar} onClose={handleCloseSnackbar} />
+            </Snackbar>
+          )}
         </Box>
       ) : (
         <>

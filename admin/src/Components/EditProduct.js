@@ -117,8 +117,8 @@ const AddProduct = (props) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `/admin/dashboard/addProduct`,
+      const response = await axios.put(
+        `/admin/dashboard/editProduct/${props.id}`,
         {
           name: formState.inputs.name.value,
           price: formState.inputs.price.value,
@@ -214,7 +214,7 @@ const AddProduct = (props) => {
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      {!isLoading && !error && product ? (
+      {   product ? (
         <form className="login" onSubmit={formSubmitHandler}>
           <Input
             id="name"
@@ -360,7 +360,11 @@ const AddProduct = (props) => {
                     control={
                       <Checkbox
                         id={cat._id}
-                        //   checked={}
+                        checked={
+                          categoriesId.find((id) => id === cat._id)
+                            ? true
+                            : false
+                        }
                         onChange={handleChange}
                         name={cat.name}
                       />
@@ -380,7 +384,9 @@ const AddProduct = (props) => {
                     control={
                       <Checkbox
                         id={cat._id}
-                        //   checked={}
+                        checked={
+                          tagsId.find((id) => id === cat._id) ? true : false
+                        }
                         onChange={handleTagChange}
                         name={cat.name}
                       />
@@ -401,7 +407,7 @@ const AddProduct = (props) => {
               fontSize: "larger",
               backgroundColor: "#fe6b00",
             }}
-              disabled={!formState.isValid}
+            disabled={!formState.isValid}
           >
             Add Product
           </Button>

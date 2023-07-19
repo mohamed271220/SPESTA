@@ -17,11 +17,13 @@ import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
 import Cate from "./Cate.png";
 import AddProductModal from "../../Components/AddProductModal";
 import AddCategory from "../../Components/AddCategory";
-const Category = ({ id, name, image, addedBy, products }) => {
+import ConfirmDelete from "../../Components/ConfirmCategoryDelete";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  console.log(image);
 
   return (
     <Card
@@ -58,6 +60,7 @@ const Category = ({ id, name, image, addedBy, products }) => {
           <Button variant="primary" size="small">
             Edit
           </Button>
+          <ConfirmDelete setSnackbar={setSnackbar}  id={id} />
         </CardActions>
 
         <Collapse
@@ -80,16 +83,8 @@ const Category = ({ id, name, image, addedBy, products }) => {
           </CardContent>
         </Collapse>
       </Box>
-      <Box
-        sx={{ width: "40%", height: "100px" }}
-        objectFit="contain"
-      >
-        <img
-       
-          src={`http://localhost:8080/${image}`}
-          
-          alt="Category"
-        />
+      <Box sx={{ width: "40%", height: "100px" }} objectFit="contain">
+        <img src={`http://localhost:8080/${image}`} alt="Category" />
       </Box>
     </Card>
   );
@@ -100,12 +95,18 @@ const Categories = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleProcessRowUpdateError = React.useCallback((error) => {
+    setSnackbar({ children: error.message, severity: "error" });
+  }, []);
 
   const { data, isLoading } = useGetCategoriesQuery();
   const isNonMobile = useMediaQuery("(min-width:1000px)");
   console.log(data);
+  const [snackbar, setSnackbar] = React.useState(null);
 
   return (
+
     <Box m="1.5rem 2.5rem">
       <AddProductModal
         open={open}
@@ -157,12 +158,24 @@ const Categories = () => {
             <Category
               key={_id}
               id={_id}
+              setSnackbar={setSnackbar}
               name={name}
               addedBy={addedBy}
               products={products}
               image={image}
             />
           ))}
+
+          {!!snackbar && (
+            <Snackbar
+              open
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClose={handleCloseSnackbar}
+              autoHideDuration={6000}
+            >
+              <Alert {...snackbar} onClose={handleCloseSnackbar} />
+            </Snackbar>
+          )}
         </Box>
       ) : (
         <>

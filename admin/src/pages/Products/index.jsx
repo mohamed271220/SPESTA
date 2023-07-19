@@ -59,13 +59,13 @@ const Product = ({
         }}
       >
         <CardContent>
-          {category.map((catId) => (
+          {category.map((cate) => (
             <Typography
               sx={{ fontSize: 14 }}
               color={theme.palette.secondary[300]}
               gutterBottom
             >
-              {catId}
+               {cate.name} : {cate._id}
             </Typography>
           ))}
           <Typography variant="h5" component="div">
