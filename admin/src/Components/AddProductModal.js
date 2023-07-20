@@ -48,7 +48,7 @@ const AddProductModal = ({ children, handleClose, open }) => {
         }}
       >
         <Fade in={open}>
-          <Box sx={{...style,backgroundColor: theme.palette.primary[700] }}>
+          <Box sx={{...style,backgroundColor: theme.palette.primary.main }}>
             <Logo />
             {/* <AddProduct onClose={handleClose} /> */}
             {children}

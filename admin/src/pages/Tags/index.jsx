@@ -66,6 +66,9 @@ const Tag = ({ setSnackbar, id, name, products, addedBy }) => {
         >
           See More
         </Button>
+        <Button onClick={handleOpenEdit} variant="primary" size="small">
+            Edit
+          </Button>
         <ConfirmDelete tagMode={true} setSnackbar={setSnackbar}  id={id} />
 
       </CardActions>

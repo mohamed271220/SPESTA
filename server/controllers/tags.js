@@ -12,7 +12,7 @@ exports.getAllTags = async (req, res, next) => {
 exports.getSingleTag = async (req, res, next) => {
   const tagId = req.params.tagId;
   try {
-    const tag = await Tags.findById(tagId).populate("products");
+    const tag = await Tags.findById(tagId);
     res.status(200).json({ message: "success", data: tag });
   } catch (err) {
     const error = new Error("Something went wrong: could not find tag with id of "+tagId );

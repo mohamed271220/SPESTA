@@ -6,6 +6,7 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import LoadingSpinner from "./Loading/LoadingSpinner/LoadingSpinner";
+import { useTheme } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -18,7 +19,6 @@ const style = {
   justifyContent: "center",
   height: 300,
   borderRadius: "12px",
-  bgcolor: "#252d58",
   //   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
@@ -28,7 +28,7 @@ export default function TransitionsModal() {
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+const theme = useTheme()
   return (
     <div>
       <Modal
@@ -45,7 +45,7 @@ export default function TransitionsModal() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={{...style, backgroundColor:theme.palette.primary.main}}>
             <LoadingSpinner />
           </Box>
         </Fade>

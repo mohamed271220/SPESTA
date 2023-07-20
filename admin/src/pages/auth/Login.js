@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../state/authSlice";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import TransitionsModal from "../../Components/LoadingModal";
-import { Button } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -65,18 +65,28 @@ const Login = (props) => {
       // props.onCancel();
       navigate("/");
     } catch (err) {
-      setError(err.response.data.message|| 'Something went wrong');
+      setError(err.response.data.message || "Something went wrong");
       // console.log(err);
     }
     setIsLoading(false);
   };
 
+  const theme = useTheme();
   return (
     <div className="login-container">
       <Logo />
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      <form className="login" onSubmit={loginSubmitHandler}>
+      <form
+        className="login"
+        style={{
+          backgroundColor: theme.palette.grey[100],
+        }}
+        onSubmit={loginSubmitHandler}
+      >
+            <Typography variant="h4" sx={{
+          color:theme.palette.primary.main,
+        }}>Login</Typography>
         <Input
           id="email"
           type="email"
@@ -102,7 +112,7 @@ const Login = (props) => {
           }}
           sx={{
             "&:hover": {
-              color: "white",
+              color: theme.palette.primary[700],
             },
           }}
         >
@@ -116,14 +126,30 @@ const Login = (props) => {
             </>
           )}
         </Button>
-        <button
+        <Button
           type="submit"
           size="small"
           className="center button submit-btn"
           disabled={!formState.isValid}
+          sx={{
+            m: "1rem",
+          
+            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary[200],
+            "&:hover": {
+              color: theme.palette.secondary[100],
+              backgroundColor: theme.palette.secondary[400],
+            },
+            "&:disabled": {
+              backgroundColor:theme.palette.grey[700],
+              color: theme.palette.grey[400],
+            }
+          }}
         >
-          Login
-        </button>
+          <Typography variant="h6" component="div" sx={{  flexGrow: 1 }}>
+            Login
+          </Typography>
+        </Button>
       </form>
       <Link className="" to={"/auth/signup"}>
         <Button

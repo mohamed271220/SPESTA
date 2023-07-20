@@ -21,12 +21,24 @@ import ConfirmDelete from "../../Components/ConfirmCategoryDelete";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import CatePic from "./CatePic";
+import EditCategory from "../../Components/EditCategory";
 const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
 
   return (
+    <>
+     <AddProductModal
+        open={openEdit}
+        handleOpen={handleOpenEdit}
+        handleClose={handleCloseEdit}
+      >
+        <EditCategory id={id} onClose={handleCloseEdit} />
+      </AddProductModal>
     <Card
       sx={{
         backgroundImage: "none",
@@ -58,7 +70,7 @@ const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
           >
             See More
           </Button>
-          <Button variant="primary" size="small">
+          <Button onClick={handleOpenEdit} variant="primary" size="small">
             Edit
           </Button>
           <ConfirmDelete setSnackbar={setSnackbar}  id={id} />
@@ -88,6 +100,7 @@ const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
         <img src={`http://localhost:8080/${image}`} alt="Category" />
       </Box>
     </Card>
+    </>
   );
 };
 

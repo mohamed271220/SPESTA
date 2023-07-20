@@ -3,6 +3,7 @@ import React, { useReducer, useEffect } from "react";
 import { validate } from "../../util/validators";
 
 import "./Input.css";
+import { useTheme } from "@emotion/react";
 
 const inputReducer = (state, action) => {
   switch (action.type) {
@@ -30,7 +31,7 @@ const Input = (props) => {
     isTouched: false,
     isValid: props.initialValid || false,
   });
-
+const theme=useTheme()
   const { id, onInput } = props;
   const { value, isValid } = inputState;
 
@@ -50,6 +51,7 @@ const Input = (props) => {
   const element =
     props.element === "input" ? (
       <input
+      style={{color:theme.palette.primary.main}}
         id={props.id}
         type={props.type}
         min={props.min}
@@ -76,7 +78,7 @@ const Input = (props) => {
           !inputState.isValid && inputState.isTouched && "form-control--invalid"
         }`}
       >
-        <label htmlFor={props.id}>{props.label}</label>
+        <label     style={{color:theme.palette.primary.main}}  htmlFor={props.id}>{props.label}</label>
         {element}
         {!inputState.isValid && inputState.isTouched && (
           <p>{props.errorText} </p>

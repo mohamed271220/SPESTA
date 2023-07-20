@@ -70,7 +70,6 @@ export const tokensDark = {
 
   secondary: {
     50: "#f0f0f0",
-
     100: "#ffcdcd",
     200: "#ff9a9a",
     300: "#ff6868",

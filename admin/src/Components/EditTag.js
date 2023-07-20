@@ -17,9 +17,10 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 
 const EditTag = (props) => {
+  const theme = useTheme();
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();
@@ -49,8 +50,10 @@ const EditTag = (props) => {
         setProductIds(data.data.products);
         setFormData(
           {
-            name: data.data.name,
-            isValid: true,
+            name: {
+              value: data.data.name,
+              isValid: true,
+            },
           },
           true
         );
@@ -92,8 +95,8 @@ const EditTag = (props) => {
       //   console.log(productIds);
       formData.append("productIds", JSON.stringify(productIds));
       console.log(formData.entries());
-      const data = await axios.post(
-        `/admin/dashboard/addTag`,
+      const data = await axios.put(
+        `/admin/dashboard/editTag/${props.id}`,
         {
           name: formState.inputs.name.value,
           productIds: JSON.stringify(productIds),
@@ -118,60 +121,95 @@ const EditTag = (props) => {
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      <form className="login" onSubmit={formSubmitHandler}>
-        <Input
-          id="name"
-          type="text"
-          label="Category name"
-          placeholder="Make it something catchy"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter product name"
-          element="input"
-          onInput={inputHandler}
-          initialValue={tag.name}
-            initialValid={true}
-        />
-
-        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-          <FormLabel component="legend">Assign Products</FormLabel>
-          <FormGroup>
-            {products &&
-              products.map((cat) => (
-                <>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        id={cat._id}
-                        checked={
-                          productIds.find((id) => id === cat._id) ? true : false
-                        }
-                        onChange={handleChange}
-                        name={cat.name}
-                      />
-                    }
-                    label={cat.name}
-                  />
-                  <Typography variant="body2">{cat._id}</Typography>
-                </>
-              ))}
-          </FormGroup>
-          <FormHelperText>Be careful</FormHelperText>
-        </FormControl>
-
-        <Button
-          type="submit"
-          className="submit-btn"
-          sx={{
-            cursor: "pointer",
-            fontWeight: 600,
-            fontSize: "larger",
-            backgroundColor: "#fe6b00",
+      {tag ? (
+        <form
+          style={{
+            backgroundColor: theme.palette.primary[100],
           }}
-          disabled={!formState.isValid}
+          className="login"
+          onSubmit={formSubmitHandler}
         >
-          Add Tag
-        </Button>
-      </form>
+          <Input
+            id="name"
+            type="text"
+            label="Tag name"
+            placeholder="Make it something catchy"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter product name"
+            element="input"
+            onInput={inputHandler}
+            initialValue={tag.name}
+            initialValid={true}
+          />
+
+          <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+            <FormLabel
+              sx={{
+                color: theme.palette.primary[900],
+              }}
+              component="legend"
+            >
+              Assign Products
+            </FormLabel>
+            <FormGroup
+              sx={{
+                color: theme.palette.primary[900],
+              }}
+            >
+              {products &&
+                products.map((cat) => (
+                  <>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          sx={{
+                            color: theme.palette.primary[900],
+                          }}
+                          id={cat._id}
+                          checked={
+                            productIds.find((id) => id === cat._id)
+                              ? true
+                              : false
+                          }
+                          onChange={handleChange}
+                          name={cat.name}
+                        />
+                      }
+                      label={cat.name}
+                    />
+                    <Typography variant="body2">{cat._id}</Typography>
+                  </>
+                ))}
+            </FormGroup>
+            <FormHelperText>Be careful</FormHelperText>
+          </FormControl>
+
+          <Button
+            type="submit"
+            className="submit-btn"
+            sx={{
+              cursor: "pointer",
+              fontWeight: 600,
+              fontSize: "larger",
+              color: theme.palette.primary.main,
+              backgroundColor: theme.palette.secondary[200],
+              "&:hover": {
+                color: theme.palette.secondary[100],
+                backgroundColor: theme.palette.secondary[400],
+              },
+              "&:disabled": {
+                backgroundColor: theme.palette.grey[700],
+                color: theme.palette.grey[400],
+              },
+            }}
+            disabled={!formState.isValid}
+          >
+            Add Tag
+          </Button>
+        </form>
+      ) : (
+        <TransitionsModal />
+      )}
 
       <p className={error ? "errMsg" : ""}>{error}</p>
     </div>

@@ -17,14 +17,14 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 
 const EditCategory = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();
   const token = useSelector((state) => state.auth.token);
-  console.log(token);
+  // console.log(token);
   const userId = useSelector((state) => state.auth.userId);
   const [products, setProducts] = React.useState([]);
   const [productIds, setProductIds] = React.useState([]);
@@ -58,11 +58,16 @@ const EditCategory = (props) => {
 
   useEffect(() => {
     const getCategory = async () => {
-      const response = axios.get(`/category/${props.id}`);
-      const { data } = response;
-      setCate(data.data);
-      setProductIds(data.data.products);
+      try{
 
+        const response = await axios.get(`/category/${props.id}`);
+        const { data } = response;
+        // console.log(data.data);
+        if(data){
+          setCate(data.data);
+          setProductIds(data.data.products);
+        console.log(data.data);
+      }
       setFormData({
         name: {
           value: data.data.name,
@@ -73,6 +78,7 @@ const EditCategory = (props) => {
           isValid: true,
         },
       });
+    } catch (err) {console.log(err);}
     };
     getCategory();
   }, [props.id, setFormData]);
@@ -97,7 +103,7 @@ const EditCategory = (props) => {
       formData.append("image", formState.inputs.image.value);
       formData.append("productIds", JSON.stringify(productIds));
       console.log(formData.entries());
-      const data = await axios.post(`/admin/dashboard/addCategory`, formData, {
+      const data = await axios.put(`/admin/dashboard/editCategory/${props.id}`, formData, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -111,12 +117,20 @@ const EditCategory = (props) => {
     }
     setIsLoading(false);
   };
-
+  const theme = useTheme();
   return (
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      <form className="login" onSubmit={formSubmitHandler}>
+      {
+cate ? (
+  <form
+        style={{
+          backgroundColor: theme.palette.primary[100],
+        }}
+        className="login"
+        onSubmit={formSubmitHandler}
+      >
         <Input
           id="name"
           type="text"
@@ -140,17 +154,31 @@ const EditCategory = (props) => {
         />
 
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-          <FormLabel component="legend">Assign Products</FormLabel>
-          <FormGroup>
+          <FormLabel
+            sx={{
+              color: theme.palette.primary[900],
+            }}
+            component="legend"
+          >
+            Assign Products
+          </FormLabel>
+          <FormGroup
+            sx={{
+              color: theme.palette.primary[900],
+            }}
+          >
             {products &&
               products.map((cat) => (
                 <>
                   <FormControlLabel
                     control={
                       <Checkbox
+                        sx={{
+                          color: theme.palette.primary[900],
+                        }}
                         id={cat._id}
                         checked={
-                          productIds.find((id) => id === cat._id) ? true : false
+                          productIds.find((prod) => prod === cat._id) ? true : false
                         }
                         onChange={handleChange}
                         name={cat.name}
@@ -172,13 +200,27 @@ const EditCategory = (props) => {
             cursor: "pointer",
             fontWeight: 600,
             fontSize: "larger",
-            backgroundColor: "#fe6b00",
+            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary[200],
+            "&:hover": {
+              color: theme.palette.secondary[100],
+              backgroundColor: theme.palette.secondary[400],
+            },
+            "&:disabled": {
+              backgroundColor: theme.palette.grey[700],
+              color: theme.palette.grey[400],
+            },
           }}
           disabled={!formState.isValid}
         >
           Add Category
         </Button>
       </form>
+) : (
+  <TransitionsModal/>
+)
+      }
+       
 
       <p className={error ? "errMsg" : ""}>{error}</p>
     </div>

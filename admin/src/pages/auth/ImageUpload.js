@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 // import {BsCloudUploadFill} from 'react-icons/bs'
 // import Button from "./Button";
 import "./ImageUpload.css";
-import { Button } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 import upload from "./upload.png";
+import UploadPic from "./UploadPic";
 const ImageUpload = (props) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
@@ -41,7 +42,7 @@ const ImageUpload = (props) => {
   const pickImageHandler = () => {
     filePickerRef.current.click();
   };
-
+const theme= useTheme()
   return (
     <div className="form-control-auth">
       <input
@@ -58,13 +59,13 @@ const ImageUpload = (props) => {
           {previewUrl ? (
             <img src={previewUrl} alt="preview" />
           ) : (
-            <img onClick={pickImageHandler} src={upload} alt="upload" />
+            <UploadPic onClick={pickImageHandler}  />
           )}
         </div>
         <Button
           sx={{
             "&:hover": {
-              color: "white",
+              color:  theme.palette.primary[700],
             },
           }}
           className="btn-small"
@@ -74,7 +75,7 @@ const ImageUpload = (props) => {
           PICK IMAGE
         </Button>
       </div>
-      {!isValid && <p>{props.errorText}</p>}
+      {!isValid && <p style={{color:theme.palette.secondary[300]}} >{props.errorText}</p>}
     </div>
   );
 };

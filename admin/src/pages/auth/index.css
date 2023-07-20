@@ -76,7 +76,7 @@
 .form-control-auth textarea {
   width: 100%;
   font: inherit;
-  color: white;
+  color: rgb(0, 0, 0);
   border: 1px solid #aaa;
   background-color: rgba(255, 255, 255, 0);
   padding: 0.5rem 0.65rem;

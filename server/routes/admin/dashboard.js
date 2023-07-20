@@ -61,21 +61,22 @@ router.delete(
 
 //TODO ADD A PRODUCT TO A CATEGORY
 router.put(
-  "/addProductToCategory/:categoryId",
+  "/editCategory/:categoryId",
+  fileUpload.single("image"),
   isAdmin,
-  adminController.addProductToCategory
+  adminController.editCategory
 );
 
 //TODO ADD A TAG
 //TESTED✅
 router.post("/addTag", isAdmin, adminController.addTag);
 //WITH THAT TRANSACTION METHOD
+router.put("/editTag/:tagId", isAdmin, adminController.editTag);
 //TODO REMOVE A TAG
 //TESTED✅
 router.delete("/removeTag/:tagId", isAdmin, adminController.removeTag);
 //TODO ADD PRODUCT TO TAG
 // you will have the product id on the product page
-router.put("/addProductToTag/:tagId", isAdmin, adminController.addProductToTag);
 
 //TODO GET ADMIN DATA
 router.get("/admin/:adminId", isAdmin, adminController.getAdminById);

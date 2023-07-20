@@ -17,11 +17,12 @@ import { authActions } from "../../state/authSlice";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import TransitionsModal from "../../Components/LoadingModal";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { Button } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 
 const Signup = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme=useTheme()
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();
@@ -89,12 +90,19 @@ const Signup = (props) => {
       {/* <ErrorModal error={error} onClear={clearError} /> */}
 
       {isLoading && <TransitionsModal />}
-      <form className="login" onSubmit={signupSubmitHandler}>
-        <h2>SignUp</h2>
+      <form 
+         style={{
+          backgroundColor: theme.palette.grey[100],
+        }}
+       className="login" onSubmit={signupSubmitHandler}>
+        <Typography variant="h4" sx={{
+          color:theme.palette.primary.main,
+        }}>SignUp</Typography>
+
         <Input
           id="email"
           type="email"
-          placeholder="example@example.com"
+          placeholder="Email e.g example@example.com"
           validators={[VALIDATOR_EMAIL()]}
           errorText="Please enter a valid email address."
           element="input"
@@ -103,7 +111,7 @@ const Signup = (props) => {
         <Input
           id="password"
           type={showPWD ? "text" : "password"}
-          placeholder="Make sure that your password is strong"
+          placeholder="Enter a strong password"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid password"
           element="input"
@@ -115,8 +123,8 @@ const Signup = (props) => {
             setShowPWD(!showPWD);
           }}
           sx={{
-            "&:hover": {
-              color: "white",
+           "&:hover": {
+              color: theme.palette.primary[700],
             },
           }}
         >
@@ -133,7 +141,7 @@ const Signup = (props) => {
         <Input
           id="adminKey"
           type="password"
-          placeholder="Ask someone in management for it"
+          placeholder="Enter the admin key"
           validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_REQUIRE()]}
           errorText="Invalid Key"
           element="input"
@@ -153,13 +161,29 @@ const Signup = (props) => {
           onInput={inputHandler}
           errorText="please provide an image"
         />
-        <button
+        <Button
           disabled={!formState.isValid}
           type="submit"
           className="center button submit-btn"
+          sx={{
+            m: "1rem",
+           
+            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary[200],
+            "&:hover": {
+              color: theme.palette.secondary[100],
+              backgroundColor: theme.palette.secondary[400],
+            },
+            "&:disabled": {
+              backgroundColor:theme.palette.grey[700],
+              color: theme.palette.grey[400],
+            }
+          }}
         >
-          Signup
-        </button>
+            <Typography variant="h6" component="div" sx={{  flexGrow: 1 }}>
+            SignUp
+          </Typography>
+        </Button>
       </form>
 
       <p className={error ? "errMsg" : ""}>{error}</p>

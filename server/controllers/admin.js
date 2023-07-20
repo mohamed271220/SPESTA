@@ -291,7 +291,44 @@ exports.removeCategory = async (req, res, next) => {
   }
 };
 
-exports.addProductToCategory = async (req, res, next) => {};
+exports.editCategory = async (req, res, next) => {
+  const categoryId = req.params.categoryId;
+  const { name, productIds } = req.body;
+  const addedBy = req.userId;
+  const category = await Category.findById(categoryId);
+  try {
+    if (!category) {
+      const error = new Error("No Category Found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    category.name = name;
+    category.image = req.file.path.replace("\\", "/");
+    category.products = JSON.parse(productIds);
+
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await category.save({ session: sess });
+    const admin = await Admin.findById(addedBy);
+    JSON.parse(productIds).forEach(async (cat) => {
+      const product = await Product.findById(cat);
+      product.category.push(category);
+    });
+
+    admin.addedCategories.push(category);
+    await admin.save({ session: sess });
+    sess.commitTransaction();
+
+    res
+      .status(200)
+      .json({ message: "Category Updated Successfully", category });
+  } catch (err) {
+    const error = new Error("Could not edit category " + err);
+    error.statusCode = 500;
+    return next(error);
+  }
+};
 
 //TODO TAGS CATEGORY
 
@@ -335,7 +372,42 @@ exports.addTag = async (req, res, next) => {
     return next(error);
   }
 };
+exports.editTag = async (req, res, next) => {
+  const tagId = req.params.tagId;
+  const { name,productIds } = req.body;
+  const addedBy = req.userId;
+  const tag = await Tag.findById(tagId);
+  if (!tag) {
+    const error = new Error("No Tag Found");
+    error.statusCode = 404;
+    throw error;
+  }
+  try {
+    tag.name = name;
+    tag.products = JSON.parse(productIds);
 
+
+
+
+
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await tag.save({ session: sess });
+    const admin = await Admin.findById(addedBy);
+    JSON.parse(productIds).forEach(async (cat) => {
+      const product = await Product.findById(cat);
+      product.tag.push(tag);
+    });
+    admin.addedTags.push(tag);
+    await admin.save({ session: sess });
+    sess.commitTransaction();
+    res.status(200).json({ message: "Tag Updated Successfully", tag });
+  } catch (err) {
+    const error = new Error("Could not update tag "+ err );
+    error.statusCode = 500;
+    return next(error);
+  }
+};
 exports.removeTag = async (req, res, next) => {
   const tagId = req.params.tagId;
   const tag = await Tag.findById(tagId);

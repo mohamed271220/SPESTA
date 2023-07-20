@@ -17,7 +17,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 
 const AddTag = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -94,12 +94,16 @@ const AddTag = (props) => {
     }
     setIsLoading(false);
   };
-
+const theme=useTheme()
   return (
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      <form className="login" onSubmit={formSubmitHandler}>
+      <form 
+        style={{
+        backgroundColor: theme.palette.primary[100]
+      }}
+       className="login" onSubmit={formSubmitHandler}>
         <Input
           id="name"
           type="text"
@@ -112,14 +116,25 @@ const AddTag = (props) => {
         />
 
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-          <FormLabel component="legend">Assign Products</FormLabel>
-          <FormGroup>
+          <FormLabel 
+                sx={{
+            color:theme.palette.primary[900]
+          }}
+           component="legend">Assign Products</FormLabel>
+          <FormGroup
+                sx={{
+            color:theme.palette.primary[900]
+          }}
+          >
             {products &&
               products.map((cat) => (
                 <>
                   <FormControlLabel
                     control={
                       <Checkbox
+                      sx={{
+            color:theme.palette.primary[900]
+          }}
                         id={cat._id}
                         //   checked={}
                         onChange={handleChange}
@@ -142,7 +157,17 @@ const AddTag = (props) => {
             cursor: "pointer",
             fontWeight: 600,
             fontSize: "larger",
-            backgroundColor: "#fe6b00",
+            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary[200],
+            "&:hover": {
+              color: theme.palette.secondary[100],
+              backgroundColor: theme.palette.secondary[400],
+            },
+            "&:disabled": {
+              backgroundColor:theme.palette.grey[700],
+              color: theme.palette.grey[400],
+            }
+          ,
           }}
           disabled={!formState.isValid}
         >

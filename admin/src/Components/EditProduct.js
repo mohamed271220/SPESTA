@@ -19,7 +19,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
 
 import "./AddProduct.css";
-import { Button } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 const AddProduct = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -209,13 +209,19 @@ const AddProduct = (props) => {
   };
   //   console.log(categoriesId);
   //   console.log(tagsId);
-
+  const theme = useTheme();
   return (
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
       {product ? (
-        <form className="login" onSubmit={formSubmitHandler}>
+        <form
+          style={{
+            backgroundColor: theme.palette.primary[100],
+          }}
+          className="login"
+          onSubmit={formSubmitHandler}
+        >
           <Input
             id="name"
             type="text"
@@ -352,13 +358,27 @@ const AddProduct = (props) => {
           </div>
 
           <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-            <FormLabel component="legend">Assign categories</FormLabel>
-            <FormGroup>
+            <FormLabel
+              sx={{
+                color: theme.palette.primary[900],
+              }}
+              component="legend"
+            >
+              Assign categories
+            </FormLabel>
+            <FormGroup
+              sx={{
+                color: theme.palette.primary[900],
+              }}
+            >
               {categories &&
                 categories.map((cat) => (
                   <FormControlLabel
                     control={
                       <Checkbox
+                        sx={{
+                          color: theme.palette.primary[900],
+                        }}
                         id={cat._id}
                         checked={
                           categoriesId.find((id) => id === cat._id)
@@ -376,13 +396,27 @@ const AddProduct = (props) => {
             <FormHelperText>Be careful</FormHelperText>
           </FormControl>
           <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-            <FormLabel component="legend">Assign Tags</FormLabel>
-            <FormGroup>
+            <FormLabel
+              sx={{
+                color: theme.palette.primary[900],
+              }}
+              component="legend"
+            >
+              Assign Tags
+            </FormLabel>
+            <FormGroup
+              sx={{
+                color: theme.palette.primary[900],
+              }}
+            >
               {tags &&
                 tags.map((cat) => (
                   <FormControlLabel
                     control={
                       <Checkbox
+                        sx={{
+                          color: theme.palette.primary[900],
+                        }}
                         id={cat._id}
                         checked={
                           tagsId.find((id) => id === cat._id) ? true : false
@@ -405,7 +439,16 @@ const AddProduct = (props) => {
               cursor: "pointer",
               fontWeight: 600,
               fontSize: "larger",
-              backgroundColor: "#fe6b00",
+              color: theme.palette.primary.main,
+              backgroundColor: theme.palette.secondary[200],
+              "&:hover": {
+                color: theme.palette.secondary[100],
+                backgroundColor: theme.palette.secondary[400],
+              },
+              "&:disabled": {
+                backgroundColor: theme.palette.grey[700],
+                color: theme.palette.grey[400],
+              },
             }}
             disabled={!formState.isValid}
           >

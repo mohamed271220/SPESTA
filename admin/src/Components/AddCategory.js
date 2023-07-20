@@ -99,7 +99,7 @@ const AddCategory = (props) => {
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
       <form className="login" style={{
-        backgroundColor: theme.palette.primary[500]
+        backgroundColor: theme.palette.primary[100]
       }}  onSubmit={formSubmitHandler}>
         <Input
           id="name"
@@ -120,14 +120,23 @@ const AddCategory = (props) => {
         />
 
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-          <FormLabel component="legend">Assign Products</FormLabel>
-          <FormGroup>
+          <FormLabel component="legend"  
+          sx={{
+            color:theme.palette.primary[900]
+          }}
+          >Assign Products</FormLabel>
+          <FormGroup sx={{
+            color:theme.palette.primary[900]
+          }}>
             {products &&
               products.map((cat) => (
                 <>
                   <FormControlLabel
                     control={
                       <Checkbox
+                      sx={{
+            color:theme.palette.primary[900]
+          }}
                         id={cat._id}
                         //   checked={}
                         onChange={handleChange}
@@ -150,7 +159,17 @@ const AddCategory = (props) => {
             cursor: "pointer",
             fontWeight: 600,
             fontSize: "larger",
-            backgroundColor: "#fe6b00",
+          
+            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary[200],
+            "&:hover": {
+              color: theme.palette.secondary[100],
+              backgroundColor: theme.palette.secondary[400],
+            },
+            "&:disabled": {
+              backgroundColor:theme.palette.grey[700],
+              color: theme.palette.grey[400],
+            }
           }}
             disabled={!formState.isValid}
         >

@@ -66,8 +66,8 @@ setLoading(false);
                 color: "ghostwhite",
                 backgroundColor: "red",
                 "&:hover": {
-                  color: "#252d58",
-                  backgroundColor: "white",
+                  color: theme.palette.secondary[100],
+                  backgroundColor: theme.palette.secondary[400],
                 },
               }}
               onClick={handleSubmit}
@@ -77,7 +77,11 @@ setLoading(false);
             <Button
               sx={{
                 m: "1rem",
-                color: "ghostwhite",
+                color: theme.palette.secondary[100],
+                "&:hover": {
+                  color: theme.palette.primary[100],
+                  backgroundColor: theme.palette.primary[600],
+                },
               }}
               onClick={handleClose}
             >

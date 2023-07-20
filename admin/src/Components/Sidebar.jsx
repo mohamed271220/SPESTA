@@ -133,13 +133,19 @@ const Sidebar = ({
                 }
                 const lcText = text.toLowerCase();
                 return (
-                  <ListItem key={text} disablePadding>
+                  <ListItem
+                    key={text}
+                    
+                    disablePadding
+                  >
                     <ListItemButton
+                    
                       onClick={() => {
                         navigate(`/${lcText}`);
                         setActive(lcText);
                       }}
                       sx={{
+                         fontWeight: "bold",
                         backgroundColor:
                           active === lcText
                             ? theme.palette.secondary[300]
@@ -152,10 +158,11 @@ const Sidebar = ({
                     >
                       <ListItemIcon
                         sx={{
+                          fontWeight: "600",
                           ml: "2rem",
                           color:
                             active === lcText
-                              ? theme.palette.primary[600]
+                              ? theme.palette.primary[100]
                               : theme.palette.secondary[200],
                         }}
                       >
@@ -171,7 +178,12 @@ const Sidebar = ({
               })}
             </List>
           </Box>
-          <Box position="absolute" bottom="0rem" backgroundColor={theme.palette.background.alt} zIndex={'999'}>
+          <Box
+            position="absolute"
+            bottom="0rem"
+            backgroundColor={theme.palette.background.alt}
+            zIndex={"999"}
+          >
             <Divider />
             <FlexBetween
               textTransform="none"
@@ -203,14 +215,14 @@ const Sidebar = ({
                   {user.email}
                 </Typography> */}
               </Box>
-              <SettingsOutlined
+              {/* <SettingsOutlined
                 sx={{
                   color: theme.palette.secondary[300],
                   fontSize: "1.5rem",
                   ml: "auto",
                   cursor: "pointer",
                 }}
-              />
+              /> */}
             </FlexBetween>
           </Box>
         </Drawer>
