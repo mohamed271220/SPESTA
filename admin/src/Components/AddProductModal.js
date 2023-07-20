@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Backdrop, Modal, Fade } from "@mui/material";
+import { Box, Backdrop, Modal, Fade,useTheme } from "@mui/material";
 import Logo from "./Logo";
 import AddProduct from "./AddProduct";
 import { Outlet } from "react-router-dom";
+
 //ADD PRODUCT FORM MODAL MODAL
 
 const style = {
@@ -16,7 +17,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
-  bgcolor: "#141937",
+
   border: "2px solid #000",
   boxShadow: 24,
   // overflow: "scroll",
@@ -27,6 +28,7 @@ const style = {
 };
 
 const AddProductModal = ({ children, handleClose, open }) => {
+  const theme=useTheme()
   return (
     <>
       <Modal
@@ -46,7 +48,7 @@ const AddProductModal = ({ children, handleClose, open }) => {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={{...style,backgroundColor: theme.palette.primary[700] }}>
             <Logo />
             {/* <AddProduct onClose={handleClose} /> */}
             {children}

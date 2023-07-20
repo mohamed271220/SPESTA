@@ -23,15 +23,29 @@ import Logo from "../../Components/Logo";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import ConfirmDelete from "../../Components/ConfirmCategoryDelete";
-
+import EditTag from "../../Components/EditTag";
 import AddProductModal from "../../Components/AddProductModal";
 import TagP from './Tag.png'
+import TagPic from "./TagPic";
+
 const Tag = ({ setSnackbar, id, name, products, addedBy }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
 
   return (
+    <>
+      <AddProductModal
+        open={openEdit}
+        handleOpen={handleOpenEdit}
+        handleClose={handleCloseEdit}
+      >
+        <EditTag id={id} onClose={handleCloseEdit} />
+      </AddProductModal>
     <Card
       sx={{
         backgroundImage: "none",
@@ -60,7 +74,7 @@ const Tag = ({ setSnackbar, id, name, products, addedBy }) => {
         timeout="auto"
         unmountOnExit
         sx={{
-          color: theme.palette.neutral[300],
+          color: theme.palette.neutral[100],
         }}
       >
         <CardContent>
@@ -74,6 +88,7 @@ const Tag = ({ setSnackbar, id, name, products, addedBy }) => {
         </CardContent>
       </Collapse>
     </Card>
+    </>
   );
 };
 
@@ -92,6 +107,8 @@ const Tags = () => {
   // console.log(data);
 
   return (
+  
+
     <Box m="1.5rem 2.5rem">
       <AddProductModal
         open={open}
@@ -117,7 +134,8 @@ const Tags = () => {
           <Card
             sx={{
               backgroundImage: "none",
-              backgroundColor: "#909090",
+              backgroundColor: theme.palette.background.alt,
+
               borderRadius: "0.55rem",
               display: "flex",
               alignItems: "center",
@@ -126,20 +144,7 @@ const Tags = () => {
             }}
             onClick={handleOpen}
           >
-            <CardContent
-              sx={{
-                display: "flex",
-                borderRadius: "0.55rem",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                src={TagP}
-                alt="add"
-                style={{ width: "90%", height: "90%" }}
-              />
-            </CardContent>
+          <TagPic/>
           </Card>
           {data.data.map(({ _id, name, products, addedBy }) => (
             <Tag

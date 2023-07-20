@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  useTheme,
   RectangleProgress,
   Fab,
   Typography,
@@ -13,7 +14,9 @@ import axios from "axios";
 
 import { useSelector } from "react-redux";
 
+
 const ConfirmDelete = (props) => {
+  const theme =useTheme()
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -22,14 +25,21 @@ const ConfirmDelete = (props) => {
   const token = useSelector((state) => state.auth.token);
   const handleSubmit = async (e) => {
     let url;
+    let msg
     setLoading(true);
     const id = props.id;
     handleClose();
 
     if (props.tagMode === true) {
       url = `http://localhost:8080/api/admin/dashboard/removeTag/${id}`;
-    } else {
+      msg = "Tag deleted successfully"
+    } else if (props.productMode === true) { 
+      url = `http://localhost:8080/api/admin/dashboard/removeProduct/${id}`;
+      msg = "Product deleted successfully"
+    }
+    else {
       url = `http://localhost:8080/api/admin/dashboard/removeCategory/${id}`;
+      msg = "Category deleted successfully"
     }
 
     try {
@@ -40,7 +50,7 @@ const ConfirmDelete = (props) => {
       });
       if (result) {
         props.setSnackbar({
-          children: "Tag successfully Deleted",
+          children: msg,
           severity: "success",
         });
         setSuccess(true);
@@ -113,6 +123,7 @@ const ConfirmDelete = (props) => {
             sx={{
               color: "ghostwhite",
               height: 40,
+              display:'flex',
               borderRadius: "12px",
               backgroundColor: "#42dd04",
               "&:hover": {
@@ -130,14 +141,27 @@ const ConfirmDelete = (props) => {
             sx={{
               color: "ghostwhite",
               height: 40,
+              display:'flex',
+              
               borderRadius: "12px",
-              backgroundColor: "red",
+              color:"white",
+              backgroundColor: theme.palette.secondary[300],
+              "&:hover": {
+                color: theme.palette.secondary[600],
+                backgroundColor: theme.palette.secondary[100],
+              },
             }}
             onClick={handleOpen}
           >
             <Button
+
               sx={{
-                color: "ghostwhite",
+              color:"white",
+                backgroundColor: theme.palette.secondary[300],
+              "&:hover": {
+                color: theme.palette.secondary[600],
+                backgroundColor: theme.palette.secondary[100],
+              },
               }}
             >
               <Delete /> Delete{" "}

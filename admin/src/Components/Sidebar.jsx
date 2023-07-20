@@ -146,7 +146,7 @@ const Sidebar = ({
                             : "transparent",
                         color:
                           active === lcText
-                            ? theme.palette.primary[600]
+                            ? theme.palette.primary[100]
                             : theme.palette.secondary[100],
                       }}
                     >
@@ -195,13 +195,13 @@ const Sidebar = ({
                 >
                   {user.name}
                 </Typography>
-                <Typography
+                {/* <Typography
                   fontSize="0.8rem"
                   sx={{ color: theme.palette.secondary[200] }}
                   
                 >
                   {user.email}
-                </Typography>
+                </Typography> */}
               </Box>
               <SettingsOutlined
                 sx={{

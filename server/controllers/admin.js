@@ -11,7 +11,7 @@ const User = require("../models/user");
 //TODO GET ALL PRODUCTS
 exports.getProducts = async (req, res, next) => {
   try {
-    const products = await Product.find().populate('category');
+    const products = await Product.find().populate("category");
     res.status(200).json({ message: "Products fetched", products });
   } catch (err) {
     const error = new Error("Could not fetch products");
@@ -205,6 +205,12 @@ exports.removeProduct = async (req, res, next) => {
     const admin = await Admin.findById(product.addedBy);
     admin.addedProducts.pull(product);
     await admin.save({ session: sess });
+    const category = await Category.findById(product.category);
+    category.products.pull(product);
+    await category.save({ session: sess });
+    const tag = await Tag.findById(product.tag);
+    tag.products.pull(product);
+    await tag.save({ session: sess });
     sess.commitTransaction();
     res.status(200).json({ message: "Product Deleted Successfully" });
   } catch (err) {
@@ -224,14 +230,14 @@ exports.addCategory = async (req, res, next) => {
     error.data = errors.array();
     next(error);
   }
-  const { name,productIds } = req.body;
+  const { name, productIds } = req.body;
   console.log(productIds);
   const addedBy = req.userId;
   const category = new Category({
     name,
-    image:req.file.path.replace("\\", "/"),
+    image: req.file.path.replace("\\", "/"),
     addedBy,
-    products:JSON.parse(productIds)
+    products: JSON.parse(productIds),
   });
   try {
     const sess = await mongoose.startSession();
@@ -250,7 +256,7 @@ exports.addCategory = async (req, res, next) => {
     sess.commitTransaction();
     res.status(201).json({ message: "Category Added Successfully", category });
   } catch (err) {
-    const error = new Error("could not add category" +err);
+    const error = new Error("could not add category" + err);
     error.statusCode = 500;
     return next(error);
   }
@@ -271,6 +277,11 @@ exports.removeCategory = async (req, res, next) => {
     const admin = await Admin.findById(category.addedBy);
     admin.addedCategories.pull(category);
     await admin.save({ session: sess });
+    const products = await Product.find({ category: categoryId });
+    products.forEach(async (product) => {
+      product.category.pull(category);
+      await product.save({ sess });
+    });
     sess.commitTransaction();
     res.status(200).json({ message: "Category Deleted Successfully" });
   } catch (err) {
@@ -294,13 +305,13 @@ exports.addTag = async (req, res, next) => {
     next(error);
   }
   const { name } = req.body;
-  const productIds=req.body.productIds
+  const productIds = req.body.productIds;
   console.log(productIds);
   const addedBy = req.userId;
   const tag = new Tag({
     name,
     addedBy,
-    products:JSON.parse(productIds)
+    products: JSON.parse(productIds),
   });
   try {
     const sess = await mongoose.startSession();
@@ -319,7 +330,7 @@ exports.addTag = async (req, res, next) => {
     sess.commitTransaction();
     res.status(201).json({ message: "Category Added Successfully", tag });
   } catch (err) {
-    const error = new Error("could not add category" +err);
+    const error = new Error("could not add category" + err);
     error.statusCode = 500;
     return next(error);
   }
@@ -340,6 +351,12 @@ exports.removeTag = async (req, res, next) => {
     const admin = await Admin.findById(tag.addedBy);
     admin.addedTags.pull(tag);
     await admin.save({ session: sess });
+    const products = await Product.find({ tag: tagId });
+    products.forEach(async (product) => {
+      product.tag.pull(tag);
+      await product.save({ sess });
+    });
+    sess;
     sess.commitTransaction();
     res.status(200).json({ message: "Tag Deleted Successfully" });
   } catch (err) {

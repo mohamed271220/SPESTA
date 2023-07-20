@@ -20,6 +20,7 @@ import AddCategory from "../../Components/AddCategory";
 import ConfirmDelete from "../../Components/ConfirmCategoryDelete";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import CatePic from "./CatePic";
 const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
@@ -40,7 +41,7 @@ const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
         <CardContent>
           <Typography
             sx={{ fontSize: 14 }}
-            color={theme.palette.secondary[700]}
+            color={theme.palette.secondary[300]}
             gutterBottom
           >
             Added by: {addedBy}
@@ -68,7 +69,7 @@ const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
           timeout="auto"
           unmountOnExit
           sx={{
-            color: theme.palette.neutral[300],
+            color: theme.palette.neutral[100],
           }}
         >
           <CardContent>
@@ -134,7 +135,7 @@ const Categories = () => {
           <Card
             sx={{
               backgroundImage: "none",
-              backgroundColor: "#909090",
+              backgroundColor: theme.palette.background.alt,
               borderRadius: "0.55rem",
               display: "flex",
               alignItems: "center",
@@ -143,16 +144,7 @@ const Categories = () => {
             }}
             onClick={handleOpen}
           >
-            <CardContent
-              sx={{
-                display: "flex",
-                borderRadius: "0.55rem",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <img src={Cate} alt="Categories" height="200px" width="200px" />
-            </CardContent>
+          <CatePic/>
           </Card>
           {data.data.map(({ _id, name, addedBy, products, image }) => (
             <Category

@@ -17,24 +17,21 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Typography, useTheme } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
-const AddCategory = (props) => {
+const EditCategory = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
-  const theme=useTheme()
   const [error, setError] = React.useState();
   const token = useSelector((state) => state.auth.token);
   console.log(token);
   const userId = useSelector((state) => state.auth.userId);
   const [products, setProducts] = React.useState([]);
   const [productIds, setProductIds] = React.useState([]);
-
+  const [cate, setCate] = React.useState();
   // console.log(error);
   const [formState, inputHandler, setFormData] = useForm(
     {
-   
-
       image: {
         value: null,
       },
@@ -58,6 +55,27 @@ const AddCategory = (props) => {
     getProducts();
     console.log(products);
   }, []);
+
+  useEffect(() => {
+    const getCategory = async () => {
+      const response = axios.get(`/category/${props.id}`);
+      const { data } = response;
+      setCate(data.data);
+      setProductIds(data.data.products);
+
+      setFormData({
+        name: {
+          value: data.data.name,
+          isValid: true,
+        },
+        image: {
+          value: data.data.image,
+          isValid: true,
+        },
+      });
+    };
+    getCategory();
+  }, [props.id, setFormData]);
 
   const handleChange = (event) => {
     if (event.target.checked) {
@@ -98,9 +116,7 @@ const AddCategory = (props) => {
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      <form className="login" style={{
-        backgroundColor: theme.palette.primary[500]
-      }}  onSubmit={formSubmitHandler}>
+      <form className="login" onSubmit={formSubmitHandler}>
         <Input
           id="name"
           type="text"
@@ -110,6 +126,8 @@ const AddCategory = (props) => {
           errorText="Please enter product name"
           element="input"
           onInput={inputHandler}
+          initialValue={cate.name}
+          initialValid={true}
         />
 
         <ImageUpload
@@ -117,6 +135,8 @@ const AddCategory = (props) => {
           center
           onInput={inputHandler}
           errorText="please provide an image"
+          initialValue={cate.image}
+          initialValid={true}
         />
 
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
@@ -129,7 +149,9 @@ const AddCategory = (props) => {
                     control={
                       <Checkbox
                         id={cat._id}
-                        //   checked={}
+                        checked={
+                          productIds.find((id) => id === cat._id) ? true : false
+                        }
                         onChange={handleChange}
                         name={cat.name}
                       />
@@ -152,7 +174,7 @@ const AddCategory = (props) => {
             fontSize: "larger",
             backgroundColor: "#fe6b00",
           }}
-            disabled={!formState.isValid}
+          disabled={!formState.isValid}
         >
           Add Category
         </Button>
@@ -163,4 +185,4 @@ const AddCategory = (props) => {
   );
 };
 
-export default AddCategory;
+export default EditCategory;

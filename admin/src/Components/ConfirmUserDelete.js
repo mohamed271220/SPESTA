@@ -1,12 +1,14 @@
 import React from "react";
 import AddProductModal from "./AddProductModal";
 import { Check, Save, Delete } from "@mui/icons-material";
-import { Box, Button, CircularProgress, Fab, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Fab, Typography,useTheme } from "@mui/material";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
 
+
 const ConfirmDelete = (props) => {
+  const theme=useTheme()
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -110,7 +112,12 @@ setLoading(false);
             sx={{
               width: 40,
               height: 40,
-              backgroundColor: "red",
+              color:"white",
+              backgroundColor: theme.palette.secondary[300],
+              "&:hover": {
+                color: theme.palette.secondary[600],
+                backgroundColor: theme.palette.secondary[100],
+              },
             }}
             onClick={handleOpen}
           >

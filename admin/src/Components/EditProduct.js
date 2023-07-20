@@ -214,7 +214,7 @@ const AddProduct = (props) => {
     <div className="add-product-container">
       {isLoading && <TransitionsModal />}
       {error && <p className="errMsg">{error}</p>}
-      {   product ? (
+      {product ? (
         <form className="login" onSubmit={formSubmitHandler}>
           <Input
             id="name"

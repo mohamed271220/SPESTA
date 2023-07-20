@@ -14,13 +14,14 @@ const Layout = () => {
   const data = useSelector((state) => state.auth.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
   React.useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
-    if (!storedData) {
+    if (!storedData || !storedData.token ) {
       dispatch(authActions.logout());
       navigate("/");
     }
-  },[dispatch, navigate]);
+  },[dispatch, navigate,token]);
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">

@@ -14,19 +14,25 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+import ProductPic from "./ProductPic";
 import Header from "../../Components/Header";
 import { useGetProductsQuery } from "../../state/api";
 import SkeletonPost from "../../Components/Loading/Skeleton/SkeletonPost";
 import AddP from "./AddP.png";
 import AddProduct from "../../Components/AddProduct";
 import Logo from "../../Components/Logo";
+import ConfirmDelete from "../../Components/ConfirmCategoryDelete";
+
 import AddProductModal from "../../Components/AddProductModal";
 import EditProduct from "../../Components/EditProduct";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 const Product = ({
   id,
   name,
   description,
   price,
+  setSnackbar,
   category,
   tag,
   sale,
@@ -65,7 +71,7 @@ const Product = ({
               color={theme.palette.secondary[300]}
               gutterBottom
             >
-               {cate.name} : {cate._id}
+              {cate.name} : {cate._id}
             </Typography>
           ))}
           <Typography variant="h5" component="div">
@@ -81,7 +87,13 @@ const Product = ({
 
           <Typography variant="body2">{description}</Typography>
         </CardContent>
-        <CardActions>
+        <CardActions
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            
+          }}
+        >
           <Button
             variant="primary"
             size="small"
@@ -92,6 +104,7 @@ const Product = ({
           <Button variant="primary" size="small" onClick={handleOpenEdit}>
             Edit
           </Button>
+          <ConfirmDelete productMode={true} setSnackbar={setSnackbar} id={id} />
         </CardActions>
         <Collapse
           in={isExpanded}
@@ -131,10 +144,15 @@ const Product = ({
 
 const Products = () => {
   const theme = useTheme();
+  const [snackbar, setSnackbar] = React.useState(null);
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleProcessRowUpdateError = React.useCallback((error) => {
+    setSnackbar({ children: error.message, severity: "error" });
+  }, []);
   const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width:1024px)");
   console.log(data);
@@ -156,13 +174,11 @@ const Products = () => {
           display="grid"
           gridTemplateColumns="repeat(4, minmax(0, 1fr))"
           justifyContent={isNonMobile ? "space-between" : "center"}
-          alignItems={!isNonMobile && 'center'}
+          alignItems={!isNonMobile && "center"}
           rowGap="20px"
           columnGap="1.33%"
           sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" 
-            , 
-            },
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
           <Card
@@ -174,23 +190,20 @@ const Products = () => {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
+           
             }}
             onClick={handleOpen}
           >
-            <CardContent
-              sx={{
+            {/* <CardContent
+            
+            > */}
+             <ProductPic   sx={{
                 display: "flex",
                 borderRadius: "0.55rem",
                 alignItems: "center",
                 justifyContent: "center",
-              }}
-            >
-              <img
-                src={AddP}
-                alt="add"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </CardContent>
+              }}/>
+            {/* </CardContent> */}
           </Card>
           {data.products.map(
             ({
@@ -210,6 +223,7 @@ const Products = () => {
                 name={name}
                 description={description}
                 price={price}
+                setSnackbar={setSnackbar}
                 category={category}
                 tag={tag}
                 sale={sale}
@@ -217,6 +231,16 @@ const Products = () => {
                 rating={rating}
               />
             )
+          )}
+          {!!snackbar && (
+            <Snackbar
+              open
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClose={handleCloseSnackbar}
+              autoHideDuration={6000}
+            >
+              <Alert {...snackbar} onClose={handleCloseSnackbar} />
+            </Snackbar>
           )}
         </Box>
       ) : (
