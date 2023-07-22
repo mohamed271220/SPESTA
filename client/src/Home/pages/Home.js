@@ -2,7 +2,8 @@ import React from "react";
 
 import Hero from "../assets/Hero2.png";
 import ex from "../assets/ex.png";
-
+import SelfCarousel from "../components/Carousel";
+// import {AnotherCarousel} from "../components/AnotherCarousel";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Product from "../components/Product";
@@ -11,6 +12,20 @@ import "../index.css";
 import { Link } from "react-router-dom";
 import Cat from "./Cat.png";
 const Home = () => {
+  const [categories, setCategories] = React.useState([]);
+
+  React.useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/category");
+        const data = await response.json();
+        setCategories(data.data);
+        console.log(data);
+      } catch (err) {}
+    };
+    getCategories();
+  }, []);
+
   const product = productData.map((item) => (
     <Product
       key={item.name}
@@ -24,44 +39,18 @@ const Home = () => {
     <>
       <div className="home-container">
         <div className="hero-section">
-          <img className="hero-img" src={Hero} alt="Hero" />
+          {/* <img className="hero-img" src={Hero} alt="Hero" /> */}
+          <SelfCarousel/>
           <div className="category-container">
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
-              <h2>title</h2>
-              <img src={ex} alt="ex" />
-              <p>see more</p>
-            </div>
-            <div className="category-box">
+            {categories.map((item) => (
+              <div className="category-box">
+                <h3 className="category-box-name">{item.name}</h3>
+                <img src={`http://localhost:8080/${item.image}`} alt="ex" />
+              </div>
+            )).sort(() => (Math.random() > 0.5 ? 1 : -1))
+              .slice(0, 6)} 
+
+            <div className="category-box special">
               <Link to={"/categories"}>
                 <img src={Cat} alt="checkMoreCategories" />
               </Link>

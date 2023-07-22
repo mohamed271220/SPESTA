@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MainHeader from "./MainHeader";
 import Logo from "../Logo";
 import { Link } from "react-router-dom";
@@ -35,6 +35,20 @@ function DropdownItem(props) {
 }
 
 const MainNavigation = () => {
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const getTags = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/tags");
+        const data = await response.json();
+        setTags(data.data);
+        // console.log(data);
+      } catch (err) {}
+    };
+    getTags();
+  }, []);
+
   const auth = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
 
@@ -123,7 +137,9 @@ const MainNavigation = () => {
               <DropdownItem to={"/"} img={<GoHome />} text={"Home"} />
 
               <DropdownItem to={"/categories"} img={""} text={"Categories"} />
-              {auth.token && <DropdownItem to={"/profile"} img={""} text={"Orders"} />}
+              {auth.token && (
+                <DropdownItem to={"/profile"} img={""} text={"Orders"} />
+              )}
               {auth.token && (
                 <DropdownItem to={"/cart"} img={<BiCartAdd />} text={"Cart"} />
               )}
@@ -158,13 +174,15 @@ const MainNavigation = () => {
       </MainHeader>
       <MainHeader className="secondary main-navigation__header-nav-port">
         <div className="tags">
-          <Link>Tag #</Link>
-          <Link>Tag #</Link>
-          <Link>Tag #</Link>
-          <Link>Tag #</Link>
-          <Link>Tag #</Link>
-          <Link>Tag #</Link>
-          <Link>Tag #</Link>
+          {tags &&
+            tags
+              .map((tag, index) => (
+                <Link key={tag._id} to={`tags/${tag._id}`}>
+                  {tag.name}
+                </Link>
+              ))
+              .sort(() => (Math.random() > 0.5 ? 1 : -1))
+              .slice(0, 5)}
         </div>
       </MainHeader>
     </React.Fragment>
