@@ -111,6 +111,7 @@ const Login = (props) => {
             setShowPWD(!showPWD);
           }}
           sx={{
+            color:theme.palette.primary[100],
             "&:hover": {
               color: theme.palette.primary[700],
             },
@@ -155,7 +156,7 @@ const Login = (props) => {
         <Button
           sx={{
             m: "1rem",
-            color: "ghostwhite",
+            color: theme.palette.primary[100],
             "&:hover": {
               color: "#252d58",
               backgroundColor: "white",

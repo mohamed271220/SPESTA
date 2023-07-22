@@ -59,11 +59,12 @@ const theme= useTheme()
           {previewUrl ? (
             <img src={previewUrl} alt="preview" />
           ) : (
-            <UploadPic onClick={pickImageHandler}  />
+            <UploadPic  onClick={pickImageHandler}  />
           )}
         </div>
         <Button
           sx={{
+            color:theme.palette.primary[900],
             "&:hover": {
               color:  theme.palette.primary[700],
             },

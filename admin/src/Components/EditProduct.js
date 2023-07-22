@@ -20,6 +20,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 import "./AddProduct.css";
 import { Button, useTheme } from "@mui/material";
+
 const AddProduct = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

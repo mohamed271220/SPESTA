@@ -176,15 +176,15 @@ const ConfirmDelete = (props) => {
         )}
         {loading && (
           <CircularProgress
-            // size={52}
+            size={32}
             sx={{
               borderRadius: 10,
               height: 40,
               width: 200,
               position: "absolute",
               color: "#42dd04",
-              top: -6,
-              left: -6,
+              top: 5,
+              left: 5,
               zIndex: 1,
             }}
           />

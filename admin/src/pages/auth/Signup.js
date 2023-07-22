@@ -123,6 +123,7 @@ const Signup = (props) => {
             setShowPWD(!showPWD);
           }}
           sx={{
+            color:theme.palette.primary[100],
            "&:hover": {
               color: theme.palette.primary[700],
             },
@@ -191,7 +192,7 @@ const Signup = (props) => {
         <Button
           sx={{
             m: "1rem",
-            color: "ghostwhite",
+            color:theme.palette.primary[100],
             "&:hover": {
               color: "#252d58",
               backgroundColor: "white",

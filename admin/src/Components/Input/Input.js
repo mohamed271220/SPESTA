@@ -51,7 +51,7 @@ const theme=useTheme()
   const element =
     props.element === "input" ? (
       <input
-      style={{color:theme.palette.primary.main}}
+      style={{      color:theme.palette.grey[900]}}
         id={props.id}
         type={props.type}
         min={props.min}
@@ -65,6 +65,7 @@ const theme=useTheme()
         id={props.id}
         rows={props.rows || 3}
         placeholder={props.placeholder}
+        style={{      color:theme.palette.grey[900]}}
         onChange={changeHandler}
         onBlur={touchHandler}
         value={inputState.value}

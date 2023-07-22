@@ -106,7 +106,7 @@ exports.adminLogin = async (req, res, next) => {
   }
 
   if (!isValidPassword) {
-    const error = new Error( " Invalid Password");
+    const error = new Error(" Invalid Password");
     error.statusCode = 401;
     return next(error);
   }
@@ -132,4 +132,32 @@ exports.adminLogin = async (req, res, next) => {
     email: existingUser.email,
     token: token,
   });
+};
+
+exports.editAdmin = async (req, res, next) => {
+  const adminId = req.params.adminId;
+  const name = req.body.name;
+  const email = req.body.email;
+  console.log(name, email);
+
+  let existingUser;
+  try {
+    existingUser = await Admin.findById(adminId);
+    if (!existingUser) {
+      const error = new Error("Admin not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    existingUser.name = name;
+    existingUser.email = email;
+    await existingUser.save();
+    res.status(200).json({
+      message: "Admin updated",
+    adminId: existingUser._id,
+    });
+  } catch (err) {
+    const error = new Error("something went wrong " + err);
+    error.statusCode = 404;
+    return next(error);
+  }
 };

@@ -23,6 +23,7 @@ import { authActions } from "./state/authSlice";
 import LoadingSpinner from "./Components/Loading/LoadingSpinner/LoadingSpinner";
 import Categories from "./pages/Categories";
 import Tags from "./pages/Tags";
+import Profile from "./pages/Profile";
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
@@ -89,6 +90,7 @@ function App() {
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/tags" element={<Tags />} />
+                <Route path="/profile" element={<Profile/>}/>
               </Route>
               <Route path="/auth/login" element={<Login />} />
               <Route path="/auth/signup" element={<Signup />} />

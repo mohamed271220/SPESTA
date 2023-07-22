@@ -33,6 +33,7 @@ import {
 import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 import FlexBetween from "./FlexBetween";
 import Logo from "./Logo";
+import PersonIcon from '@mui/icons-material/Person';
 
 const navItems = [
   {
@@ -64,8 +65,8 @@ const navItems = [
     icon: <TagOutlinedIcon />,
   },
   {
-    text: "Settings",
-    icon: <SettingsOutlined />,
+    text: "Profile",
+    icon: <PersonIcon />,
   },
 ];
 

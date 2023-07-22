@@ -193,24 +193,34 @@ exports.editProduct = async (req, res, next) => {
 exports.removeProduct = async (req, res, next) => {
   const productId = req.params.productId;
   const product = await Product.findById(productId);
+  if (!product) {
+    const error = new Error("No Product Found");
+    error.statusCode = 404;
+    throw error;
+  }
   try {
-    if (!product) {
-      const error = new Error("No Product Found");
-      error.statusCode = 404;
-      throw error;
-    }
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await product.deleteOne({ session: sess });
     const admin = await Admin.findById(product.addedBy);
     admin.addedProducts.pull(product);
     await admin.save({ session: sess });
-    const category = await Category.findById(product.category);
-    category.products.pull(product);
-    await category.save({ session: sess });
-    const tag = await Tag.findById(product.tag);
-    tag.products.pull(product);
-    await tag.save({ session: sess });
+
+    product.category.map(async (id) => {
+      const category = await Category.findById(id);
+
+      category.products.pull(product._id);
+
+      await category.save({ session: sess });
+    });
+
+    product.tag.map(async (id) => {
+      const tag = await Tag.findById(id);
+
+      tag.products.pull(product._id);
+      await tag.save({ session: sess });
+    });
+
     sess.commitTransaction();
     res.status(200).json({ message: "Product Deleted Successfully" });
   } catch (err) {
@@ -374,7 +384,7 @@ exports.addTag = async (req, res, next) => {
 };
 exports.editTag = async (req, res, next) => {
   const tagId = req.params.tagId;
-  const { name,productIds } = req.body;
+  const { name, productIds } = req.body;
   const addedBy = req.userId;
   const tag = await Tag.findById(tagId);
   if (!tag) {
@@ -385,10 +395,6 @@ exports.editTag = async (req, res, next) => {
   try {
     tag.name = name;
     tag.products = JSON.parse(productIds);
-
-
-
-
 
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -403,7 +409,7 @@ exports.editTag = async (req, res, next) => {
     sess.commitTransaction();
     res.status(200).json({ message: "Tag Updated Successfully", tag });
   } catch (err) {
-    const error = new Error("Could not update tag "+ err );
+    const error = new Error("Could not update tag " + err);
     error.statusCode = 500;
     return next(error);
   }

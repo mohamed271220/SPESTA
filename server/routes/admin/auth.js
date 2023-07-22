@@ -43,5 +43,6 @@ router.post(
 
   adminController.adminSignup
 );
+router.put("/edit/:adminId", adminController.editAdmin);
 
 module.exports = router;
