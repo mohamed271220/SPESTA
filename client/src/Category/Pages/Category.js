@@ -72,7 +72,7 @@ const Category = () => {
                   >
                     <img
                       src={
-                        item.images[0]
+                        item?.images
                           ? "http://localhost:8080/uploads" + item.images[0]
                           : "https://i.ibb.co/R0V4N3K/1.png"
                       }
@@ -81,7 +81,7 @@ const Category = () => {
                     <p>{item.name}</p>
                     <div>
                       {item.rating} <AiFillStar /> rated by{" "}
-                      {item.reviews.length}{" "}
+                      {item?.reviews?.length }{" "}
                     </div>
                     <p>${item.price}</p>
                   </Link>

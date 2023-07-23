@@ -24,7 +24,7 @@ exports.getSingleCategory = async (req, res, next) => {
 exports.getSingleCategoryProduction = async (req, res, next) => {
   const categoryId = req.params.categoryId;
   try {
-    const category = await Category.findById(categoryId).populate();
+    const category = await Category.findById(categoryId).populate('products');
     res.status(200).json({ message: "success", data: category });
   } catch (err) {
     const error = new Error("Something went wrong");
