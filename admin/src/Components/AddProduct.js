@@ -39,7 +39,7 @@ const AddProduct = (props) => {
         value: "",
         isValid: false,
       },
-      descriptions: {
+      description: {
         value: "",
         isValid: false,
       },
@@ -194,6 +194,8 @@ const theme = useTheme()
           type="number"
           label="Product cost"
           placeholder="In EGP"
+          min="0"
+       
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter product price"
           element="input"
@@ -203,6 +205,9 @@ const theme = useTheme()
           id="sale"
           type="number"
           label="Sale"
+          max="1"
+          min="0"
+          step=".01"
           placeholder="In percentage eg. 00.20 "
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter product price"

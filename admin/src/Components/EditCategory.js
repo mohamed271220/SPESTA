@@ -39,6 +39,10 @@ const EditCategory = (props) => {
         value: "",
         isValid: false,
       },
+      description:{
+        value:"",
+        isValid:false
+      }
     },
     false
   );
@@ -77,6 +81,10 @@ const EditCategory = (props) => {
           value: data.data.image,
           isValid: true,
         },
+        description:{
+          value:data.data.description,
+          isValid:true
+        }
       });
     } catch (err) {console.log(err);}
     };
@@ -102,6 +110,7 @@ const EditCategory = (props) => {
       formData.append("name", formState.inputs.name.value);
       formData.append("image", formState.inputs.image.value);
       formData.append("productIds", JSON.stringify(productIds));
+      formData.append("description", formState.inputs.description.value);
       console.log(formData.entries());
       const data = await axios.put(`/admin/dashboard/editCategory/${props.id}`, formData, {
         headers: {
@@ -143,7 +152,18 @@ cate ? (
           initialValue={cate.name}
           initialValid={true}
         />
-
+  <Input
+          id="description"
+          type="text"
+          label="Category description"
+          placeholder="Make it something catchy"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter product description"
+          element="textarea"
+          onInput={inputHandler}
+          initialValue={cate.description}
+          initialValid={true}
+        />
         <ImageUpload
           id="image"
           center

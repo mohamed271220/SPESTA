@@ -1,0 +1,9 @@
+.carousel-item__image {
+  height: 60rem;
+  object-fit: cover;
+}
+@media (max-width: 500px) {
+  .carousel-item__image {
+    height: 70%;
+  }
+}

@@ -5,6 +5,12 @@
   /* transition: transform 0.3s; */
 
 }
+@media (max-width:600px) {
+  .carousel{
+    height: auto;
+  }
+  
+}
 .carousel-item {
   height: 100%;
   width: 100%;

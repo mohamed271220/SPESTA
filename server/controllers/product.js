@@ -35,7 +35,12 @@ const mongoose = require("mongoose");
 exports.getProduct = async (req, res, next) => {
   const productId = req.params.productId;
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate({
+      path: "reviews",
+      populate: {
+        path: "user",
+      },
+    });
     if (!product) {
       const error = new Error("Could not find product.");
       error.statusCode = 404;
@@ -69,12 +74,16 @@ exports.postReview = async (req, res, next) => {
       error.statusCode = 404;
       next(error);
     }
+
     const review = {
       content: content,
       product: productId,
       rating: rating,
       user: userId,
     };
+
+    product.reviews.push(review);
+    await product.save();
     await review.save();
     res
       .status(201)

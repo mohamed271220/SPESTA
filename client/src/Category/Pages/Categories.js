@@ -1,66 +1,57 @@
 import React from "react";
 
-import Hero from '../../Home/assets/Hero.png';
+import Hero from "../../Home/assets/Hero.png";
 import ex from "../../Home/assets/ex.png";
 import Product from "../../shared/components/UI/Product";
 import "../index.css";
+import { Link } from "react-router-dom";
+
+import SkeletonPost from "../../shared/Loading/Skeleton/SkeletonPost";
 const Categories = () => {
+  const [categories, setCategories] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  React.useEffect(() => {
+    const getCategories = async () => {
+      try {
+        setLoading(true);
+
+        const response = await fetch("http://localhost:8080/api/category");
+        const data = await response.json();
+        setCategories(data.data);
+        setLoading(false);
+      } catch (err) {}
+    };
+    getCategories();
+  }, []);
   return (
     <div className="home-container">
       <div className="hero-section">
-        <img className="hero-img" src={Hero} alt="Hero" />
-        <div className="category-container">
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
-          <div className="category-box">
-            <h2>title</h2>
-            <img src={ex} alt="ex" />
-            <p>see more</p>
-          </div>
+        {loading ? (
+          <div
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "100vh",
+            justifyContent: "center",
+            alignItems: "center",
+            // margin: "50%",
+          }}
+        >
+          <SkeletonPost />
         </div>
+        ) : (
+          <div>
+            <img className="hero-img" src={Hero} alt="Hero" />
+            <div className="category-container">
+              {categories.map((item) => (
+                <Link to={`/categories/${item._id}`} className="category-box">
+                  <h3 className="category-box-name">{item.name}</h3>
+                  <img src={`http://localhost:8080/${item.image}`} alt="ex" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       <div className="product-recommendations-container">
         <div className="recommendations-box">

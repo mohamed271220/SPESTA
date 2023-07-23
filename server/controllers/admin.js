@@ -86,10 +86,11 @@ I hope this helps! Let me know if you have any other questions.
   const session = await mongoose.startSession();
   session.startTransaction();
 
+
   try {
     await product.save({ session });
     const admin = await Admin.findById(addedBy);
-
+  
     if (category) {
       category.forEach(async (cat) => {
         const category = await Category.findById(cat);
@@ -97,7 +98,7 @@ I hope this helps! Let me know if you have any other questions.
         await category.save({ session });
       });
     }
-
+  
     if (tag) {
       tag.forEach(async (tagId) => {
         const tagItem = await Tag.findById(tagId);
@@ -105,10 +106,10 @@ I hope this helps! Let me know if you have any other questions.
         await tagItem.save({ session });
       });
     }
-
+  
     admin.addedProducts.push(product);
     await admin.save({ session });
-
+  
     await session.commitTransaction();
   } catch (error) {
     await session.abortTransaction();
@@ -117,7 +118,7 @@ I hope this helps! Let me know if you have any other questions.
     return next(err);
   } finally {
     res.status(201).json({ message: "Product Added Successfully", product });
-    session.endSession();
+    // session.endSession();
   }
 };
 
@@ -240,7 +241,7 @@ exports.addCategory = async (req, res, next) => {
     error.data = errors.array();
     next(error);
   }
-  const { name, productIds } = req.body;
+  const { name, productIds,description } = req.body;
   console.log(productIds);
   const addedBy = req.userId;
   const category = new Category({
@@ -248,6 +249,7 @@ exports.addCategory = async (req, res, next) => {
     image: req.file.path.replace("\\", "/"),
     addedBy,
     products: JSON.parse(productIds),
+    description
   });
   try {
     const sess = await mongoose.startSession();
@@ -303,7 +305,7 @@ exports.removeCategory = async (req, res, next) => {
 
 exports.editCategory = async (req, res, next) => {
   const categoryId = req.params.categoryId;
-  const { name, productIds } = req.body;
+  const { name, productIds,description } = req.body;
   const addedBy = req.userId;
   const category = await Category.findById(categoryId);
   try {
@@ -316,6 +318,7 @@ exports.editCategory = async (req, res, next) => {
     category.name = name;
     category.image = req.file.path.replace("\\", "/");
     category.products = JSON.parse(productIds);
+    category.description = description;
 
     const sess = await mongoose.startSession();
     sess.startTransaction();

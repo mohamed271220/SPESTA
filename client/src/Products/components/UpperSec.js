@@ -1,27 +1,27 @@
-import React from 'react'
+import React from "react";
 import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import hs from "../assets/hp.png";
-const UpperSec = () => {
+const UpperSec = ({ productData }) => {
   return (
     <>
-    <div className="product-upper-section">
+      <div className="product-upper-section">
         <div className="photos-slider">
-          <img src={hs} alt="hp" className="photos-slider__photo" />
+          <img
+            src={"http://localhost:8080/uploads" + productData?.images[0]}
+            alt="hp"
+            className="photos-slider__photo"
+          />
         </div>
         <div className="product-info">
-          <div className="product-info__name">
-            SAMSUNG Galaxy Buds Pro, Bluetooth Earbuds, True Wireless, Noise
-            Cancelling, Charging Case, Quality Sound, Water Resistant, Phantom
-            Black (US Version)
-          </div>
+          <div className="product-info__name">{productData?.name}</div>
           <Link className="product-info__provider-website">
-            visit the SAMSUNG Store
+            visit provider website
           </Link>
           <div className="product-info__rating">
-            4.4{" "}
+            {productData?.rating || 0}{" "}
             <span className="star">
               {" "}
               <AiFillStar />
@@ -29,7 +29,11 @@ const UpperSec = () => {
           </div>
           <hr />
           <div className="product-info__price">
-            <span className="discount">-27%</span> $145.00
+            <span className="discount">
+              {"%" + productData?.sale * 100} OFF
+            </span>{" "}
+            <s>{productData?.price}$</s>{" "}
+            {productData?.price - productData?.price * productData?.sale}$
           </div>
           <div className="product-info__VAT">
             $202.78 Shipping & Import Fees Deposit to Egypt 🥲
@@ -38,7 +42,8 @@ const UpperSec = () => {
           <div className="product-info__description">
             <h2>About this product</h2>
             <p>
-              Intelligent Active Noise Cancellation: Escape and tune in to your
+              {productData?.description}
+              {/* Intelligent Active Noise Cancellation: Escape and tune in to your
               own moment of Zen — all with a single tap; Answer calls and
               instantly switch to talking with voice detection and let in the
               sounds that matter most with 4 ambient levels.Note : If the size
@@ -67,10 +72,11 @@ const UpperSec = () => {
               in the US. Outlets and voltage differ internationally and this
               product may require an adapter or converter for use in your
               destination. Please check compatibility before purchasing.
+             */}
             </p>
           </div>
         </div>
-        <hr className='hello-im-under'/>
+        <hr className="hello-im-under" />
         <div className="purchase-controls">
           <div className="purchase-controls__header">
             <div className="purchase-controls__header-icon-container">
@@ -79,9 +85,12 @@ const UpperSec = () => {
                 <FaRegCircleDot />
               </div>
             </div>
-            <p className="purchase-controls__header-price">$145.00</p>
+            <p className="purchase-controls__header-price">
+              {productData?.price - productData?.price * productData?.sale}$
+            </p>
             <p className="purchase-controls__header-price-VAT">
-              $202.78 Shipping & Import Fees Deposit to Egypt🥲
+              {productData?.price - productData?.price * productData?.sale}$
+              Shipping & Import Fees Deposit to Egypt🥲
             </p>
           </div>
           <div className="purchase-controls__location">
@@ -99,7 +108,7 @@ const UpperSec = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default UpperSec
+export default UpperSec;

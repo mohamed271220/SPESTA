@@ -42,6 +42,10 @@ const AddCategory = (props) => {
         value: "",
         isValid: false,
       },
+      description:{
+        value:"",
+        isValid:false
+      }
     },
     false
   );
@@ -78,6 +82,7 @@ const AddCategory = (props) => {
       formData.append("name", formState.inputs.name.value);
       formData.append("image", formState.inputs.image.value);
       formData.append("productIds", JSON.stringify(productIds));
+      formData.append("description", formState.inputs.description.value);
       console.log(formData.entries());
       const data = await axios.post(`/admin/dashboard/addCategory`, formData, {
         headers: {
@@ -109,6 +114,16 @@ const AddCategory = (props) => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter product name"
           element="input"
+          onInput={inputHandler}
+        />
+        <Input
+          id="description"
+          type="text"
+          label="Category description"
+          placeholder="Make it something catchy"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter product description"
+          element="textarea"
           onInput={inputHandler}
         />
 

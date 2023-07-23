@@ -10,6 +10,7 @@ router.get("/",categoryController.getAllCategories )
 //TODO: GET SINGLE CATEGORIES
 //TESTED✅
 router.get("/:categoryId",categoryController.getSingleCategory )
+router.get("/production/:categoryId",categoryController.getSingleCategoryProduction )
 
 
 module.exports = router;

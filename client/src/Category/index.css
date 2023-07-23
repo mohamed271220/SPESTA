@@ -52,34 +52,7 @@
   object-fit: cover;
 }
 
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 320px;
-  margin: auto 1rem;
-  text-align: center;
-}
 
-.price {
-  color: grey;
-  font-size: 22px;
-}
-
-.card button {
-  border: none;
-  outline: 0;
-  padding: 12px;
-  color: white;
-  background-color: #161b35;
-
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  font-size: 18px;
-}
-
-.card button:hover {
-  opacity: 0.7;
-}
 
 .recommendations-box {
   display: flex;
@@ -145,6 +118,8 @@
   display: flex;
   flex-direction: column;
   width: 20rem;
+  text-decoration: none;
+  color: black;
 }
 .category-product img {
   width: 18rem;

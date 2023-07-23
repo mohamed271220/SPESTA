@@ -16,6 +16,10 @@
   width: fit-content;
   width: -moz-fit-content;
 }
+.photos-slider__photo{
+  width: 20rem;
+  height: 20rem;
+}
 .product-info {
   width: 50%;
 }
