@@ -60,6 +60,11 @@
   gap: 2rem;
   text-decoration: none;
   color: white;
+  transition: all ease-in-out 0.4s;
+}
+.tags a:hover{
+  border-radius: 12px;
+background-color: rgb(170, 170, 170,0.3);
 }
 
 @media (max-width: 768px) {
