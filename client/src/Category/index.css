@@ -12,6 +12,9 @@
   width: 100%;
   background-color: white;
 }
+.product-section-s{
+  background-color: transparent;
+}
 .product-section-container {
   margin-bottom: 0.5vh;
 }
@@ -42,10 +45,27 @@
 }
 .category-box,
 .recommendations-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: white;
   padding: 1rem;
+  text-decoration: none;
 }
+.category-box{
+  width: 40vh;
+}
+.category-box div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
+  background-color: white;
+}
+.category-box p {
+  margin: 0.5vh;
+}
 .product--image {
   width: 100%;
   height: 16em;

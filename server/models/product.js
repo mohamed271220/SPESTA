@@ -14,6 +14,7 @@ const productSchema = new Schema({
   rating: {
     type: Number,
     max: 5,
+    default: 0,
   },
   images: [
     {

@@ -3,6 +3,7 @@ import { FaStar } from "react-icons/fa6";
 import Chart from "./Chart/Chart";
 
 const MiddleSec = ({ productData }) => {
+  const reviewsLength = productData?.reviews.length;
   return (
     <>
       <div className="product-reviews__stars">{/* <Chart/> */}</div>
@@ -24,11 +25,37 @@ const MiddleSec = ({ productData }) => {
             })}
             <Chart
               dataPoints={[
-                { label: "1", value: 3 },
-                { label: "2", value: 5 },
-                { label: "3", value: 2 },
-                { label: "4", value: 4 },
-                { label: "5", value: 1 },
+                // the percentage of reviews
+                {
+                  label: "1",
+                  value:
+                    (productData?.reviews.filter(
+                      (review) => review.rating === 1
+                    ).length /
+                      reviewsLength) *
+                    100,
+                },
+                { label: "2", value:     (productData?.reviews.filter(
+                      (review) => review.rating === 2
+                    ).length /
+                      reviewsLength) *
+                    100, },
+                { label: "3", value:     (productData?.reviews.filter(
+                      (review) => review.rating === 3
+                    ).length /
+                      reviewsLength) *
+                    100, },
+                { label: "4", value: 
+                (productData?.reviews.filter(
+                      (review) => review.rating === 4
+                    ).length /
+                      reviewsLength) *
+                    100, },
+                { label: "5", value:     (productData?.reviews.filter(
+                      (review) => review.rating === 5
+                    ).length /
+                      reviewsLength) *
+                    100, },
               ]}
             />
           </div>
@@ -36,34 +63,36 @@ const MiddleSec = ({ productData }) => {
         <div className="product-reviews__comments-section">
           <h2>Top Reviews</h2>
           {productData?.reviews.map((review, i) => {
-            <div className="product-reviews__comments-section-reviews">
-              <div className="user-details">
-                <div className="user-details-image-name">
-                  <img
-                    className="user-details-image"
-                    src={"http://localhost:8080/uploads/" + review?.user.image}
-                    alt=""
-                  />
-                  <h3>{review?.user.name}</h3>
+            return (
+              <div className="product-reviews__comments-section-reviews">
+                <div className="user-details">
+                  <div className="user-details-image-name">
+                    <img
+                      className="user-details-image"
+                      src={"http://localhost:8080/" + review?.user.image}
+                      alt=""
+                    />
+                    <h3>{review?.user.name}</h3>
+                  </div>
+                  <div className="user-details-stars">
+                    {review?.rating}
+                    {[...Array(5)].map((star, i) => {
+                      const currentRating = review?.rating;
+                      return (
+                        <label>
+                          <FaStar
+                            size={20}
+                            color={i < currentRating ? "#ffd700" : "#e4e5e9"}
+                          />
+                        </label>
+                      );
+                    })}
+                    <p>Reviewed in the {review?.createdAt}</p>
+                  </div>
                 </div>
-                <div className="user-details-stars">
-                  {review?.rating}
-                  {[...Array(5)].map((star, i) => {
-                    const currentRating = review?.rating;
-                    return (
-                      <label>
-                        <FaStar
-                          size={20}
-                          color={i < currentRating ? "#ffd700" : "#e4e5e9"}
-                        />
-                      </label>
-                    );
-                  })}
-                  <p>Reviewed in the {review?.createdAt}</p>
-                </div>
+                <div className="user-details-comment">{review?.content}</div>
               </div>
-              <div className="user-details-comment">{review?.content}</div>
-            </div>;
+            );
           })}
           {/* <div className="product-reviews__comments-section-reviews">
             <div className="user-details">

@@ -9,6 +9,7 @@ import "../index.css";
 import MiddleSec from "../components/MiddleSec";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
 
 const product = productData.map((item) => (
   <OneProduct
@@ -26,40 +27,62 @@ const Product = () => {
 
   React.useEffect(() => {
     const findProductData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `http://localhost:8080/api/product/products/${productId}`
         );
-        const data  = response.data;
-        if(response){
-
+        const data = response.data;
+        if (response) {
           setProductData(data.product);
           console.log(data.product);
+          setLoading(false);
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     };
     findProductData();
-  },[productId]);
+  }, [productId]);
 
   const [rating, setRating] = React.useState(0);
   return (
     <div className="product-section-full">
-      <UpperSec productData={productData} />
-      <div className="product-middle-section">
-        <MiddleSec productData={productData} />
-      </div>
+      {isLoading ? (
+        <div
 
-      <div className="product-lower-section  product-section-container">
-        <h2>Recommended for you</h2>
-        <Carousel
-          removeArrowOnDeviceType={["tablet", "mobile"]}
-          responsive={responsive}
+        style={{
+            display: "flex",
+            width: "100%",
+            height: "100vh",
+            justifyContent: "center",
+            alignItems: "center",
+            // margin: "50%",
+          }}
         >
-          {product}
-        </Carousel>
-      </div>
+        <LoadingSpinner />
+        </div>
+      ) : (
+        <>
+          <UpperSec productData={productData} />
+          <div className="product-middle-section">
+            <MiddleSec productData={productData} />
+          </div>
+
+          <div className="product-lower-section  product-section-container">
+            <div className="product-section product-section-s">
+              <h2>Recommended for you</h2>
+              <Carousel
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                responsive={responsive}
+              >
+                {product}
+              </Carousel>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

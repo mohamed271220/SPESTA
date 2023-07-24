@@ -24,7 +24,7 @@ const NewsCarousel = (props) => {
     >
       {props.data.map((item) => {
         return (
-          <div className="carousel-item">
+          <div key={item.image} className="carousel-item">
             <img
               className="carousel-item__image"
               src={item.image}

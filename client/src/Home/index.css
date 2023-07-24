@@ -57,6 +57,9 @@
 
   background-color: white;
 }
+.category-box{
+  width: 40vh;
+}
 .category-box p {
   margin: 0.5vh;
 }
@@ -82,7 +85,7 @@
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  /* max-width: 60vh; */
+  max-width: 60vh;
   margin: auto 1rem;
   text-align: start;
   display: flex;
@@ -95,7 +98,7 @@
 
 .price {
   color: grey;
-  font-size: 1.5vh;
+  font-size: 3vh;
 }
 .price span {
   color: white;
@@ -151,6 +154,9 @@
   font-weight: 600;
   text-decoration: none;
   color: #161b35;
+}
+.category-box-more{
+  font-size: 1.6vh;
 }
 .cate-links {
   text-decoration: none;

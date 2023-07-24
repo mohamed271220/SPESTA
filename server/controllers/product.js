@@ -65,23 +65,33 @@ exports.postReview = async (req, res, next) => {
     next(error);
   }
   const content = req.body.content;
-  const rating = req.body.rating;
+  const rating = parseInt(req.body.rating);
+  console.log(rating);
   const userId = req.userId;
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate("reviews");
+    if (product.reviews.find((r) => r.user.toString() === userId)) {
+      const error = new Error("You have already reviewed this product.");
+      error.statusCode = 403;
+      return next(error);
+    }
     if (!product) {
       const error = new Error("Could not find product.");
       error.statusCode = 404;
-      next(error);
+      return next(error);
     }
 
-    const review = {
+    const review = new Review({
       content: content,
       product: productId,
       rating: rating,
       user: userId,
-    };
-
+    });
+    if (product.reviews.length === 0) {
+      product.rating = rating;
+    } else {
+      product.rating = (+product.rating + rating) / 2;
+    }
     product.reviews.push(review);
     await product.save();
     await review.save();
