@@ -8,11 +8,11 @@ const router = express.Router();
 router.get("/products/:productId", productController.getProduct);
 
 //TODO ADD A REVIEW
-//TESTED❌
+//TESTED✅
 router.post("/:productId/review",isAuth, productController.postReview);
 
 //TODO ADD TO CART
-//TESTED❌
+//TESTED✅✅
 router.post("/:productId/cart", isAuth,productController.addToCart);
 //TODO REMOVE FROM CART
 //TESTED❌

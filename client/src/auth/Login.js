@@ -46,7 +46,8 @@ const Login = (props) => {
       // props.onCancel();
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      // console.log(err);
+      setError(err.response.data.message || err.message || 'Something went wrong');
     }
     setIsLoading(false);
   };

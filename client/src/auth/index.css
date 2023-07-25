@@ -25,14 +25,14 @@
 .login-form label {
   font-weight: 500;
 }
-.sec-acc-btn{
-margin: 1rem auto;
-align-items: center;
+.sec-acc-btn {
+  margin: 1rem auto;
+  align-items: center;
   height: 2.5rem;
   font-weight: 500;
   font-size: large;
-  background-color: #aaa;
-  border :1px solid black
+  background-image: linear-gradient(90deg, #aaa, white);
+  cursor: pointer;
 }
 /* .form-input{
     height: 4vh;
@@ -45,9 +45,14 @@ align-items: center;
   font-weight: 600;
   color: black;
   font-size: larger;
-  background-color: #ffe485;
-  border :1px solid black
+  background-image: linear-gradient(90deg, orange, #e7ca61);
+  cursor: pointer;
+  /* border :0.1px solid black */
 }
+.login-button:disabled {
+  background-image: linear-gradient(90deg,#aaa,rgb(215, 215, 215)) ;
+}
+
 .form-control {
   margin: 1rem 0 0;
 }
@@ -89,19 +94,17 @@ align-items: center;
   border-color: red;
   background: #ffd1d1;
 }
-.login-container{
+.login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 }
-.btn-small{
+.btn-small {
   font-size: small;
   font-weight: 400;
 }
-@media (max-width:768px) {
-
+@media (max-width: 768px) {
   .login {
     width: 20rem;
   }

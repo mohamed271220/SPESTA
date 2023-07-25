@@ -5,6 +5,28 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
+exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId, "-password").populate(
+      "orders cart"
+    );
+    if (!user) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    res.status(200).json({
+      message: "User fetched",
+      user: user,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    return next(err);
+  }
+};
+
 // SIGNUP
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
@@ -53,7 +75,7 @@ exports.signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       {
-        userId: createdUser._id.toString(),
+        userId: createdUser.id.toString(),
         email: createdUser.email,
       },
       process.env.JWT_SECRET,
@@ -66,7 +88,7 @@ exports.signup = async (req, res, next) => {
   }
   res.status(201).json({
     message: "User created",
-    userId: createdUser._id,
+    userId: createdUser.id,
     email: createdUser.email,
     image: createdUser.image,
     token: token,

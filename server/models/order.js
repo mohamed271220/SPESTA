@@ -6,12 +6,14 @@ const orderSchema = new Schema(
   {
     products: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "Product",
-        required: true,
-        number:{
+        product: {
+          type: mongoose.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        number: {
           type: Number,
-          default: 1
+          default: 1,
         },
       },
     ],

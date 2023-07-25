@@ -234,3 +234,12 @@ hr {
     display: none;
   }
 }
+.product-reviews__comments-section-button {
+  background-image: linear-gradient(90deg, orange, #e7ca61);
+  transition: all 1s ease-in-out;
+  cursor: pointer;
+}
+.product-reviews__comments-section-button:disabled {
+  background-image: none;
+  cursor: default;
+}

@@ -120,7 +120,7 @@ const Dashboard = () => {
                   sx={{
                     display: "flex",
                     gap: "3rem",
-                    padding: "3rem",
+                    padding: isNonMobile ? "1.9rem" : "3rem",
                     flexWrap: "wrap",
                   }}
                 >
@@ -256,7 +256,7 @@ const Dashboard = () => {
                 height: isNonMobile ? "40vh" : "80vh",
               }}
             >
-                         <CardContent>
+              <CardContent>
                 <Box
                   sx={{
                     borderRadius: "0.55rem",
@@ -325,7 +325,7 @@ const Dashboard = () => {
                 height: isNonMobile ? "40vh" : "80vh",
               }}
             >
-                         <CardContent>
+              <CardContent>
                 <Box
                   sx={{
                     borderRadius: "0.55rem",

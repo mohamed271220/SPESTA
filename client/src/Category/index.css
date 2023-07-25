@@ -53,9 +53,7 @@
   padding: 1rem;
   text-decoration: none;
 }
-.category-box{
-  width: 40vh;
-}
+
 .category-box div {
   display: flex;
   flex-direction: column;
@@ -65,6 +63,9 @@
 }
 .category-box p {
   margin: 0.5vh;
+}
+.category-box img {
+width: 100%;
 }
 .product--image {
   width: 100%;

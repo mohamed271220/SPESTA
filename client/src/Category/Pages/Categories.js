@@ -67,11 +67,13 @@ const Categories = () => {
             <div className="category-container">
               {categories.map((item) => (
                 <Link to={`/categories/${item._id}`} className="category-box">
-                <div>
-
-                  <h3 className="category-box-name">{item.name}</h3>
-                  <img src={`http://localhost:8080/${item.image}`} alt="ex" />
-                </div>
+                  <div>
+                    <h3 className="category-box-name">{item.name}</h3>
+                    <img src={`http://localhost:8080/${item.image}`} alt="ex" />
+                    <p className="category-box-name category-box-more">
+                      See more deals
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>

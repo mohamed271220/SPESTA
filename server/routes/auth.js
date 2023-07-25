@@ -2,8 +2,13 @@ const express = require("express");
 const { body } = require("express-validator");
 const authController = require("../controllers/auth");
 const fileUpload = require("../middleware/file-upload");
+const isAuth = require("../middleware/is-auth");
 
 const router = express.Router();
+
+//TODO Get user data
+
+router.get("/user/:id", isAuth, authController.getUser);
 
 //TODO: USERS lOGIN
 //TESTED✅

@@ -17,17 +17,17 @@ function SearchBar({ placeholder, data }) {
     });
 
     if (searchWord === "") {
-      setFilteredData([]);
       setOpen(false);
+      setFilteredData([]);
     } else {
       setFilteredData(newFilter);
     }
   };
 
   const clearInput = () => {
+    setOpen(false);
     setFilteredData([]);
     setWordEntered("");
-    setOpen(false);
   };
 
   return (
@@ -65,11 +65,21 @@ function SearchBar({ placeholder, data }) {
         </div>
       </div>
       {filteredData.length !== 0 && (
-        <div className={`dataResult  openModal } `} id="searchInputs">
+        <div className={`dataResult  ${open ? "openModal" : "closeModal"}`} id="searchInputs">
           {filteredData.slice(0, 15).map((value, key) => {
             return (
-              <a className="dataItem" href={value.link} target="_blank">
-                <p>{value.name} </p>
+              <a
+                className="dataItem"
+                href={"/products/" + value._id}
+                target="_blank"
+              >
+                <div>
+                  <img
+                    src={`http://localhost:8080/uploads${value?.images[0]}`}
+                    alt={value.name}
+                  />
+                  <p>{value.name} </p>
+                </div>
               </a>
             );
           })}

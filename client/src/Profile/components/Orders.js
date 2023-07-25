@@ -1,14 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Orders = () => {
+const Orders = ({ orders }) => {
   return (
     <div className="orders-container">
       <h2>Your Orders</h2>
       <div className="orders-controls">
         <NavLink>Orders</NavLink>
         <NavLink>Delivered Orders</NavLink>
-      
       </div>
 
       <div className="orders-list">
@@ -32,6 +31,15 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
+              {orders &&
+                orders.map((order) => (
+                  <tr>
+                    <td>{order._id}</td>
+                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>{order.status}</td>
+                    <td>{order.totalPrice.toFixed(2)}</td>
+                  </tr>
+                ))}
               <tr>
                 <td>#1234</td>
                 <td>12/12/2020</td>

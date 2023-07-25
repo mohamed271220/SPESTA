@@ -58,7 +58,7 @@ const Product = () => {
             height: "100vh",
             justifyContent: "center",
             alignItems: "center",
-            // margin: "50%",
+           
           }}
         >
         <LoadingSpinner />

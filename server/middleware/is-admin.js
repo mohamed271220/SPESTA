@@ -2,6 +2,9 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin");
 
 module.exports = async (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
   const authHeader = req.get("Authorization");
   if (!authHeader) {
     const error = new Error("Not authenticated");

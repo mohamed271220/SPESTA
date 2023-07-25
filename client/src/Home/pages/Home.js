@@ -80,16 +80,14 @@ const Home = () => {
                 .map((item) => (
                   <Link to={`/categories/${item._id}`} className="category-box">
                     <div>
-                      <p className="category-box-name">{item.name}</p>
+                      <h4 className="category-box-name">{item.name}</h4>
                       <img
                         src={`http://localhost:8080/${item.image}`}
                         alt="ex"
                       />
                       <p
                         className="category-box-name category-box-more"
-                        style={{
-                          color: "blue",
-                        }}
+                       
                       >
                         See more deals
                       </p>

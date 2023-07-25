@@ -54,13 +54,14 @@ const Signup = (props) => {
       const data = await axios.post(`/auth/signup`, formData);
 
       setIsLoading(false);
-      auth.login(data.data.userId, data.data.token,data.data);
-
+      auth.login(data.data.userId, data.data.token, data.data);
 
       navigate("/");
       props.onCancel();
     } catch (err) {
-      setError(err.message);
+      setError(
+        err.response.data.message || err.message || "Something went wrong"
+      );
     }
     setIsLoading(false);
   };
@@ -69,7 +70,7 @@ const Signup = (props) => {
     <div className="login-container">
       {/* <ErrorModal error={error} onClear={clearError} /> */}
       <p className={error ? "errMsg" : ""}>{error}</p>
-      {isLoading && <LoadingSpinner  />}
+      {isLoading && <LoadingSpinner />}
       <form className="login" onSubmit={signupSubmitHandler}>
         <h2>SignUp</h2>
         <Input

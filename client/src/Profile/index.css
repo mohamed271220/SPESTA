@@ -34,8 +34,9 @@
 
 @media (max-width: 768px) {
   .profile-container {
-    padding: 0;
+    padding: 0.5rem;
     background-color: transparent;
+    margin-bottom: 3rem;
   }
   .profile-control {
     gap: 0.5rem;

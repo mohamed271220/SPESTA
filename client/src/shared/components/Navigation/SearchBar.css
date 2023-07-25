@@ -33,26 +33,27 @@ input:focus {
 .dataResult {
   margin-top: 5px;
   width: 70vh;
-  height: 200px;
+  height: 60vh;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   overflow: hidden;
   overflow-y: auto;
   position: absolute;
   z-index: 77;
-  transition: all 1s ease-out;
+  padding: 1vh;
+  transition: all 0.4s ease-out;
 }
 .openModal {
-  animation: OpenModal 0.1s ease-out forwards;
+  animation: OpenModal 0.4s ease-out forwards;
 }
 @keyframes OpenModal {
   0% {
     opacity: 0;
-    transform: translateY(-100%);
+    transform: translateY(-50%);
   }
   50% {
     opacity: 1;
-    transform: translateY(20%);
+    transform: translateY(1%);
   }
   100% {
     opacity: 1;
@@ -61,8 +62,21 @@ input:focus {
 }
 
 .closeModal {
-  opacity: 0;
-  transform: translateY(-100%);
+  animation: CloseModal 0.4s ease-out forwards;
+}
+@keyframes CloseModal {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
 }
 
 .dataResult::-webkit-scrollbar {
@@ -71,12 +85,22 @@ input:focus {
 
 .dataResult .dataItem {
   width: 100%;
-  height: 50px;
+  height: 50;
   display: flex;
   align-items: center;
   color: black;
 }
-
+.dataItem div{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 2rem
+}
+.dataItem img {
+  border-radius: 12px;
+  width: 3rem;
+  height: 3rem;
+}
 .dataItem p {
   margin-left: 10px;
 }

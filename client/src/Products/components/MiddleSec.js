@@ -1,9 +1,99 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
 import { FaStar } from "react-icons/fa6";
 import Chart from "./Chart/Chart";
+import axios from "axios";
+import { AuthContext } from "../../shared/context/auth-context";
+import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
+
+const styles = {
+  container: {
+    display: "flex",
+    marginBottom: "1rem",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  stars: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  textarea: {
+    border: "1px solid #a9a9a9",
+    borderRadius: 5,
+    padding: 10,
+    margin: "20px 0",
+    minHeight: 100,
+    width: 300,
+  },
+  button: {
+    border: "1px solid #a9a9a9",
+    borderRadius: 5,
+
+    width: 300,
+    padding: 10,
+  },
+};
+const colors = {
+  orange: "#FFBA5A",
+  grey: "#a9a9a9",
+};
 
 const MiddleSec = ({ productData }) => {
   const reviewsLength = productData?.reviews.length;
+  const [open, setIsOpen] = React.useState(false);
+  const [currentValue, setCurrentValue] = React.useState(0);
+  const [hoverValue, setHoverValue] = React.useState(undefined);
+  const textArea = useRef(null);
+  const stars = Array(5).fill(0);
+  const auth = useContext(AuthContext);
+  const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const handleClick = (value) => {
+    setCurrentValue(value);
+  };
+
+  const handleMouseOver = (newHoverValue) => {
+    setHoverValue(newHoverValue);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverValue(undefined);
+  };
+
+  const formHandler = async (e) => {
+    e.preventDefault();
+    if (textArea.current.value.trim() === "" || currentValue === 0) {
+      setError("Please fill all the fields");
+      return;
+    }
+    const data = {
+      rating: currentValue,
+      comment: textArea.current.value,
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.post(
+        `http://localhost:8080/api/product/${productData._id}/review`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      setIsOpen(false);
+      setLoading(false);
+    } catch (err) {
+      setIsOpen(false);
+      setLoading(false);
+      setError(
+        err.response.data.message || err.message || "Something went wrong"
+      );
+    }
+
+    // console.log(data);
+  };
+
   return (
     <>
       <div className="product-reviews__stars">{/* <Chart/> */}</div>
@@ -35,33 +125,49 @@ const MiddleSec = ({ productData }) => {
                       reviewsLength) *
                     100,
                 },
-                { label: "2", value:     (productData?.reviews.filter(
+                {
+                  label: "2",
+                  value:
+                    (productData?.reviews.filter(
                       (review) => review.rating === 2
                     ).length /
                       reviewsLength) *
-                    100, },
-                { label: "3", value:     (productData?.reviews.filter(
+                    100,
+                },
+                {
+                  label: "3",
+                  value:
+                    (productData?.reviews.filter(
                       (review) => review.rating === 3
                     ).length /
                       reviewsLength) *
-                    100, },
-                { label: "4", value: 
-                (productData?.reviews.filter(
+                    100,
+                },
+                {
+                  label: "4",
+                  value:
+                    (productData?.reviews.filter(
                       (review) => review.rating === 4
                     ).length /
                       reviewsLength) *
-                    100, },
-                { label: "5", value:     (productData?.reviews.filter(
+                    100,
+                },
+                {
+                  label: "5",
+                  value:
+                    (productData?.reviews.filter(
                       (review) => review.rating === 5
                     ).length /
                       reviewsLength) *
-                    100, },
+                    100,
+                },
               ]}
             />
           </div>
         </div>
         <div className="product-reviews__comments-section">
           <h2>Top Reviews</h2>
+
           {productData?.reviews.map((review, i) => {
             return (
               <div className="product-reviews__comments-section-reviews">
@@ -94,57 +200,57 @@ const MiddleSec = ({ productData }) => {
               </div>
             );
           })}
-          {/* <div className="product-reviews__comments-section-reviews">
-            <div className="user-details">
-              <div className="user-details-image-name">
-                <img
-                  className="user-details-image"
-                  src={
-                    "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                  }
-                  alt=""
-                />
-                <h3>{productData?.reviews.user}</h3>
-              </div>
-              <div className="user-details-stars">
-                4.4
-                {[...Array(5)].map((star, i) => {
-                  const currentRating = productData?.rating;
+          {!open && (
+            <button
+              style={styles.button}
+              className="product-reviews__comments-section-button"
+              onClick={() => setIsOpen(true)}
+            >
+              Post your review
+            </button>
+          )}
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          {open && (
+            <form onSubmit={formHandler} style={styles.container}>
+              {loading && <LoadingSpinner asOverlay />}
+              <h2> Add your review </h2>
+              <div style={styles.stars}>
+                {stars.map((_, index) => {
                   return (
-                    <label>
-                      <FaStar
-                        size={20}
-                        color={i < currentRating ? "#ffd700" : "#e4e5e9"}
-                      />
-                    </label>
+                    <FaStar
+                      key={index}
+                      size={24}
+                      onClick={() => handleClick(index + 1)}
+                      onMouseOver={() => handleMouseOver(index + 1)}
+                      onMouseLeave={handleMouseLeave}
+                      color={
+                        (hoverValue || currentValue) > index
+                          ? colors.orange
+                          : colors.grey
+                      }
+                      style={{
+                        marginRight: 10,
+                        cursor: "pointer",
+                      }}
+                    />
                   );
                 })}
-                <p>Reviewed in the United States on February 26, 2022</p>
               </div>
-            </div>
-            <div className="user-details-comment">
-              I had the Galaxy Buds Plus (Red) and I bought them in 2020. I was
-              really happy with the overall use, function and feel of the Bud
-              Plus. I ended up (by accident) washing and drying them in the
-              laundry. After that I lost some of the functions of the earbuds.
-              Not an issue with the replacement program that I also purchased
-              with the buds here on Amazon through Asurion protection plan. I
-              was able to replace the defective buds with new ones with
-              absolutely no hassle. I ended up spending an extra $22.00 in the
-              replacement because I re-added the protection plan which why not
-              at this point, i'm a firm believer in service/replacement
-              plans.When I ordered these Buds Pro's, I had read about all the
-              current and new earbuds on the market and as I was doing my
-              research, comparing new with the old and feature for feature, my
-              first notice was the battery life is less than the old Bud Plus's.
-              Significantly less out the box but for me that was not an issue to
-              sway me away from the new Bud's Pro. None the less I started
-              looking at other companies and saw reviews about them (other
-              brands) that told me not to really mess with them. Not even worth
-              calling out other brand names as I think that is a personal
-              preference. I have been privy to Samsung brand for years, owning
-            </div>
-          </div> */}
+              <textarea
+                placeholder="What's your experience?"
+                style={styles.textarea}
+                ref={textArea}
+              />
+
+              <button
+                disabled={currentValue === 0}
+                className={"product-reviews__comments-section-button"}
+                style={styles.button}
+              >
+                Submit
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </>

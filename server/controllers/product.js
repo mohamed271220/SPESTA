@@ -70,6 +70,8 @@ exports.postReview = async (req, res, next) => {
   const userId = req.userId;
   try {
     const product = await Product.findById(productId).populate("reviews");
+
+    //TODO CHECK IF THE PRODUCT IS IN AN ORDER MADE BY THE SAME USER AND IT"S STATUS IS DELIVERED
     if (product.reviews.find((r) => r.user.toString() === userId)) {
       const error = new Error("You have already reviewed this product.");
       error.statusCode = 403;
@@ -108,6 +110,7 @@ exports.postReview = async (req, res, next) => {
 exports.addToCart = async (req, res, next) => {
   const productId = req.params.productId;
   const userId = req.userId;
+  const number = req.body.number;
   let product;
   try {
     product = await Product.findById(productId);
@@ -124,15 +127,27 @@ exports.addToCart = async (req, res, next) => {
   }
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId, "-password");
     if (!user) {
       const error = new Error("Could not find user.");
       error.statusCode = 404;
       next(error);
     }
-    user.cart.push(productId);
+    let existingInCart = user.cart.find(
+      (p) => p.product.toString() === productId
+    );
+    // console.log("+++"+existingInCart);
+    if (existingInCart) {
+      // console.log(user.cart);
+      existingInCart.number = existingInCart.number + number;
+    } else {
+      user.cart.push({ product: productId, number: number });
+    }
+    // console.log(user.cart.find((p) => p.product.toString() === productId));
+
+    // console.log(user.cart);
     await user.save();
-    res.status(201).json({ message: "Product added to cart" });
+    res.status(201).json({ message: "Product added to cart", user });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
