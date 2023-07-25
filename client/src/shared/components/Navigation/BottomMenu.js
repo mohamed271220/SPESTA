@@ -6,7 +6,7 @@ const BottomMenu = () => {
     <div>
       <NavLinks />
     </div>
-  );
+  )
 };
 
 export default BottomMenu;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./SearchBar.css";
 import { AiOutlineSearch } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 function SearchBar({ placeholder, data }) {
   const [filteredData, setFilteredData] = useState([]);
@@ -68,10 +69,10 @@ function SearchBar({ placeholder, data }) {
         <div className={`dataResult  ${open ? "openModal" : "closeModal"}`} id="searchInputs">
           {filteredData.slice(0, 15).map((value, key) => {
             return (
-              <a
+              <Link
                 className="dataItem"
-                href={"/products/" + value._id}
-                target="_blank"
+                to={"/products/" + value._id}
+              
               >
                 <div>
                   <img
@@ -80,7 +81,7 @@ function SearchBar({ placeholder, data }) {
                   />
                   <p>{value.name} </p>
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>

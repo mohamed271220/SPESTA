@@ -13,7 +13,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { AuthContext } from "../../context/auth-context";
 import axios from "axios";
 import SearchBar from "./SearchBar";
-
+import { LiaCartPlusSolid } from "react-icons/lia";
+import { useSelector } from "react-redux";
 function DropdownItem(props) {
   if (props.text === "Logout") {
     return (
@@ -86,10 +87,14 @@ const MainNavigation = () => {
     auth.logout();
   };
 
+  const cartQuantity = useSelector((state) => state.cart.totalQuantity);
   return (
     <React.Fragment>
       {!Loading && (
         <>
+          <Link to={"/cart"} className="cart-floating">
+            <LiaCartPlusSolid /> {cartQuantity}
+          </Link>
           <MainHeader>
             <Link to="/" className="main-navigation__logo">
               <Logo />

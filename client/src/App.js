@@ -174,7 +174,7 @@ function App() {
       }}
     >
       <Suspense fallback={<LoadingSpinner />}>
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </Suspense>
     </AuthContext.Provider>
   );

@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import hs from "../assets/hp.png";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../shared/features/cartSlice";
+import { AuthContext } from "../../shared/context/auth-context";
+import axios from "axios";
 const UpperSec = ({ productData }) => {
+  const dispatch = useDispatch();
+  const auth = useContext(AuthContext);
+  const addItemToCartHandler = () => {
+    if (!auth.token) {
+      return alert("you must login first");
+    }
+
+    const addItem = async () => {
+      const response = await axios(
+        `http://localhost:8080/api/productss/${productData._id}/cart`,
+        {}
+      );
+    };
+    // console.log(productData);
+    dispatch(
+      cartActions.addItemToCart({
+        id: productData._id,
+        name: productData.name,
+        price: productData.price,
+        sale: productData.sale,
+        image: productData?.images[0],
+      })
+    );
+  };
+
   return (
     <>
       <div className="product-upper-section">
@@ -32,8 +61,8 @@ const UpperSec = ({ productData }) => {
             <span className="discount">
               {"%" + productData?.sale * 100} OFF
             </span>{" "}
-            <s>{productData?.price}$</s>{" "}
-            {productData?.price - productData?.price * productData?.sale}$
+            <s>${productData?.price}</s>{" "}
+            ${productData?.price - productData?.price * productData?.sale}
           </div>
           <div className="product-info__VAT">
             $202.78 Shipping & Import Fees Deposit to Egypt 🥲
@@ -41,39 +70,7 @@ const UpperSec = ({ productData }) => {
           <hr />
           <div className="product-info__description">
             <h2>About this product</h2>
-            <p>
-              {productData?.description}
-              {/* Intelligent Active Noise Cancellation: Escape and tune in to your
-              own moment of Zen — all with a single tap; Answer calls and
-              instantly switch to talking with voice detection and let in the
-              sounds that matter most with 4 ambient levels.Note : If the size
-              of the earbud tips does not match the size of your ear canals or
-              the headset is not worn properly in your ears, you may not obtain
-              the correct sound qualities or call performance. Change the earbud
-              tips to ones that fit more snugly in your ear High Quality
-              ewSound: Relive the memories of every beat of your favorite song
-              with an 11-mm woofer and 6.5-mm tweeter built into every ear bud.
-              Earbud Dimension (W x H x D)-0.81 x 0.77 x 0.82 inches. Case
-              Dimension (W x H x D)-1.97 x 1.98 x 1.09 inches Water Resistant
-              Workouts: Water won’t ruin your workout; Your IPX7 water-resistant
-              Galaxy Buds Pro can keep the beat going even with a little rain;
-              They’re even protected for immersion up to 3 feet deep for a
-              half-hour Crystal Clear Calls: No matter where you are, stay
-              connected whether you’re owning that virtual meeting or catching
-              up with a friend; Our new design reduces background noise, so your
-              voice comes through loud and clear. Long Lasting Battery Life: Get
-              the juice you need to jam for hours; Wireless charging case is
-              included, and you can also share your phone’s battery by placing
-              your earbuds on the back of your compatible Galaxy device for
-              on-the-go charging Touch Music Control: Control your playlist
-              without reaching in your pocket; Skip songs, launch music and
-              answer calls simply by tapping your buds, so you can stay in the
-              moment Note: Products with electrical plugs are designed for use
-              in the US. Outlets and voltage differ internationally and this
-              product may require an adapter or converter for use in your
-              destination. Please check compatibility before purchasing.
-             */}
-            </p>
+            <p>{productData?.description}</p>
           </div>
         </div>
         <hr className="hello-im-under" />
@@ -101,7 +98,10 @@ const UpperSec = ({ productData }) => {
           </div>
           <h2 className="stoke">In Stoke</h2>
 
-          <button className="purchase-controls__add-to-cart">
+          <button
+            onClick={addItemToCartHandler}
+            className="purchase-controls__add-to-cart"
+          >
             Add to cart
           </button>
           <button className="purchase-controls__buy-now">Buy Now</button>

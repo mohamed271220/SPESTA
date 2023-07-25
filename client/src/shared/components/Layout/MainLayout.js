@@ -14,7 +14,7 @@ const MainLayout = () => {
       <BottomMenu />
       <Footer />
     </React.Fragment>
-  );
+  )
 };
 
 export default MainLayout;
