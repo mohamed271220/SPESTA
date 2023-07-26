@@ -16,6 +16,11 @@
   animation: floaty 1s;
   z-index: 77;
 }
+@media (max-width: 750px) {
+  .cart-floating {
+    right: 3rem;
+  }
+}
 
 @keyframes floaty {
   0% {

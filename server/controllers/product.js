@@ -141,7 +141,14 @@ exports.addToCart = async (req, res, next) => {
       // console.log(user.cart);
       existingInCart.number = existingInCart.number + number;
     } else {
-      user.cart.push({ product: productId, number: number });
+      user.cart.push({
+        product: productId,
+        number: number,
+        price: product.price - product.price * product.sale,
+        name: product.name,
+        sale: product.sale,
+        image: product.images[0],
+      });
     }
     // console.log(user.cart.find((p) => p.product.toString() === productId));
 
@@ -158,6 +165,8 @@ exports.addToCart = async (req, res, next) => {
 exports.removeFromCart = async (req, res, next) => {
   const productId = req.params.productId;
   const userId = req.userId;
+  const number = req.body.number;
+
   let product;
   try {
     product = await Product.findById(productId);
@@ -165,8 +174,9 @@ exports.removeFromCart = async (req, res, next) => {
     if (!err.statusCode) {
       err.statusCode = 500;
     }
-    next(err);
+    return next(err);
   }
+
   if (!product) {
     const error = new Error("Could not find product.");
     error.statusCode = 404;
@@ -174,20 +184,31 @@ exports.removeFromCart = async (req, res, next) => {
   }
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId, "-password");
     if (!user) {
       const error = new Error("Could not find user.");
       error.statusCode = 404;
       next(error);
     }
-    user.cart.pull(product);
-    res.status(201).json({ message: "Product removed from cart" });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
+    let existingInCart = user.cart.find(
+      (p) => p.product.toString() === productId
+    );
+    // console.log("+++"+existingInCart);
+    if (existingInCart) {
+      // console.log(user.cart);
+      if (existingInCart.number > 1) {
+        existingInCart.number = existingInCart.number - number;
+      } else {
+        const prod = user.cart.find((p) => p.product.toString() === productId);
+        user.cart.pull(prod);
+      }
     }
-    next(err);
-  }
+    // console.log(user.cart.find((p) => p.product.toString() === productId));
+
+    // console.log(user.cart);
+    await user.save();
+    res.status(201).json({ message: "Product added to cart", user });
+  } catch (err) {}
 };
 exports.makeOrder = async (req, res, next) => {
   const userId = req.userId;

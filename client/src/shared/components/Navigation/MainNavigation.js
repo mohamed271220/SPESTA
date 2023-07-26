@@ -87,7 +87,20 @@ const MainNavigation = () => {
     auth.logout();
   };
 
-  const cartQuantity = useSelector((state) => state.cart.totalQuantity);
+//  console.log(auth.data)
+  const cartQuantity =  useSelector((state) => state.cart.totalQuantity);
+  // const cart = useSelector((state) => state.cart);
+
+  // useEffect(() => {
+  //   const update = async () => {
+  //     const response = await axios.post(
+  //       `http://localhost:8080/api/product/${._id}/cart`,
+  //       { number: 1 }
+  //     );
+  //   };
+  //   update()
+  // }, []);
+
   return (
     <React.Fragment>
       {!Loading && (

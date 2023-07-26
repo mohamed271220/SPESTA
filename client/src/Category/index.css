@@ -1,11 +1,4 @@
-.home-container {
-  display: flex;
-  max-width: 100%;
-  margin: 0 auto;
-  /* padding: 2rem; */
-  text-align: center;
-  flex-direction: column;
-}
+
 .product-section {
   padding: 2rem;
   z-index: 0;
@@ -50,7 +43,7 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  padding: 1rem;
+  /* padding: 1rem; */
   text-decoration: none;
 }
 
@@ -61,9 +54,9 @@
 
   background-color: white;
 }
-.category-box p {
+/* .category-box p {
   margin: 0.5vh;
-}
+} */
 .category-box img {
 width: 100%;
 }

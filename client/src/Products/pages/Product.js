@@ -11,6 +11,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const product = productData.map((item) => (
   <OneProduct
     key={item.name}

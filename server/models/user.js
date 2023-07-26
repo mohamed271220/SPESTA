@@ -22,6 +22,14 @@ const userSchema = new Schema(
         number: {
           type: Number,
         },
+        price: {
+          type: Number,
+        },
+        name: {
+          type: String,
+        },
+        sale: { type: Number },
+        image: { type: String },
       },
     ],
     orders: [

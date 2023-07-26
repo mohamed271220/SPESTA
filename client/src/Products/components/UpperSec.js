@@ -8,30 +8,67 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../../shared/features/cartSlice";
 import { AuthContext } from "../../shared/context/auth-context";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const UpperSec = ({ productData }) => {
   const dispatch = useDispatch();
   const auth = useContext(AuthContext);
-  const addItemToCartHandler = () => {
+  const addItemToCartHandler = async () => {
     if (!auth.token) {
-      return alert("you must login first");
+      return toast.warn("you must login first", {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        hideProgressBar: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
 
-    const addItem = async () => {
-      const response = await axios(
-        `http://localhost:8080/api/productss/${productData._id}/cart`,
-        {}
+    const id = toast.loading("Please wait...");
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/product/${productData._id}/cart`,
+        { number: 1 },
+        {
+          headers: {
+            Authorization: "Bearer " + auth.token,
+          },
+        }
       );
-    };
-    // console.log(productData);
-    dispatch(
-      cartActions.addItemToCart({
-        id: productData._id,
-        name: productData.name,
-        price: productData.price,
-        sale: productData.sale,
-        image: productData?.images[0],
-      })
-    );
+      console.log(response);
+      if (response) {
+        toast.update(id, {
+          render: "Product added to cart",
+          type: "success",
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          isLoading: false,
+        });
+        // console.log(productData);
+        dispatch(
+          cartActions.addItemToCart({
+            id: productData._id,
+            name: productData.name,
+            price: productData.price,
+            sale: productData.sale,
+            image: productData?.images[0],
+          })
+        );
+      }
+    } catch (error) {
+      toast.update(id, {
+        render: "Failed to add product to cart",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    }
   };
 
   return (
@@ -61,8 +98,8 @@ const UpperSec = ({ productData }) => {
             <span className="discount">
               {"%" + productData?.sale * 100} OFF
             </span>{" "}
-            <s>${productData?.price}</s>{" "}
-            ${productData?.price - productData?.price * productData?.sale}
+            <s>${productData?.price}</s> $
+            {productData?.price - productData?.price * productData?.sale}
           </div>
           <div className="product-info__VAT">
             $202.78 Shipping & Import Fees Deposit to Egypt 🥲
@@ -107,6 +144,18 @@ const UpperSec = ({ productData }) => {
           <button className="purchase-controls__buy-now">Buy Now</button>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };
