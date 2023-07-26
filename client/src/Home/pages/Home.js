@@ -13,11 +13,16 @@ import { Link } from "react-router-dom";
 import Cat from "./Cat.png";
 import { images } from "..//Helper/CarouselData";
 import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
 const Home = () => {
   const [categories, setCategories] = React.useState([]);
   const [loading, setIsLoading] = React.useState(false);
   const [random, setRandom] = React.useState();
-
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.auth.data);
+  // console.log(data);
   React.useEffect(() => {
     const getCategories = async () => {
       setIsLoading(true);
@@ -26,14 +31,15 @@ const Home = () => {
         const data = await response.json();
         setCategories(data.data);
         setRandom(data.data[Math.floor(Math.random() * categories.length)]);
-        console.log(data);
+        // console.log(data);
       } catch (err) {}
       setIsLoading(false);
     };
+   
     getCategories();
-  }, []);
+  }, [categories.length, dispatch]);
   if (!loading && categories && random) {
-    console.log(random);
+    // console.log(random);
     var productName = random.name;
   }
   let randomProducts;
@@ -85,10 +91,7 @@ const Home = () => {
                         src={`http://localhost:8080/${item.image}`}
                         alt="ex"
                       />
-                      <p
-                        className="category-box-name category-box-more"
-                       
-                      >
+                      <p className="category-box-name category-box-more">
                         See more deals
                       </p>
                     </div>
@@ -126,18 +129,17 @@ const Home = () => {
             ) : (
               <LoadingSpinner />
             )}
-            
+
             <div className="product-section">
               {!loading && randomProducts ? (
                 <>
-
-              <h1>Deals on {categoryName}</h1>
-                <Carousel
-                  removeArrowOnDeviceType={["tablet", "mobile"]}
-                  responsive={responsive}
-                >
-                  {randomProducts}
-                </Carousel>
+                  <h1>Deals on {categoryName}</h1>
+                  <Carousel
+                    removeArrowOnDeviceType={["tablet", "mobile"]}
+                    responsive={responsive}
+                  >
+                    {randomProducts}
+                  </Carousel>
                 </>
               ) : (
                 <LoadingSpinner />

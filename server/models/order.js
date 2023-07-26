@@ -31,7 +31,7 @@ const orderSchema = new Schema(
       default: "Pending",
     },
     totalPrice: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

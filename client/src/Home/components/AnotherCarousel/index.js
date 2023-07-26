@@ -18,7 +18,7 @@ const NewsCarousel = (props) => {
       showIndicators={false}
       // centerMode
       autoPlay
-      labels
+      labels={false}
       centerSlidePercentage={70}
    
     >
@@ -30,7 +30,7 @@ const NewsCarousel = (props) => {
               src={item.image}
               alt={item.title}
             />
-            <p className="legend">{item.title}</p>
+            
           </div>
         );
       })}

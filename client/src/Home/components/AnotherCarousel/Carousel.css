@@ -1,9 +1,13 @@
 .carousel-item__image {
-  height: 60rem;
-  object-fit: cover;
+  height: 50rem;
+  width: 100%;
 }
-@media (max-width: 500px) {
+@media (max-width: 730px) {
   .carousel-item__image {
-    height: 70%;
+    overflow-clip-margin: content-box;
+    overflow:clip;
+    /* object-fit: cover; */
+    
+    height: 15rem;
   }
 }

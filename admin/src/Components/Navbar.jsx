@@ -26,7 +26,7 @@ import { authActions } from "../state/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
-  // const auth = useContext(AuthContext);
+
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);

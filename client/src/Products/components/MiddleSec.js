@@ -2,8 +2,9 @@ import React, { useContext, useRef } from "react";
 import { FaStar } from "react-icons/fa6";
 import Chart from "./Chart/Chart";
 import axios from "axios";
-import { AuthContext } from "../../shared/context/auth-context";
+
 import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
+import { useSelector } from "react-redux";
 
 const styles = {
   container: {
@@ -44,7 +45,8 @@ const MiddleSec = ({ productData }) => {
   const [hoverValue, setHoverValue] = React.useState(undefined);
   const textArea = useRef(null);
   const stars = Array(5).fill(0);
-  const auth = useContext(AuthContext);
+  const token = useSelector((state) => state.auth.token);
+
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleClick = (value) => {
@@ -77,7 +79,7 @@ const MiddleSec = ({ productData }) => {
         data,
         {
           headers: {
-            Authorization: `Bearer ${auth.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

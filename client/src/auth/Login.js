@@ -6,14 +6,17 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../shared/util/validators";
 import { useForm } from "../shared/hooks/form-hook";
-import { AuthContext } from "../shared/context/auth-context";
+
 import LoadingSpinner from "../shared/Loading/LoadingSpinner/LoadingSpinner";
 
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { authActions } from "../shared/features/authSlice";
 const Login = (props) => {
-  const auth = useContext(AuthContext);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState();
@@ -42,12 +45,20 @@ const Login = (props) => {
       });
       console.log(response);
       setIsLoading(false);
-      auth.login(response.data.userId, response.data.token,response.data);
+      dispatch(
+        authActions.login({
+          userId: response.data.userId,
+          token: response.data.token,
+          data: response.data,
+        })
+      );
       // props.onCancel();
       navigate("/");
     } catch (err) {
       // console.log(err);
-      setError(err.response.data.message || err.message || 'Something went wrong');
+      setError(
+        err.response.data.message || err.message || "Something went wrong"
+      );
     }
     setIsLoading(false);
   };

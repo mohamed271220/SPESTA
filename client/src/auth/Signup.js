@@ -6,15 +6,17 @@ import {
   VALIDATOR_MINLENGTH,
 } from "../shared/util/validators";
 import { useForm } from "../shared/hooks/form-hook";
-import { AuthContext } from "../shared/context/auth-context";
+
 import LoadingSpinner from "../shared/Loading/LoadingSpinner/LoadingSpinner";
 import ImageUpload from "./ImageUpload";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
+import { useDispatch } from "react-redux";
+import { authActions } from "../shared/features/authSlice";
 const Signup = (props) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = useContext(AuthContext);
   const [isLoading, setIsLoading] = React.useState(false);
   //   const [isError, setIsError] = React.useState(undefined);
   const [error, setError] = React.useState();
@@ -54,7 +56,13 @@ const Signup = (props) => {
       const data = await axios.post(`/auth/signup`, formData);
 
       setIsLoading(false);
-      auth.login(data.data.userId, data.data.token, data.data);
+      dispatch(
+        authActions.login({
+          userId: data.data.userId,
+          token: data.data.token,
+          data: data.data,
+        })
+      );
 
       navigate("/");
       props.onCancel();

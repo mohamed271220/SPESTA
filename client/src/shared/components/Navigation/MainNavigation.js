@@ -10,11 +10,13 @@ import { GoHome } from "react-icons/go";
 import { BsPerson } from "react-icons/bs";
 import { BiCartAdd } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
-import { AuthContext } from "../../context/auth-context";
+
 import axios from "axios";
 import SearchBar from "./SearchBar";
 import { LiaCartPlusSolid } from "react-icons/lia";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../features/authSlice";
+import { cartActions } from "../../features/cartSlice";
 function DropdownItem(props) {
   if (props.text === "Logout") {
     return (
@@ -41,6 +43,7 @@ const MainNavigation = () => {
   const [tags, setTags] = useState([]);
   const [searchData, setSearchData] = useState([]);
   const [Loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     setLoading(true);
     const getTags = async () => {
@@ -63,7 +66,6 @@ const MainNavigation = () => {
     getTags();
   }, []);
 
-  const auth = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
 
   let menuRef = React.useRef();
@@ -84,11 +86,16 @@ const MainNavigation = () => {
   });
 
   const logoutHandler = () => {
-    auth.logout();
+    dispatch(authActions.logout());
   };
 
-//  console.log(auth.data)
-  const cartQuantity =  useSelector((state) => state.cart.totalQuantity);
+  //  console.log(auth.data)
+  const cartQuantity = useSelector((state) => state.cart.totalQuantity);
+  const token = useSelector((state) => state.auth.token);
+  const data = useSelector((state) => state.auth.data);
+console.log(data);
+  
+
   // const cart = useSelector((state) => state.cart);
 
   // useEffect(() => {
@@ -139,12 +146,12 @@ const MainNavigation = () => {
                 placeholder={`Search...`}
               />
             )}
-            {auth.token && (
+            {token && (
               <Link to={"/profile"}>
                 <img
                   className="main-navigation__user-img"
-                  src={"http://localhost:8080/" + auth.data.image}
-                  alt={auth.data.name}
+                  src={"http://localhost:8080/" + data.image}
+                  alt={data.name}
                 />{" "}
               </Link>
             )}{" "}
@@ -157,7 +164,7 @@ const MainNavigation = () => {
                 }}
               >
                 <p className="main-navigation__location-text-dimmed menu-small">
-                  {auth.token ? "hello " + auth.data.name : "Hello & sign in"}
+                  {token ? "hello " + data.name : "Hello & sign in"}
                 </p>
                 <p>Account & List</p>
               </div>
@@ -181,17 +188,17 @@ const MainNavigation = () => {
                     img={""}
                     text={"Categories"}
                   />
-                  {auth.token && (
+                  {token && (
                     <DropdownItem to={"/profile"} img={""} text={"Orders"} />
                   )}
-                  {auth.token && (
+                  {token && (
                     <DropdownItem
                       to={"/cart"}
                       img={<BiCartAdd />}
                       text={"Cart"}
                     />
                   )}
-                  {!auth.token ? (
+                  {!token ? (
                     <DropdownItem to={"/auth/login"} img={""} text={"Login"} />
                   ) : (
                     <DropdownItem

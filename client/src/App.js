@@ -10,10 +10,13 @@ import Signup from "./auth/Signup";
 import RequireAuth from "./auth/RequireAuth";
 import Profile from "./Profile/pages/Profile";
 import Secondary from "./shared/components/Layout/Secondary";
-import { AuthContext } from "./shared/context/auth-context";
+
 import axios from "axios";
 import LoadingSpinner from "./shared/Loading/LoadingSpinner/LoadingSpinner";
 import Cart from "./Cart/page/Cart";
+import { useSelector } from "react-redux";
+import { authActions } from "./shared/features/authSlice";
+import { useDispatch } from "react-redux";
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
@@ -62,7 +65,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Cart/>,
+            element: <Cart />,
           },
           {
             path: "checkout",
@@ -106,35 +109,8 @@ const router = createBrowserRouter([
 ]);
 let LogoutTimer;
 function App() {
-  const [token, setToken] = useState(false);
-  const [userId, setUserId] = useState(null);
-  const [data, setData] = useState(null);
-  const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
-  const login = useCallback((userId, token, data, expirationDate) => {
-    setToken(token);
-    setUserId(userId);
-    setData(data);
-    const tokenExpirationDate =
-      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
-    setTokenExpirationDate(tokenExpirationDate);
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({
-        userId: userId,
-        token: token,
-        data: data,
-        expiration: tokenExpirationDate.toISOString(),
-      })
-    );
-  }, []);
-  const logout = useCallback(() => {
-    setToken(null);
-    setTokenExpirationDate(null);
-    setUserId(null);
-    setData(null);
-    localStorage.removeItem("userData");
-  }, []);
+  const dispatch = useDispatch();
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
 
@@ -143,40 +119,41 @@ function App() {
       storedData.token &&
       new Date(storedData.expiration) > new Date()
     ) {
-      login(
-        storedData.userId,
-        storedData.token,
-        storedData.data,
-        new Date(storedData.expiration)
+      dispatch(
+        authActions.login({
+          userId: storedData.userId,
+          token: storedData.token,
+          data: storedData.data,
+          expirationDate: new Date(storedData.expiration),
+        })
       );
     }
-  }, [login]);
-
+  }, [dispatch]);
+  var tokenExpirationDate = useSelector(
+    (state) => state.auth.tokenExpirationDate
+  );
   useEffect(() => {
-    if (token && tokenExpirationDate) {
-      const remainingTime =
-        tokenExpirationDate.getTime() - new Date().getTime();
-      LogoutTimer = setTimeout(logout, remainingTime);
-    } else {
-      clearTimeout(LogoutTimer);
-    }
-  }, [token, logout, tokenExpirationDate]);
-
+    const checkDate = async () => {
+      try {
+        if (tokenExpirationDate) {
+          const remainingTime =
+            new Date(tokenExpirationDate).getTime() - new Date().getTime();
+            LogoutTimer = setTimeout(() => {
+            dispatch(authActions.logout());
+          }, remainingTime);
+        } else {
+          clearTimeout(LogoutTimer);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    checkDate();
+  }, [dispatch, tokenExpirationDate]);
   return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn: !!token,
-        token: token,
-        userId: userId,
-        data: data,
-        login,
-        logout,
-      }}
-    >
-      <Suspense fallback={<LoadingSpinner />}>
-        <RouterProvider router={router} />
-      </Suspense>
-    </AuthContext.Provider>
+    <Suspense fallback={<LoadingSpinner />}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 }
 

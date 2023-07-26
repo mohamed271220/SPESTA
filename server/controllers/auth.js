@@ -144,6 +144,8 @@ exports.login = async (req, res, next) => {
       message: "User logged in",
       token: accessToken,
       userId: existingUser.id,
+      cart: existingUser.cart,
+      orders: existingUser.orders,
       email: existingUser.email,
       name: existingUser.name,
       image: existingUser.image,

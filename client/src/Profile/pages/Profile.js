@@ -7,12 +7,16 @@ import security from "../assets/security.png";
 import "../index.css";
 import Orders from "../components/Orders";
 import Addresses from "../components/Addresses";
-import { AuthContext } from "../../shared/context/auth-context";
+
 import axios from "axios";
 import LoadingSpinner from "../../shared/Loading/Skeleton/SkeletonPost";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const auth = useContext(AuthContext);
+  
+  const token = useSelector((state) => state.auth.token);
+  const userId = useSelector((state) => state.auth.userId);
+  
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,10 +25,10 @@ const Profile = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:8080/api/auth/user/" + auth.userId,
+          "http://localhost:8080/api/auth/user/" + userId,
           {
             headers: {
-              Authorization: "Bearer " + auth.token,
+              Authorization: "Bearer " + token,
             },
           }
         );
@@ -40,7 +44,7 @@ const Profile = () => {
       }
     };
     getData();
-  }, [auth.token, auth.userId]);
+  }, [token, userId]);
   return (
     <>
       {loading ? (

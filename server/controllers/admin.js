@@ -86,11 +86,10 @@ I hope this helps! Let me know if you have any other questions.
   const session = await mongoose.startSession();
   session.startTransaction();
 
-
   try {
     await product.save({ session });
     const admin = await Admin.findById(addedBy);
-  
+
     if (category) {
       category.forEach(async (cat) => {
         const category = await Category.findById(cat);
@@ -98,7 +97,7 @@ I hope this helps! Let me know if you have any other questions.
         await category.save({ session });
       });
     }
-  
+
     if (tag) {
       tag.forEach(async (tagId) => {
         const tagItem = await Tag.findById(tagId);
@@ -106,10 +105,10 @@ I hope this helps! Let me know if you have any other questions.
         await tagItem.save({ session });
       });
     }
-  
+
     admin.addedProducts.push(product);
     await admin.save({ session });
-  
+
     await session.commitTransaction();
   } catch (error) {
     await session.abortTransaction();
@@ -241,7 +240,7 @@ exports.addCategory = async (req, res, next) => {
     error.data = errors.array();
     next(error);
   }
-  const { name, productIds,description } = req.body;
+  const { name, productIds, description } = req.body;
   console.log(productIds);
   const addedBy = req.userId;
   const category = new Category({
@@ -249,7 +248,7 @@ exports.addCategory = async (req, res, next) => {
     image: req.file.path.replace("\\", "/"),
     addedBy,
     products: JSON.parse(productIds),
-    description
+    description,
   });
   try {
     const sess = await mongoose.startSession();
@@ -305,7 +304,7 @@ exports.removeCategory = async (req, res, next) => {
 
 exports.editCategory = async (req, res, next) => {
   const categoryId = req.params.categoryId;
-  const { name, productIds,description } = req.body;
+  const { name, productIds, description } = req.body;
   const addedBy = req.userId;
   const category = await Category.findById(categoryId);
   try {
@@ -525,7 +524,7 @@ exports.getOrders = async (req, res, next) => {
   try {
     // sort should look like this: { "field": "userId", "sort": "desc"}
     const { page = 1, pageSize = 20, sort = null, search = "" } = req.query;
-
+    // console.log(page, pageSize, sort, search);
     // formatted sort should look like { userId: -1 }
     const generateSort = () => {
       const sortParsed = JSON.parse(sort);
@@ -538,29 +537,32 @@ exports.getOrders = async (req, res, next) => {
     const sortFormatted = Boolean(sort) ? generateSort() : {};
     // console.log(sortFormatted);
 
-    const transactions = await Order.find({
-      // $or: [
-      //   { totalPrice: { '$regex': new RegExp(search, "i") } },
-      //    { madeBy: { '$regex': new RegExp(search, "i") } },
-      // ],
-    })
+    const madeBy = search
+      ? {
+          $or: [
+            { totalPrice: { $eq: search } },
+            // { status: { $regex: new RegExp(search, "i") } },
+            // { madeBy: { $eq: new mongoose.Types.ObjectId(search) } },
+          ],
+        }
+      : {};
+    const transactions = await Order.find(madeBy)
       .sort(sortFormatted)
       .skip(page * pageSize)
       .limit(pageSize);
     console.log(transactions);
     const total = await Order.countDocuments({
-      // name: { $regex: search, $options: "i" },
-      // name: { $regex: search, $options: "i" },
+      name: { $regex: search, $options: "i" },
     });
-    console.log(total);
+    // console.log(total);
     res.status(200).json({
       transactions,
       total,
     });
   } catch (err) {
-    const error = new Error("Could not fetch orders");
+    const error = new Error("Could not fetch orders" + err);
     error.statusCode = 500;
-    return next(error + " real err " + err);
+    return next(error);
   }
 };
 

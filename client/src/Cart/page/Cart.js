@@ -4,7 +4,7 @@ import "./index.css";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../shared/features/cartSlice";
 import axios from "axios";
-import { AuthContext } from "../../shared/context/auth-context";
+
 import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -15,11 +15,13 @@ const Cart = () => {
   const dispatch = useDispatch();
   // var items = useSelector((state) => state.cart.items);
   const [total, setTotal] = React.useState(0);
-  const auth = useContext(AuthContext);
+
+  const token = useSelector((state) => state.auth.token);
+  const id = useSelector((state) => state.auth.userId);
   const [cartItems, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   // console.log(items);
-  const id = auth.userId;
+  // const id = auth.userId;
 
   const config = {
     position: "top-center",
@@ -43,7 +45,7 @@ const Cart = () => {
         },
         {
           headers: {
-            Authorization: "Bearer " + auth.token,
+            Authorization: "Bearer " + token,
           },
         }
       );
@@ -79,7 +81,7 @@ const Cart = () => {
 
   const addItemToCartHandler = async ({ productId, name, price, sale }) => {
     setTotal((prevStat) => (prevStat += price));
-    if (!auth.token) {
+    if (!token) {
       return toast.warn("you must login first", {});
     }
 
@@ -90,7 +92,7 @@ const Cart = () => {
         { number: 1 },
         {
           headers: {
-            Authorization: "Bearer " + auth.token,
+            Authorization: "Bearer " + token,
           },
         }
       );
@@ -125,7 +127,6 @@ const Cart = () => {
     }
   };
 
-
   useEffect(() => {
     setLoading(true);
     const getCart = async () => {
@@ -134,7 +135,7 @@ const Cart = () => {
           "http://localhost:8080/api/auth/user/" + id,
           {
             headers: {
-              Authorization: "Bearer " + auth.token,
+              Authorization: "Bearer " + token,
             },
           }
         );
@@ -164,7 +165,7 @@ const Cart = () => {
       setLoading(false);
     };
     getCart();
-  }, [auth.token, id, dispatch]);
+  }, [token, id, dispatch]);
 
   return (
     <div className="cart-container">
@@ -185,7 +186,7 @@ const Cart = () => {
           <div className="cart-items-container">
             <h2>Shopping Cart</h2>
             <p> Deselect all items</p>
-            <hr  />
+            <hr />
 
             <div className="cart-items">
               {cartItems.length === 0 ? (

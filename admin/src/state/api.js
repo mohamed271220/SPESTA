@@ -68,5 +68,5 @@ export const {
   useGetProductsQuery,
   useGetOrdersQuery,
   useGetCategoriesQuery,
-  useGetTagsQuery
+  useGetTagsQuery,
 } = api;

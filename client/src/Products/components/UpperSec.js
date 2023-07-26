@@ -4,17 +4,18 @@ import { AiFillStar } from "react-icons/ai";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import hs from "../assets/hp.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../shared/features/cartSlice";
-import { AuthContext } from "../../shared/context/auth-context";
+
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const UpperSec = ({ productData }) => {
   const dispatch = useDispatch();
-  const auth = useContext(AuthContext);
+  const token = useSelector((state) => state.auth.token);
+  
   const addItemToCartHandler = async () => {
-    if (!auth.token) {
+    if (!token) {
       return toast.warn("you must login first", {
         position: "top-center",
         autoClose: 5000,
@@ -34,7 +35,7 @@ const UpperSec = ({ productData }) => {
         { number: 1 },
         {
           headers: {
-            Authorization: "Bearer " + auth.token,
+            Authorization: "Bearer " + token,
           },
         }
       );
