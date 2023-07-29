@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
+// const passportLocalMongoose = require("passport-local-mongoose");
+// const findOrCreate = require("mongoose-findorcreate");
 const userSchema = new Schema(
   {
     name: { type: String, required: true, min: 2, max: 50 },
@@ -46,5 +48,6 @@ const userSchema = new Schema(
 );
 
 userSchema.plugin(uniqueValidator);
-
+// userSchema.plugin(passportLocalMongoose);
+// userSchema.plugin(findOrCreate);
 module.exports = mongoose.model("User", userSchema);

@@ -3,8 +3,24 @@ const { body } = require("express-validator");
 const authController = require("../controllers/auth");
 const fileUpload = require("../middleware/file-upload");
 const isAuth = require("../middleware/is-auth");
-
+// const passport = require("passport");
 const router = express.Router();
+
+// router.get(
+//   "/auth/google",
+//   passport.authenticate("google", { scope: ["profile"] })
+// );
+// router.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", { failureRedirect: "http://localhost:3000" }),
+//   function (req, res) {
+//     // Successful authentication, redirect secrets.
+//     res.redirect("http://localhost:3000");
+//   }
+// );
+// router.get("/logout", function(req, res){
+//   res.redirect("http://localhost:3000/");
+// });
 
 //TODO Get user data
 //TESTED✅
@@ -19,9 +35,6 @@ router.get("/user/:id", isAuth, authController.getUser);
 // router.put("/user", isAuth, authController.editUser);
 
 //TODO fetch addresses related to a user
-
-
-
 
 //TODO add address
 
@@ -38,7 +51,6 @@ router.delete(
   isAuth,
   authController.deleteAddress
 );
-
 
 //TODO: USERS lOGIN
 //TESTED✅
