@@ -6,7 +6,7 @@ const userSchema = new Schema(
     name: { type: String, required: true, min: 2, max: 50 },
     email: { type: String, required: true, unique: true, min: 2, max: 50 },
     password: { type: String, required: true, minlength: 6 },
-    address: [{ type: String }],
+    address: [{ type: mongoose.Types.ObjectId, ref: "Address" }],
     image: {
       type: String,
       required: false,

@@ -7,12 +7,14 @@
   padding: 1rem;
 }
 .profile-control {
-  padding: 0 2rem;
+  padding: 0rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1rem;
   justify-content: space-evenly;
+ 
+  align-items: center;
 }
 .profile-control-item {
   width: 20rem;
@@ -68,7 +70,7 @@
 @media (max-width: 360px) {
   .profile-control {
     padding: 0;
-    gap: 0.2;
+    gap: 0.2rem;
   }
   .profile-control-item {
     width: 10rem;

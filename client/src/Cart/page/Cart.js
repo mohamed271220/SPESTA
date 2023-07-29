@@ -6,16 +6,21 @@ import { cartActions } from "../../shared/features/cartSlice";
 import axios from "axios";
 
 import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
-
+import { responsive } from "../../Home/components/data";
+import Product from "../../Home/components/Product";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CartItem from "../components/CartItem";
-
+import { useGetProductsQuery } from "../../shared/features/SpestaSlice";
+import { Link } from "react-router-dom";
+import { AiFillStar } from "react-icons/ai";
+import Carousel from "react-multi-carousel";
 const Cart = () => {
   const dispatch = useDispatch();
   // var items = useSelector((state) => state.cart.items);
   const [total, setTotal] = React.useState(0);
-
+  const { data: products, isLoading, isError, error } = useGetProductsQuery();
+  console.log(products);
   const token = useSelector((state) => state.auth.token);
   const id = useSelector((state) => state.auth.userId);
   const [cartItems, setItems] = React.useState([]);
@@ -168,49 +173,120 @@ const Cart = () => {
   }, [token, id, dispatch]);
 
   return (
-    <div className="cart-container">
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100vh",
-          }}
-        >
-          <LoadingSpinner />
-        </div>
-      ) : (
-        <>
-          <div className="cart-items-container">
-            <h2>Shopping Cart</h2>
-            <p> Deselect all items</p>
-            <hr />
-
-            <div className="cart-items">
-              {cartItems.length === 0 ? (
-                <p>Cart is empty</p>
-              ) : (
-                cartItems.map((item) => {
-                  return (
-                    <CartItem
-                      key={item.id}
-                      item={item}
-                      addItemToCartHandler={addItemToCartHandler}
-                      removeItemHandler={removeItemHandler}
-                    />
-                  );
-                })
-              )}
-              <hr className="line-cart" />
-              <p className="cart-total">Subtotal : ${total} </p>
-            </div>
+    <div>
+      <div className="cart-container">
+        {loading || isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100vh",
+            }}
+          >
+            <LoadingSpinner />
           </div>
-          <div></div>
-          <div></div>
-        </>
+        ) : (
+          <>
+            {/* TODO: PUT IN IT'S OWN COMPONENT */}
+            <div className="cart-items-container">
+              <h2>Shopping Cart</h2>
+              <p> Deselect all items</p>
+              <hr />
+
+              <div className="cart-items">
+                {cartItems.length === 0 ? (
+                  <p>Cart is empty</p>
+                ) : (
+                  cartItems.map((item) => {
+                    return (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        addItemToCartHandler={addItemToCartHandler}
+                        removeItemHandler={removeItemHandler}
+                      />
+                    );
+                  })
+                )}
+                <hr className="line-cart" />
+                <p className="cart-total">Subtotal : ${total} </p>
+              </div>
+            </div>
+            <div className="row-container">
+              <div className="checkout-container">
+                <p>
+                  Total Items : <span> ${total} </span>
+                </p>
+                <button className="checkout-btn">Proceed To Checkout</button>
+              </div>
+              <div className="recommendation-container">
+                <p>Also checkout</p>
+                <div>
+                  {products.products
+                    ?.map((product) => (
+                      <Link
+                        style={{
+                          textDecoration: "none",
+                          color: "black",
+                        }}
+                        to={`/products/${product._id}`}
+                        key={product._id}
+                        className="recommendation-item"
+                      >
+                        <img
+                          src={`http://localhost:8080/uploads${product.images[0]}`}
+                          alt=""
+                        />
+                        <div>
+                          <p>{product.name}</p>
+                          <p>${product.price}</p>
+                          <span>
+                            <AiFillStar
+                              style={{
+                                color: "gold",
+                              }}
+                            />{" "}
+                            {product.rating}{" "}
+                          </span>
+                        </div>
+                      </Link>
+                    ))
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3)}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+        {/* TODO: PUT IN IT'S OWN COMPONENT */}
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="product-section">
+          <h1>Recommended Products</h1>
+          <Carousel
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            responsive={responsive}
+          >
+            {products.products
+              ?.map((item) => (
+                <Product
+                  key={item.name}
+                  name={item.name}
+                  url={item.images[0]}
+                  price={item.price}
+                  description={item.description}
+                />
+              ))
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 5)}
+          </Carousel>
+        </div>
       )}
+
       <ToastContainer
         position="top-center"
         autoClose={2000}

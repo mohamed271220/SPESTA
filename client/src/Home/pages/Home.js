@@ -15,13 +15,16 @@ import { images } from "..//Helper/CarouselData";
 import LoadingSpinner from "../../shared/Loading/LoadingSpinner/LoadingSpinner";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-
+import { useGetProductsQuery } from "../../shared/features/SpestaSlice";
+import gaming from "../assets/gaming.jpg";
 const Home = () => {
   const [categories, setCategories] = React.useState([]);
   const [loading, setIsLoading] = React.useState(false);
   const [random, setRandom] = React.useState();
+  const { data: products, isLoading, isError, error } = useGetProductsQuery();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.auth.data);
+
   // console.log(data);
   React.useEffect(() => {
     const getCategories = async () => {
@@ -35,12 +38,12 @@ const Home = () => {
       } catch (err) {}
       setIsLoading(false);
     };
-   
+
     getCategories();
   }, [categories.length, dispatch]);
   if (!loading && categories && random) {
     // console.log(random);
-    var productName = random.name;
+
   }
   let randomProducts;
   let categoryName;
@@ -79,6 +82,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="home-container">
+        {/* TODO: PUT IN IT'S OWN COMPONENT */}
           <div className="hero-section">
             <AnotherCarousel data={images} />
             <div className="category-container">
@@ -107,29 +111,33 @@ const Home = () => {
               </div>
             </div>
           </div>
+            {/* TODO: PUT IN IT'S OWN COMPONENT */}
           <div className="product-section-container">
-            {!loading && random ? (
+            {!loading && random && !isLoading ? (
               <div className="product-section">
-                <h1>Deals on {categoryName}</h1>
+                <h1>Recommended Products</h1>
                 <Carousel
                   removeArrowOnDeviceType={["tablet", "mobile"]}
                   responsive={responsive}
                 >
-                  {random.products.map((item) => (
-                    <Product
-                      key={item.name}
-                      name={item.name}
-                      url={item.images[0]}
-                      price={item.price}
-                      description={item.description}
-                    />
-                  ))}
+                  {products.products
+                    ?.map((item) => (
+                      <Product
+                        key={item._id}
+                        name={item.name}
+                        url={item.images[0]}
+                        price={item.price}
+                        description={item.description}
+                      />
+                    ))
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 5)}
                 </Carousel>
               </div>
             ) : (
               <LoadingSpinner />
             )}
-
+  {/* TODO: PUT IN IT'S OWN COMPONENT */}
             <div className="product-section">
               {!loading && randomProducts ? (
                 <>
@@ -146,17 +154,30 @@ const Home = () => {
               )}
             </div>
           </div>
-          <div className="product-recommendations-container">
-            {/* <div className="">
-              <h1>Recommended for you</h1>
-              <Carousel
-                removeArrowOnDeviceType={["tablet", "mobile"]}
-                responsive={responsive}
-              >
-                {product}
-              </Carousel>
-            </div> */}
-          </div>
+            {/* TODO: PUT IN IT'S OWN COMPONENT */}
+          {!loading && random && !isLoading && (
+            <div className="special-recommend">
+              <div className="special-recommend-container">
+                {
+                  categories
+                    .find((item) => item.name === "Electronics")
+                    .products.map((item) => (
+                      <div>
+                        <Product
+                          className="featured-product"
+                          key={item.name}
+                          name={item.name}
+                          url={item.images[0]}
+                          price={item.price}
+                          description={item.description}
+                        />
+                      </div>
+                    ))[0]
+                }
+              </div>
+              <img src={gaming} alt="ex" />
+            </div>
+          )}
         </div>
       )}
     </>

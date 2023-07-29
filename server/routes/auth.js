@@ -7,8 +7,33 @@ const isAuth = require("../middleware/is-auth");
 const router = express.Router();
 
 //TODO Get user data
-
+//TESTED✅
 router.get("/user/:id", isAuth, authController.getUser);
+
+//TODO: DELETE ACC
+
+// router.delete("/user", isAuth, authController.deleteUser);
+
+//TODO:: EDIT ACC
+
+// router.put("/user", isAuth, authController.editUser);
+
+//TODO add address
+
+router.post("/user/addAddress", isAuth, authController.addAddress);
+
+//TODO edit address
+
+router.put("/user/editAddress/:addressId", isAuth, authController.editAddress);
+
+//TODO delete address
+
+router.delete(
+  "/user/deleteAddress/:addressId",
+  isAuth,
+  authController.deleteAddress
+);
+
 
 //TODO: USERS lOGIN
 //TESTED✅
@@ -36,7 +61,5 @@ router.post(
   ],
   authController.signup
 );
-//TODO: DELETE ACC
-//TODO:: EDIT ACC
 
 module.exports = router;

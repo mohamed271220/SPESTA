@@ -1,30 +1,8 @@
 
-.product-section {
-  padding: 2rem;
-  z-index: 0;
-  width: 100%;
-  background-color: white;
-}
 .product-section-s{
   background-color: transparent;
 }
-.product-section-container {
-  margin-bottom: 0.5vh;
-}
-.product-section h1 {
-  margin-left: 1rem;
-  display: flex;
-}
-.hero-section {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  height: auto;
-}
-.hero-section .hero-img {
-  width: 100%;
-}
-.category-container {
+.category-page-container {
   position: relative;
   top: -14.5rem;
   width: 100%;
@@ -33,37 +11,40 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   margin-bottom: -12rem;
 }
 .category-box,
 .recommendations-box {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 35vh;
+ 
+  text-align: start;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  max-height: fit-content;
+  
   background-color: white;
-  /* padding: 1rem; */
   text-decoration: none;
+}
+
+.category-box {
+  padding: 0.5rem 1rem;
+  justify-content: flex-start;
 }
 
 .category-box div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
   background-color: white;
 }
 /* .category-box p {
   margin: 0.5vh;
 } */
 .category-box img {
-width: 100%;
-}
-.product--image {
-  width: 100%;
-  height: 16em;
-  object-fit: cover;
+
+  align-self: center;
 }
 
 
@@ -85,17 +66,50 @@ width: 100%;
 }
 
 @media (min-width: 767px) and (max-width: 1005px) {
-  .category-container {
+  .category-page-container {
     top: -11rem;
     margin-bottom: -8rem;
   }
 }
 @media (max-width: 768px) {
-  .category-container {
+  .category-page-container {
     top: 0rem;
-
-    margin: 2rem auto;
+    margin: 3rem auto;
+    gap: 0.4rem;
+    
   }
+  
+  .category-box {
+    width: 12rem;
+    height: 18rem;
+    padding: 0.225rem 1vh;
+    /* justify-content: flex-start; */
+    overflow: hidden;
+  }
+  .category-box div{
+    align-items: center;
+  }
+  .category-box h3 {
+    font-size: medium;
+  }
+
+  .category-box p {
+    font-size: small;
+  }
+  .category-box img {
+    overflow: hidden;
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .special {
+    width: fit-content;
+    height: fit-content;
+  }
+  .category-box h2 {
+    margin: 0;
+  }
+
   .product-recommendations-container {
     margin-bottom: 4rem;
   }

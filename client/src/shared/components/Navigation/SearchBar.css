@@ -1,6 +1,7 @@
 .searchInputs {
   /* margin-top: 105px; */
   display: flex;
+  height: 2.3rem;
 }
 
 .search input {
@@ -13,14 +14,19 @@
   padding: 15px;
   height: 30px;
   width: 100%;
+  border-radius: 6px 0 0 6px;
+  height: 2.3rem;
 
   /* width: 300px; */
 }
 
 .searchIcon {
-  background-color: white;
+  background-color: rgb(228, 221, 160);
   display: grid;
+  /* padding-left: .5rem; */
+  width: 2rem;
   place-items: center;
+  border-radius: 0px 6px 6px 0px;
 }
 
 input:focus {
@@ -28,6 +34,7 @@ input:focus {
 }
 .searchIcon svg {
   font-size: 35px;
+  margin: 0;
 }
 
 .dataResult {

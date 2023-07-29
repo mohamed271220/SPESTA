@@ -434,9 +434,9 @@ exports.removeTag = async (req, res, next) => {
     const products = await Product.find({ tag: tagId });
     products.forEach(async (product) => {
       product.tag.pull(tag);
-      await product.save({ sess });
+      await product.save({ session:sess });
     });
-    sess;
+    
     sess.commitTransaction();
     res.status(200).json({ message: "Tag Deleted Successfully" });
   } catch (err) {

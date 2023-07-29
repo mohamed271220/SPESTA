@@ -9,7 +9,7 @@ function SearchBar({ placeholder, data }) {
   const [wordEntered, setWordEntered] = useState("");
   const [open, setOpen] = useState(false);
   //   console.log(data);
-  const handleFilter = (event) => {
+  const handleFilter =  (event) => {
     setOpen(true);
     const searchWord = event.target.value;
     setWordEntered(searchWord);
@@ -48,7 +48,7 @@ function SearchBar({ placeholder, data }) {
                 color: "black",
                 width: "1rem",
                 height: "1rem",
-                marginRight: "1vh",
+              
               }}
             />
           ) : (
@@ -57,7 +57,7 @@ function SearchBar({ placeholder, data }) {
                 color: "black",
                 width: "1rem",
                 height: "1rem",
-                marginRight: "1vh",
+               
               }}
               id="clearBtn"
               onClick={clearInput}

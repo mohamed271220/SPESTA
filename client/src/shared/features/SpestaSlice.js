@@ -6,9 +6,12 @@ export const spestaApi = createApi({
     baseUrl: "http://localhost:8080/api",
   }),
   endpoints: (builder) => ({
-    getUseeData: builder.query({
-     
+    getProducts: builder.query({
+      query: () => ({
+        url: "/admin/dashboard/products",
+      }),
     }),
+    getUseeData: builder.query({}),
     getCategories: builder.query({}),
     getCategoryById: builder.query({}),
     getTags: builder.query({}),
@@ -25,3 +28,5 @@ export const spestaApi = createApi({
     }),
   }),
 });
+
+export const { useGetProductsQuery } = spestaApi;

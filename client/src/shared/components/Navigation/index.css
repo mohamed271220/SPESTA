@@ -14,7 +14,7 @@
   font-size: 4vh;
   cursor: pointer;
   animation: floaty 1s;
-  z-index: 77;
+  z-index: 1000;
 }
 @media (max-width: 750px) {
   .cart-floating {
@@ -134,7 +134,7 @@
 }
 @media (max-width: 768px) {
   .nav-links-container {
-    border-top: 2px solid #aaaaaa;
+    border-top: 1px solid #aaaaaa82;
     padding-top: 1rem;
     display: flex;
     bottom: 0;

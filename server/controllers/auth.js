@@ -1,9 +1,10 @@
 const User = require("../models/user");
-
+const Address = require("../models/address");
 const { validationResult, body } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
+
 
 exports.getUser = async (req, res, next) => {
   try {
@@ -153,6 +154,83 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     const error = new Error("Login failed");
     error.statusCode = 500;
+    return next(error);
+  }
+};
+
+exports.addAddress = async (req, res, next) => {
+  const userId = req.userId;
+  const { street, city, description } = req.body;
+  try {
+    const user = await User.findById(userId);
+    const address = new Address({
+      userId,
+      street,
+      city,
+      description,
+    });
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await address.save({ session: sess });
+    user.addresses.push(address);
+    await user.save({ session: sess });
+    sess.commitTransaction();
+    res.status(201).json({
+      message: "Address added successfully",
+    });
+  } catch (err) {
+    const error = new Error("could not add address " + err);
+    error.statusCode = 500;
+    return next(error);
+  }
+};
+exports.editAddress = async (req, res, next) => {
+  const { street, city, description } = req.body;
+  const addressId = req.params.addressId;
+  try {
+    const address = await Address.findById(addressId);
+    if (!address) {
+      const error = new Error("Address not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    address.street = street;
+    address.city = city;
+    address.description = description;
+    await address.save();
+    res.status(201).json({
+      message: "Address edited successfully",
+    });
+  } catch (err) {
+    const error = new Error("Address not found");
+    error.statusCode = 404;
+    return next(error);
+  }
+};
+exports.deleteAddress = async (req, res, next) => {
+  const addressId = req.params.addressId;
+  const userId = req.userId;
+  try {
+    const address = await Address.findById(addressId);
+    if (!address) {
+      const error = new Error("Address not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await address.deleteOne({ session: sess });
+    const user = await User.findById(userId);
+    user.addresses.pull(addressId);
+    await user.save({ session: sess });
+    sess.commitTransaction();
+    res.status(201).json({
+      message: "Address deleted successfully",
+    });
+  } catch (err) {
+    const error = new Error("Address not found");
+    error.statusCode = 404;
     return next(error);
   }
 };

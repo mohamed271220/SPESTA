@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddAddress from "../assets/AddAddress.svg";
 import '../index.css'
 const Addresses = () => {
+
+
+
+  useEffect(()=>{
+    //a call for use data
+//and another call to add ,edit and remove addresses
+// and one to make the selected address default
+
+  })
+
   return (
     <div>
       <h2>Your Addresses</h2>

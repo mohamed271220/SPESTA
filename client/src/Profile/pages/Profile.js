@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import orders from "../assets/orders.png";
 import address from "../assets/address.png";
 import payment from "../assets/payment.png";
@@ -16,10 +16,15 @@ const Profile = () => {
   
   const token = useSelector((state) => state.auth.token);
   const userId = useSelector((state) => state.auth.userId);
-  
+  const navigate=useNavigate();
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  if(!token){
+navigate("/auth/login")
+  }
+
   useEffect(() => {
     const getData = async () => {
       try {
