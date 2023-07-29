@@ -2,14 +2,14 @@ const User = require("../models/user");
 const Address = require("../models/address");
 const { validationResult, body } = require("express-validator");
 const bcrypt = require("bcryptjs");
-
+const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 
 exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId, "-password").populate(
-      "orders cart"
+      "orders cart address"
     );
     if (!user) {
       const error = new Error("User not found");
@@ -158,6 +158,8 @@ exports.login = async (req, res, next) => {
   }
 };
 
+
+
 exports.addAddress = async (req, res, next) => {
   const userId = req.userId;
   const { street, city, description } = req.body;
@@ -172,7 +174,7 @@ exports.addAddress = async (req, res, next) => {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await address.save({ session: sess });
-    user.addresses.push(address);
+    user.address.push(address);
     await user.save({ session: sess });
     sess.commitTransaction();
     res.status(201).json({
@@ -209,27 +211,24 @@ exports.editAddress = async (req, res, next) => {
 };
 exports.deleteAddress = async (req, res, next) => {
   const addressId = req.params.addressId;
+  console.log(addressId);
   const userId = req.userId;
   try {
     const address = await Address.findById(addressId);
-    if (!address) {
-      const error = new Error("Address not found");
-      error.statusCode = 404;
-      return next(error);
-    }
+console.log(address);
 
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await address.deleteOne({ session: sess });
     const user = await User.findById(userId);
-    user.addresses.pull(addressId);
+    user.address.pull(addressId);
     await user.save({ session: sess });
     sess.commitTransaction();
     res.status(201).json({
       message: "Address deleted successfully",
     });
   } catch (err) {
-    const error = new Error("Address not found");
+    const error = new Error("Address not found "+err);
     error.statusCode = 404;
     return next(error);
   }

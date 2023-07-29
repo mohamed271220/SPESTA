@@ -1,7 +1,18 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
+
+
 const Orders = ({ orders }) => {
+  if (!orders || orders.length === 0) {
+    return (
+      <div>
+        <h2>No orders yet</h2>
+        <NavLink to="/cart">Go to cart</NavLink>
+      </div>
+    );
+  }
+
   return (
     <div className="orders-container">
       <h2>Your Orders</h2>

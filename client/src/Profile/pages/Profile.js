@@ -12,17 +12,19 @@ import axios from "axios";
 import LoadingSpinner from "../../shared/Loading/Skeleton/SkeletonPost";
 import { useSelector } from "react-redux";
 
+
 const Profile = () => {
-  
   const token = useSelector((state) => state.auth.token);
   const userId = useSelector((state) => state.auth.userId);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [addresses, setAddresses] = useState([]);
+  const [ordersArr, setOrders] = useState([]);
 
-  if(!token){
-navigate("/auth/login")
+  if (!token) {
+    navigate("/auth/login");
   }
 
   useEffect(() => {
@@ -38,6 +40,8 @@ navigate("/auth/login")
           }
         );
         setUser(response.data.user);
+        setAddresses(response.data.user.address);
+        setOrders(response.data.user.orders);
         console.log(response);
         setLoading(false);
       } catch (err) {
@@ -82,10 +86,10 @@ navigate("/auth/login")
             </div>
           </div>
           <div className="m-orders" id="orders">
-            <Orders orders={user?.orders} />
+            <Orders orders={ordersArr} />
           </div>
           <div className="m-addresses" id="addresses">
-            <Addresses addresses={user?.address} />
+            <Addresses addresses={addresses} />
           </div>
         </div>
       )}

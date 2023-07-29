@@ -18,6 +18,11 @@ router.get("/user/:id", isAuth, authController.getUser);
 
 // router.put("/user", isAuth, authController.editUser);
 
+//TODO fetch addresses related to a user
+
+
+
+
 //TODO add address
 
 router.post("/user/addAddress", isAuth, authController.addAddress);
