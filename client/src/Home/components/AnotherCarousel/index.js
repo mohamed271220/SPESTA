@@ -24,13 +24,18 @@ const NewsCarousel = (props) => {
     >
       {props.data.map((item) => {
         return (
-          <div key={item.image} className="carousel-item">
+          <div key={item.image} className="carousel-item"  
+          
+          >
+          <div class="pickgradient">
+
             <img
               className="carousel-item__image"
               src={item.image}
               alt={item.title}
             />
             
+          </div>
           </div>
         );
       })}

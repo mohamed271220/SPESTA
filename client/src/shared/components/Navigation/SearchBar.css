@@ -50,6 +50,13 @@ input:focus {
   padding: 1vh;
   transition: all 0.4s ease-out;
 }
+
+@media (max-width:415px) {
+  .dataResult {
+    width: 40vh;
+  }
+}
+
 .openModal {
   animation: OpenModal 0.4s ease-out forwards;
 }
@@ -69,7 +76,11 @@ input:focus {
 }
 
 .closeModal {
-  animation: CloseModal 0.4s ease-out forwards;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 0.1s ease;
+  
 }
 @keyframes CloseModal {
   0% {

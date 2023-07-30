@@ -17,6 +17,7 @@ import Cart from "./Cart/page/Cart";
 import { useSelector } from "react-redux";
 import { authActions } from "./shared/features/authSlice";
 import { useDispatch } from "react-redux";
+import Checkout from "./Cart/page/Checkout";
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;
@@ -67,10 +68,6 @@ const router = createBrowserRouter([
             index: true,
             element: <Cart />,
           },
-          {
-            path: "checkout",
-            element: <div>Checkout</div>,
-          },
         ],
       },
       {
@@ -93,6 +90,10 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "checkout",
+    element: <Checkout />,
+  },
+  {
     path: "/auth",
     element: <Secondary />,
     children: [
@@ -109,7 +110,6 @@ const router = createBrowserRouter([
 ]);
 let LogoutTimer;
 function App() {
-
   const dispatch = useDispatch();
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
@@ -138,7 +138,7 @@ function App() {
         if (tokenExpirationDate) {
           const remainingTime =
             new Date(tokenExpirationDate).getTime() - new Date().getTime();
-            LogoutTimer = setTimeout(() => {
+          LogoutTimer = setTimeout(() => {
             dispatch(authActions.logout());
           }, remainingTime);
         } else {

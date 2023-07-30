@@ -221,6 +221,9 @@ exports.makeOrder = async (req, res, next) => {
       next(error);
     }
     products = user.cart;
+    const total = products
+      .map((p) => p.price * p.number)
+      .reduce((acc, prod) => acc + prod, 0);
     console.log(products);
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -229,10 +232,7 @@ exports.makeOrder = async (req, res, next) => {
       address: req.body.address,
       madeBy: userId,
       status: "pending",
-      totalPrice: 2,
-      // products.reduce((acc, prod) => {
-      //   return acc + prod.price;
-      // }),
+      totalPrice: total,
     });
     console.log(order);
     await order.save({ session: sess });

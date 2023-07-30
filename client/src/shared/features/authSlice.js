@@ -4,6 +4,7 @@ const initialState = {
   token: false,
   userId: null,
   data: null,
+  address: null,
   tokenExpirationDate: null,
 };
 
@@ -11,6 +12,10 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setAddress(state, action) {
+      state.address = action.payload;
+    
+    },
     login(state, action) {
       state.token = action.payload.token;
       state.userId = action.payload.userId;

@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-
 exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId, "-password").populate(
@@ -92,6 +91,7 @@ exports.signup = async (req, res, next) => {
     userId: createdUser.id,
     email: createdUser.email,
     image: createdUser.image,
+    address: existingUser.address,
     token: token,
   });
 };
@@ -147,6 +147,7 @@ exports.login = async (req, res, next) => {
       userId: existingUser.id,
       cart: existingUser.cart,
       orders: existingUser.orders,
+      address: existingUser.address,
       email: existingUser.email,
       name: existingUser.name,
       image: existingUser.image,
@@ -157,8 +158,6 @@ exports.login = async (req, res, next) => {
     return next(error);
   }
 };
-
-
 
 exports.addAddress = async (req, res, next) => {
   const userId = req.userId;
@@ -215,7 +214,7 @@ exports.deleteAddress = async (req, res, next) => {
   const userId = req.userId;
   try {
     const address = await Address.findById(addressId);
-console.log(address);
+    console.log(address);
 
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -228,7 +227,7 @@ console.log(address);
       message: "Address deleted successfully",
     });
   } catch (err) {
-    const error = new Error("Address not found "+err);
+    const error = new Error("Address not found " + err);
     error.statusCode = 404;
     return next(error);
   }

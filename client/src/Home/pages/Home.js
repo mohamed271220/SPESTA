@@ -43,7 +43,6 @@ const Home = () => {
   }, [categories.length, dispatch]);
   if (!loading && categories && random) {
     // console.log(random);
-
   }
   let randomProducts;
   let categoryName;
@@ -55,6 +54,7 @@ const Home = () => {
       randomItems?.products
         ?.map((item) => (
           <Product
+          id={item}
             key={item.name}
             name={item.name}
             url={item.images[0]}
@@ -82,7 +82,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="home-container">
-        {/* TODO: PUT IN IT'S OWN COMPONENT */}
+          {/* TODO: PUT IN IT'S OWN COMPONENT */}
           <div className="hero-section">
             <AnotherCarousel data={images} />
             <div className="category-container">
@@ -111,7 +111,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-            {/* TODO: PUT IN IT'S OWN COMPONENT */}
+          {/* TODO: PUT IN IT'S OWN COMPONENT */}
           <div className="product-section-container">
             {!loading && random && !isLoading ? (
               <div className="product-section">
@@ -124,6 +124,7 @@ const Home = () => {
                     ?.map((item) => (
                       <Product
                         key={item._id}
+                        id={item._id}
                         name={item.name}
                         url={item.images[0]}
                         price={item.price}
@@ -137,7 +138,32 @@ const Home = () => {
             ) : (
               <LoadingSpinner />
             )}
-  {/* TODO: PUT IN IT'S OWN COMPONENT */}
+            {!loading && random && !isLoading ? (
+              <div className="product-section">
+                <h1>Deals</h1>
+                <Carousel
+                  removeArrowOnDeviceType={["tablet", "mobile"]}
+                  responsive={responsive}
+                >
+                  {products.products
+                    ?.map((item) => (
+                      <Product
+                        key={item._id}
+                        id={item._id}
+                        name={item.name}
+                        url={item.images[0]}
+                        price={item.price}
+                        description={item.description}
+                      />
+                    ))
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 5)}
+                </Carousel>
+              </div>
+            ) : (
+              <LoadingSpinner />
+            )}
+            {/* TODO: PUT IN IT'S OWN COMPONENT */}
             <div className="product-section">
               {!loading && randomProducts ? (
                 <>
@@ -154,7 +180,7 @@ const Home = () => {
               )}
             </div>
           </div>
-            {/* TODO: PUT IN IT'S OWN COMPONENT */}
+          {/* TODO: PUT IN IT'S OWN COMPONENT */}
           {!loading && random && !isLoading && (
             <div className="special-recommend">
               <div className="special-recommend-container">

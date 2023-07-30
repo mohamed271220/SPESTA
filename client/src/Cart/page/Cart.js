@@ -219,7 +219,17 @@ const Cart = () => {
                 <p>
                   Total Items : <span> ${total} </span>
                 </p>
-                <button className="checkout-btn">Proceed To Checkout</button>
+                <button className="checkout-btn">
+                  <Link
+                    to={"/checkout"}
+                    style={{
+                      textDecoration: "none",
+                      color: "black",
+                    }}
+                  >
+                    Proceed To Checkout
+                  </Link>
+                </button>
               </div>
               <div className="recommendation-container">
                 <p>Also checkout</p>
@@ -261,7 +271,7 @@ const Cart = () => {
           </>
         )}
       </div>
-        {/* TODO: PUT IN IT'S OWN COMPONENT */}
+      {/* TODO: PUT IN IT'S OWN COMPONENT */}
       {isLoading ? (
         <LoadingSpinner />
       ) : (
@@ -274,6 +284,7 @@ const Cart = () => {
             {products.products
               ?.map((item) => (
                 <Product
+                  id={item._id}
                   key={item.name}
                   name={item.name}
                   url={item.images[0]}

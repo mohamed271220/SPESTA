@@ -93,8 +93,7 @@ const MainNavigation = () => {
   const cartQuantity = useSelector((state) => state.cart.totalQuantity);
   const token = useSelector((state) => state.auth.token);
   const data = useSelector((state) => state.auth.data);
-console.log(data);
-  
+  console.log(data);
 
   // const cart = useSelector((state) => state.cart);
 
@@ -128,12 +127,15 @@ console.log(data);
                     <IoLocationOutline />
                   </div>
                 </IconContext.Provider>
-                <div className="main-navigation__location-text">
+                <Link to={'/profile/#address'}  className="main-navigation__location-text">
                   <p className="main-navigation__location-text-dimmed">
                     Location
                   </p>
-                  <p>Egypt</p>
-                </div>
+                  <p style={{
+                    color:"white",
+                    textDecoration:"none",
+                  }} >{data?.address[0] || "No Address"}</p>
+                </Link>
               </div>
             </div>
             {searchData && !Loading && (

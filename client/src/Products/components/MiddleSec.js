@@ -202,7 +202,7 @@ const MiddleSec = ({ productData }) => {
               </div>
             );
           })}
-          {!open && (
+          {!open &&token && (
             <button
               style={styles.button}
               className="product-reviews__comments-section-button"

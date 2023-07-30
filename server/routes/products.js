@@ -15,7 +15,7 @@ router.post("/:productId/review",isAuth, productController.postReview);
 //TESTED✅✅
 router.post("/:productId/cart", isAuth,productController.addToCart);
 //TODO REMOVE FROM CART
-//TESTED❌
+//TESTED✅✅
 router.put("/:productId/cart/remove",isAuth, productController.removeFromCart);
 
 //TODO  ORDER
