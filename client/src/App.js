@@ -3,6 +3,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainLayout from "./shared/components/Layout/MainLayout";
 import Home from "./Home/pages/Home";
 import Categories from "./Category/Pages/Categories";
+import Tags from "./Tag/pages/Tags";
+import Tag from "./Tag/pages/Tag";
 import Category from "./Category/Pages/Category";
 import Product from "./Products/pages/Product";
 import Login from "./auth/Login";
@@ -53,11 +55,11 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>Tags</div>,
+            element: <Tags />,
           },
           {
             path: ":tagId",
-            element: <div>Single Tag</div>,
+            element: <Tag />,
           },
         ],
       },

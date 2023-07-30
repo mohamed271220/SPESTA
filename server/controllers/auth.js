@@ -91,7 +91,7 @@ exports.signup = async (req, res, next) => {
     userId: createdUser.id,
     email: createdUser.email,
     image: createdUser.image,
-    address: existingUser.address,
+
     token: token,
   });
 };
@@ -103,7 +103,7 @@ exports.login = async (req, res, next) => {
   console.log(email + " " + password);
   let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await User.findOne({ email: email }).populate("address");
     // console.log(existingUser);
   } catch (err) {
     const error = new Error("Login failed");

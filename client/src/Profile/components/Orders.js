@@ -23,7 +23,7 @@ const Orders = ({ orders }) => {
 
       <div className="orders-list">
         <div className="orders-numbers">
-          <span>0 Orders</span> placed in{" "}
+          <span>{orders.length} Orders</span> placed in{" "}
           <select>
             <option>Last 7 days</option>
             <option>Last 30 days</option>
@@ -48,15 +48,10 @@ const Orders = ({ orders }) => {
                     <td>{order._id}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td>{order.status}</td>
-                    <td>{order.totalPrice.toFixed(2)}</td>
+                    <td>${order.totalPrice.toFixed(2)}</td>
                   </tr>
                 ))}
-              <tr>
-                <td>#1234</td>
-                <td>12/12/2020</td>
-                <td>Delivered</td>
-                <td>$100</td>
-              </tr>
+           
             </tbody>
           </table>
         </div>

@@ -40,6 +40,7 @@ const Profile = () => {
           }
         );
         setUser(response.data.user);
+        console.log(response.data.user);
         setAddresses(response.data.user.address);
         setOrders(response.data.user.orders);
         console.log(response);

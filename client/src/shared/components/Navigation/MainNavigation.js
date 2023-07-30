@@ -134,7 +134,7 @@ const MainNavigation = () => {
                   <p style={{
                     color:"white",
                     textDecoration:"none",
-                  }} >{data?.address[0] || "No Address"}</p>
+                  }} >{data?.address[0].city || "No Address"}</p>
                 </Link>
               </div>
             </div>

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const config = {
   position: "top-center",
@@ -102,27 +103,31 @@ const Checkout = () => {
             <h2>Shipping Address</h2>
           </div>
           <div className="checkout-body-left-address-list">
-            {addresses.map((address) => (
-              <div
-                key={address._id}
-                className={`checkout-body-left-address ${
-                  choosed === address._id ? "active-itemlist" : ""
-                }`}
-              >
-                <p>
-                  <span className="circle"></span>
-                  <input
-                    type="checkbox"
-                    name="favorite_pet"
-                    value={address._id}
-                    checked={address._id === choosed ? true : false}
-                    onChange={() => setChoosed(address._id)}
-                  />
-                  <span>{address.street}</span> , {address.city} ,
-                  {address.description}
-                </p>
-              </div>
-            ))}
+            {addresses ? (
+              addresses.map((address) => (
+                <div
+                  key={address._id}
+                  className={`checkout-body-left-address ${
+                    choosed === address._id ? "active-itemlist" : ""
+                  }`}
+                >
+                  <p>
+                    <span className="circle"></span>
+                    <input
+                      type="checkbox"
+                      name="favorite_pet"
+                      value={address._id}
+                      checked={address._id === choosed ? true : false}
+                      onChange={() => setChoosed(address._id)}
+                    />
+                    <span>{address.street}</span> , {address.city} ,
+                    {address.description}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <Link to="/profile">No addresses found</Link>
+            )}
           </div>
           <div className="checkout-body-left-address-add">
             <form onSubmit={orderHandler}>

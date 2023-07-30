@@ -48,7 +48,7 @@ const AddAddressModal = (props) => {
     );
   }, []);
 
-  console.log(token);
+  // console.log(token);
   const SubmitHandler = async (event) => {
     event.preventDefault();
     setIsLoading(true);

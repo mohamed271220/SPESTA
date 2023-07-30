@@ -237,6 +237,7 @@ exports.makeOrder = async (req, res, next) => {
     console.log(order);
     await order.save({ session: sess });
     user.cart = [];
+    user.orders.push(order);
     await user.save({ session: sess });
     await sess.commitTransaction();
     res.status(201).json({ message: "Order created successfully" });

@@ -150,7 +150,12 @@
   width: 20rem;
   height: 20rem;
 }
-
+@media (max-width:730px) {
+  .address-card-s img{
+    width: 15rem;
+    height: 15rem;
+  }
+}
 .address-card-button {
   border: none;
 }
@@ -189,4 +194,7 @@
 }
 .orders-table td {
   text-align: center;
+}
+.orders-table{
+  overflow-x: scroll;
 }

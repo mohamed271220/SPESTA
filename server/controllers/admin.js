@@ -87,14 +87,14 @@ I hope this helps! Let me know if you have any other questions.
   session.startTransaction();
 
   try {
-    await product.save({ session });
+    await product.save({ session:session });
     const admin = await Admin.findById(addedBy);
 
     if (category) {
       category.forEach(async (cat) => {
         const category = await Category.findById(cat);
         category.products.push(product);
-        await category.save({ session });
+        await category.save({ session:session });
       });
     }
 
@@ -102,22 +102,20 @@ I hope this helps! Let me know if you have any other questions.
       tag.forEach(async (tagId) => {
         const tagItem = await Tag.findById(tagId);
         tagItem.products.push(product);
-        await tagItem.save({ session });
+        await tagItem.save({ session:session });
       });
     }
 
     admin.addedProducts.push(product);
-    await admin.save({ session });
+    await admin.save({ session:session });
 
     await session.commitTransaction();
+    res.status(201).json({ message: "Product Added Successfully", product });
   } catch (error) {
     await session.abortTransaction();
     const err = new Error("Something went wrong " + error);
     err.statusCode = 500;
     return next(err);
-  } finally {
-    res.status(201).json({ message: "Product Added Successfully", product });
-    // session.endSession();
   }
 };
 
