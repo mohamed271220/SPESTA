@@ -87,27 +87,35 @@ I hope this helps! Let me know if you have any other questions.
   session.startTransaction();
 
   try {
-    await product.save({ session:session });
+    await product.save({ session: session });
     const admin = await Admin.findById(addedBy);
 
     if (category) {
       category.forEach(async (cat) => {
-        const category = await Category.findById(cat);
-        category.products.push(product);
-        await category.save({ session:session });
+        try {
+          const category = await Category.findById(cat).session({
+            session: session,
+          });
+          category.products.push(product);
+          await category.save({ session: session });
+        } catch (err) {
+          console.log(err);
+        }
       });
     }
 
     if (tag) {
       tag.forEach(async (tagId) => {
-        const tagItem = await Tag.findById(tagId);
+        const tagItem = await Tag.findById(tagId).session({
+          session: session,
+        });
         tagItem.products.push(product);
-        await tagItem.save({ session:session });
+        await tagItem.save({ session: session });
       });
     }
 
     admin.addedProducts.push(product);
-    await admin.save({ session:session });
+    await admin.save({ session: session });
 
     await session.commitTransaction();
     res.status(201).json({ message: "Product Added Successfully", product });
@@ -432,9 +440,9 @@ exports.removeTag = async (req, res, next) => {
     const products = await Product.find({ tag: tagId });
     products.forEach(async (product) => {
       product.tag.pull(tag);
-      await product.save({ session:sess });
+      await product.save({ session: sess });
     });
-    
+
     sess.commitTransaction();
     res.status(200).json({ message: "Tag Deleted Successfully" });
   } catch (err) {
@@ -538,8 +546,8 @@ exports.getOrders = async (req, res, next) => {
     const madeBy = search
       ? {
           $or: [
-            { totalPrice: { $eq: search } },
-            // { status: { $regex: new RegExp(search, "i") } },
+            // { totalPrice: { $eq: search } },
+            { status: { $regex: new RegExp(search, "i") } },
             // { madeBy: { $eq: new mongoose.Types.ObjectId(search) } },
           ],
         }
@@ -571,6 +579,7 @@ exports.updateOrder = async (req, res, next) => {
     const order = await Order.findById(orderId);
     order.status = status;
     await order.save();
+    res.json({ message: "Order Updated Successfully", order });
   } catch (err) {
     const error = new Error("Could not update order");
     error.statusCode = 500;

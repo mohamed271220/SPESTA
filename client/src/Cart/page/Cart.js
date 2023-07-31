@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CartItem from "../components/CartItem";
 import { useGetProductsQuery } from "../../shared/features/SpestaSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 const Cart = () => {
@@ -25,6 +25,7 @@ const Cart = () => {
   const id = useSelector((state) => state.auth.userId);
   const [cartItems, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
   // console.log(items);
   // const id = auth.userId;
 
@@ -42,6 +43,9 @@ const Cart = () => {
   const removeItemHandler = async (productId, price) => {
     const id = toast.loading("Please wait...");
     //api/product/productId/cart/remove
+    if (!token) {
+      return toast.warn("you must login first", {});
+    }
     try {
       const response = await axios.put(
         "http://localhost:8080/api/product/" + productId + "/cart/remove",
@@ -219,16 +223,23 @@ const Cart = () => {
                 <p>
                   Total Items : <span> ${total} </span>
                 </p>
-                <button className="checkout-btn">
-                  <Link
-                    to={"/checkout"}
-                    style={{
-                      textDecoration: "none",
-                      color: "black",
-                    }}
-                  >
-                    Proceed To Checkout
-                  </Link>
+                <button
+                  // disabled={cartItems.length === 0 || !token}
+                  className="checkout-btn"
+                  onClick={() => {
+                    if (!token) {
+                      return toast.warn("you must login first", {});
+                    }
+                    if (cartItems.length === 0) {
+                      return toast.warn(
+                        "you must add something to cart first",
+                        {}
+                      );
+                    }
+                    navigate("/checkout");
+                  }}
+                >
+                  Proceed To Checkout
                 </button>
               </div>
               <div className="recommendation-container">

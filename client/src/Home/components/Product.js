@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 export default function Product(props) {
   const fillUrl = "https://www.w3schools.com/howto/img_avatar.png";
   return (
-    <Link to={'/products/'+props.id} className={`card ${props.className}`}
-    style={{
-      textDecoration: "none",
-      color: "black",
-    }}
-
+    <Link
+      // onClick={(e) => scrollTo(0, 0)}
+      to={"/products/" + props.id}
+      className={`card ${props.className}`}
+      style={{
+        textDecoration: "none",
+        color: "black",
+      }}
     >
       <img
         className="product--image"
@@ -18,7 +20,7 @@ export default function Product(props) {
       />
       <h4>{props.name}</h4>
       <p className="price">
-        <span>19%off </span> {props.price}$
+        <span>{Math.round(props.sale * 100)}%</span> {props.price.toFixed(2)}$
       </p>
       <p className="description">{props.description}</p>
     </Link>

@@ -64,7 +64,7 @@ exports.postReview = async (req, res, next) => {
     error.statusCode = 422;
     next(error);
   }
-  const content = req.body.content;
+  const content = req.body.comment.trim();
   const rating = parseInt(req.body.rating);
   console.log(rating);
   const userId = req.userId;

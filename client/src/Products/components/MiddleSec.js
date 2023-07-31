@@ -46,7 +46,7 @@ const MiddleSec = ({ productData }) => {
   const textArea = useRef(null);
   const stars = Array(5).fill(0);
   const token = useSelector((state) => state.auth.token);
-
+  console.log(productData);
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleClick = (value) => {
@@ -202,7 +202,7 @@ const MiddleSec = ({ productData }) => {
               </div>
             );
           })}
-          {!open &&token && (
+          {!open && token && (
             <button
               style={styles.button}
               className="product-reviews__comments-section-button"

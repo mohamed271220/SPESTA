@@ -1,9 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-
-
 const Orders = ({ orders }) => {
+  const [content, setContent] = useState(
+    orders &&
+      orders.map((order) => (
+        <tr>
+          <td>{order._id}</td>
+          <td>{order.createdAt.substring(0, 10)}</td>
+          <td>{order.status}</td>
+          <td>${order.totalPrice.toFixed(2)}</td>
+        </tr>
+      ))
+  );
+
+  const deliveredOrders =
+    orders &&
+    orders
+      .filter((order) => order.status === "completed")
+      .map((order) => (
+        <tr>
+          <td>{order._id}</td>
+          <td>{order.createdAt.substring(0, 10)}</td>
+          <td>{order.status}</td>
+          <td>${order.totalPrice.toFixed(2)}</td>
+        </tr>
+      ));
+
+  const allOrders =
+    orders &&
+    orders.map((order) => (
+      <tr>
+        <td>{order._id}</td>
+        <td>{order.createdAt.substring(0, 10)}</td>
+        <td
+        className="status"
+          style={{
+            backgroundColor: `${
+              order.status === "completed" ? "green" : "yellow"
+            }`,
+          }}
+        >
+          {order.status}
+        </td>
+        <td>${order.totalPrice.toFixed(2)}</td>
+      </tr>
+    ));
+
   if (!orders || orders.length === 0) {
     return (
       <div>
@@ -17,8 +60,10 @@ const Orders = ({ orders }) => {
     <div className="orders-container">
       <h2>Your Orders</h2>
       <div className="orders-controls">
-        <NavLink>Orders</NavLink>
-        <NavLink>Delivered Orders</NavLink>
+        <NavLink onClick={() => setContent(allOrders)}>Orders</NavLink>
+        <NavLink onClick={() => setContent(deliveredOrders)}>
+          Delivered Orders
+        </NavLink>
       </div>
 
       <div className="orders-list">
@@ -41,18 +86,7 @@ const Orders = ({ orders }) => {
                 <th>Order Total</th>
               </tr>
             </thead>
-            <tbody>
-              {orders &&
-                orders.map((order) => (
-                  <tr>
-                    <td>{order._id}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{order.status}</td>
-                    <td>${order.totalPrice.toFixed(2)}</td>
-                  </tr>
-                ))}
-           
-            </tbody>
+            <tbody>{content}</tbody>
           </table>
         </div>
       </div>

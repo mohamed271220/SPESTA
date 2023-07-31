@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -10,10 +10,12 @@ import { cartActions } from "../../shared/features/cartSlice";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const UpperSec = ({ productData }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
-  
+  const navigate = useNavigate();
+
   const addItemToCartHandler = async () => {
     if (!token) {
       return toast.warn("you must login first", {
@@ -71,6 +73,64 @@ const UpperSec = ({ productData }) => {
       });
     }
   };
+  const addItemToCartAndRedirectHandler = async () => {
+    if (!token) {
+      return toast.warn("you must login first", {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        hideProgressBar: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    const id = toast.loading("Please wait...");
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/product/${productData._id}/cart`,
+        { number: 1 },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log(response);
+      if (response) {
+        toast.update(id, {
+          render: "Product added to cart",
+          type: "success",
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          isLoading: false,
+        });
+        // console.log(productData);
+        dispatch(
+          cartActions.addItemToCart({
+            id: productData._id,
+            name: productData.name,
+            price: productData.price,
+            sale: productData.sale,
+            image: productData?.images[0],
+          })
+        );
+        navigate("/checkout");
+      }
+    } catch (error) {
+      toast.update(id, {
+        render: "Failed to add product to cart",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -99,8 +159,11 @@ const UpperSec = ({ productData }) => {
             <span className="discount">
               {"%" + productData?.sale * 100} OFF
             </span>{" "}
-            <s>${productData?.price}</s> $
-            {productData?.price - productData?.price * productData?.sale}
+            <s>${productData?.price.toFixed(2)}</s> $
+            {(
+              productData?.price -
+              productData?.price * productData?.sale
+            ).toFixed(2)}
           </div>
           <div className="product-info__VAT">
             $202.78 Shipping & Import Fees Deposit to Egypt 🥲
@@ -121,10 +184,18 @@ const UpperSec = ({ productData }) => {
               </div>
             </div>
             <p className="purchase-controls__header-price">
-              {productData?.price - productData?.price * productData?.sale}$
+              $
+              {(
+                productData?.price -
+                productData?.price * productData?.sale
+              ).toFixed(2)}
             </p>
             <p className="purchase-controls__header-price-VAT">
-              {productData?.price - productData?.price * productData?.sale}$
+              $
+              {(
+                productData?.price -
+                productData?.price * productData?.sale
+              ).toFixed(2)}
               Shipping & Import Fees Deposit to Egypt🥲
             </p>
           </div>
@@ -142,7 +213,12 @@ const UpperSec = ({ productData }) => {
           >
             Add to cart
           </button>
-          <button className="purchase-controls__buy-now">Buy Now</button>
+          <button
+            onClick={addItemToCartAndRedirectHandler}
+            className="purchase-controls__buy-now"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
       <ToastContainer

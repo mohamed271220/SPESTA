@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const config = {
   position: "top-center",
@@ -25,6 +25,10 @@ const Checkout = () => {
   const [addresses, setAddresses] = useState([]);
   const [cart, setCart] = useState([]);
   const [choosed, setChoosed] = useState("");
+  const navigate = useNavigate();
+  if (!token) {
+    navigate("/cart");
+  }
 
   React.useEffect(() => {
     setLoading(true);

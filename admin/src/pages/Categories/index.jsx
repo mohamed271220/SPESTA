@@ -22,7 +22,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import CatePic from "./CatePic";
 import EditCategory from "../../Components/EditCategory";
-const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
+const Category = ({ setSnackbar, id, name, image, addedBy, products }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -32,74 +32,80 @@ const Category = ({ setSnackbar,id, name, image, addedBy, products }) => {
 
   return (
     <>
-     <AddProductModal
+      <AddProductModal
         open={openEdit}
         handleOpen={handleOpenEdit}
         handleClose={handleCloseEdit}
       >
         <EditCategory id={id} onClose={handleCloseEdit} />
       </AddProductModal>
-    <Card
-      sx={{
-        backgroundImage: "none",
-        backgroundColor: theme.palette.background.alt,
-        borderRadius: "0.55rem",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-      }}
-    >
-      <Box>
-        <CardContent>
-          <Typography
-            sx={{ fontSize: 14 }}
-            color={theme.palette.secondary[300]}
-            gutterBottom
-          >
-            Added by: {addedBy}
-          </Typography>
-          <Typography variant="h5" component="div">
-            {name}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            See More
-          </Button>
-          <Button onClick={handleOpenEdit} variant="primary" size="small">
-            Edit
-          </Button>
-          <ConfirmDelete setSnackbar={setSnackbar}  id={id} />
-        </CardActions>
-
-        <Collapse
-          in={isExpanded}
-          timeout="auto"
-          unmountOnExit
-          sx={{
-            color: theme.palette.neutral[100],
-          }}
-        >
+      <Card
+        sx={{
+          backgroundImage: "none",
+          backgroundColor: theme.palette.background.alt,
+          borderRadius: "0.55rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <Box>
           <CardContent>
-            <Typography variant="h5" component="div">
-              Products:
+            <Typography
+              sx={{ fontSize: 14 }}
+              color={theme.palette.secondary[300]}
+              gutterBottom
+            >
+              Added by: {addedBy}
             </Typography>
-            {products.map((product) => (
-              <Typography variant="h5" component="div">
-                {product.name} with id: {product._id}
-              </Typography>
-            ))}
+            <Typography variant="h5" component="div">
+              {name}
+            </Typography>
           </CardContent>
-        </Collapse>
-      </Box>
-      <Box sx={{ width: "40%", height: "100px" }} objectFit="contain">
-        <img src={`http://localhost:8080/${image}`} alt="Category" />
-      </Box>
-    </Card>
+          <CardActions>
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              See More
+            </Button>
+            <Button onClick={handleOpenEdit} variant="primary" size="small">
+              Edit
+            </Button>
+            <ConfirmDelete setSnackbar={setSnackbar} id={id} />
+          </CardActions>
+
+          <Collapse
+            in={isExpanded}
+            timeout="auto"
+            unmountOnExit
+            sx={{
+              color: theme.palette.neutral[100],
+            }}
+          >
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Products:
+              </Typography>
+              {products.map((product) => (
+                <Typography variant="h5" component="div">
+                  {product.name} with id: {product._id}
+                </Typography>
+              ))}
+            </CardContent>
+          </Collapse>
+        </Box>
+        <Box sx={{ width: "40%", height: "100px" }} objectFit="contain">
+          <img
+            style={{
+              width: "100%",
+            }}
+            src={`http://localhost:8080/${image}`}
+            alt="Category"
+          />
+        </Box>
+      </Card>
     </>
   );
 };
@@ -120,7 +126,6 @@ const Categories = () => {
   const [snackbar, setSnackbar] = React.useState(null);
 
   return (
-
     <Box m="1.5rem 2.5rem">
       <AddProductModal
         open={open}
@@ -129,7 +134,7 @@ const Categories = () => {
       >
         <AddCategory onClose={handleClose} />
       </AddProductModal>
-      <Header title="PRODUCTS" subtitle="List of products details" />
+      <Header title="CATEGORIES" subtitle="List of categories" />
       {data === undefined && <p>Error</p>}
       {data || !isLoading ? (
         <Box
@@ -157,7 +162,7 @@ const Categories = () => {
             }}
             onClick={handleOpen}
           >
-          <CatePic/>
+            <CatePic />
           </Card>
           {data.data.map(({ _id, name, addedBy, products, image }) => (
             <Category

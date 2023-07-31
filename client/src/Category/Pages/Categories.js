@@ -39,6 +39,7 @@ const Categories = () => {
         name={item.name}
         url={item.images[0] && item.images[0]}
         price={item.price}
+        sale={item.sale}
         description={item.description}
       />
     ));
@@ -64,6 +65,7 @@ const Categories = () => {
         ) : (
           <div>
             <img className="hero-img" src={Hero} alt="Hero" />
+            <h1 className="mobile-header">Explore unlimited potential</h1>
             <div className="category-page-container">
               {categories.map((item) => (
                 <Link to={`/categories/${item._id}`} className="category-box">

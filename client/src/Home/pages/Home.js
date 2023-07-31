@@ -54,11 +54,12 @@ const Home = () => {
       randomItems?.products
         ?.map((item) => (
           <Product
-          id={item}
+            id={item._id}
             key={item.name}
             name={item.name}
             url={item.images[0]}
             price={item.price}
+            sale={item.sale}
             description={item.description}
           />
         ))
@@ -125,6 +126,7 @@ const Home = () => {
                       <Product
                         key={item._id}
                         id={item._id}
+                        sale={item.sale}
                         name={item.name}
                         url={item.images[0]}
                         price={item.price}
@@ -151,6 +153,7 @@ const Home = () => {
                         key={item._id}
                         id={item._id}
                         name={item.name}
+                        sale={item.sale}
                         url={item.images[0]}
                         price={item.price}
                         description={item.description}
@@ -194,6 +197,7 @@ const Home = () => {
                           key={item.name}
                           name={item.name}
                           url={item.images[0]}
+                          sale={item.sale}
                           price={item.price}
                           description={item.description}
                         />

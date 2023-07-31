@@ -98,6 +98,7 @@ const Product = () => {
                             name={item.name}
                             url={item.images[0]}
                             price={item.price}
+                            sale={item.sale}
                             description={item.description}
                           />
                         ))

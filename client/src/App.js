@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { authActions } from "./shared/features/authSlice";
 import { useDispatch } from "react-redux";
 import Checkout from "./Cart/page/Checkout";
+import ScrollToTop from "./shared/hooks/scroll-to-top";
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios.defaults.withCredentials = true;

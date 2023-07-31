@@ -120,7 +120,7 @@ const Tags = () => {
       >
         <AddTag onClose={handleClose} />
       </AddProductModal>
-      <Header title="PRODUCTS" subtitle="List of products details" />
+      <Header title="TAGS" subtitle="List of tags" />
       {data === undefined && <p>Error</p>}
       {data || !isLoading ? (
         <Box

@@ -197,4 +197,6 @@
 }
 .orders-table{
   overflow-x: scroll;
+}.status{
+  border-radius: 12px;
 }

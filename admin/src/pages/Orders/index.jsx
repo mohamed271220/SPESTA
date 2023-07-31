@@ -7,6 +7,7 @@ import DataGridCustomToolbar from "../../Components/DataGridCustomToolbar";
 import UserActions from "../../Components/UserActions";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import EditOrder from "../../Components/EditOrderStatus";
 
 const Orders = () => {
   const theme = useTheme();
@@ -57,9 +58,8 @@ const Orders = () => {
         field: "status",
         headerName: "Status",
         type: "singleSelect",
-        valueOptions: ["pending", "Preparing", "Delivering", "Completed"],
+
         width: 100,
-        editable: true,
       },
       {
         field: "products",
@@ -79,7 +79,13 @@ const Orders = () => {
         headerName: "Actions",
         type: "actions",
         renderCell: (params) => {
-          return <UserActions {...{ params, rowId, setRowId, setSnackbar }} />;
+          return (
+            <EditOrder
+              setSnackbar={setSnackbar}
+              id={params.row._id}
+              status={params.row.status}
+            />
+          );
         },
       },
     ],
