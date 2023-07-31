@@ -100,4 +100,5 @@ router.get(
 );
 
 router.put("/orders/:orderId", isAdmin, adminController.updateOrder);
+router.get("/orders/:orderId", isAdmin, adminController.getOrder);
 module.exports = router;

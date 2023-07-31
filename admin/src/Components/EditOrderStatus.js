@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddProductModal from "./AddProductModal";
 import { Check, Save, Delete } from "@mui/icons-material";
 import {
@@ -27,7 +27,10 @@ const EditOrder = (props) => {
   const handleClose = () => setOpen(false);
   const [success, setSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [orderLoading, setOrderLoading] = React.useState(false);
   const token = useSelector((state) => state.auth.token);
+  const [data, setData] = useState([]);
+  const id = props.id;
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -43,6 +46,7 @@ const EditOrder = (props) => {
           },
         }
       );
+
       if (result) {
         props.setSnackbar({
           children: "Order edited successfully",
@@ -65,6 +69,33 @@ const EditOrder = (props) => {
     setValue(event.target.value);
   };
 
+  useEffect(() => {
+    const getOrder = async () => {
+      setOrderLoading(true);
+      try {
+        const result2 = await axios.get(
+          `admin/dashboard/orders/${id}`,
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setData(result2.data.order);
+        // console.log(result2.data.order);
+        setOrderLoading(false);
+      } catch (error) {
+        setOrderLoading(false);
+        props.setSnackbar({
+          children: error.response.data.message || "Something went wrong",
+          severity: "failed",
+        });
+      }
+    };
+    getOrder();
+  }, [id, token]);
+
   return (
     <>
       <AddProductModal
@@ -72,7 +103,43 @@ const EditOrder = (props) => {
         handleOpen={handleOpen}
         handleClose={handleClose}
       >
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "3vh",
+          }}
+        >
+          {orderLoading === false ? (
+            <>
+              <Box>
+                <Typography variant="h3"> Order summery </Typography>
+                <hr />
+                <Typography> Order Id : {data._id} </Typography>
+
+                {data?.products?.map((product) => (
+                  <Box key={product.product._id}
+                  sx={{
+                    display:"flex",
+                    flexDirection:"row",
+                    justifyContent:"space-between",
+                    gap:"1rem"
+                  }}
+                  >
+                    <Typography>
+                      {" "}
+                      {product.product.name} x {product.number}
+                    </Typography>
+                    <Typography>
+                      ${product.product.price * product.number}{" "}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          ) : (
+            <></>
+          )}
           <FormControl>
             <FormLabel
               sx={{

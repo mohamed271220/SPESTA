@@ -586,3 +586,19 @@ exports.updateOrder = async (req, res, next) => {
     return next(error + " real err " + err);
   }
 };
+exports.getOrder = async (req, res, next) => {
+  const orderId = req.params.orderId;
+  try {
+    const order = await Order.findById(orderId).populate("products.product");
+    if (!order) {
+      const error = new Error("No Order Found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.json({ message: "Order Fetched Successfully", order });
+  } catch (err) {
+    const error = new Error("Could not fetch order");
+    error.statusCode = 500;
+    return next(error);
+  }
+};
