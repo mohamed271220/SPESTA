@@ -10,13 +10,17 @@ import { GoHome } from "react-icons/go";
 import { BsPerson } from "react-icons/bs";
 import { BiCartAdd } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
-
+import { CgLogIn } from "react-icons/cg";
+import { TbCategory2 } from "react-icons/tb";
+import { BiLogOut } from "react-icons/bi";
+import { GiShoppingCart } from "react-icons/gi";
 import axios from "axios";
 import SearchBar from "./SearchBar";
 import { LiaCartPlusSolid } from "react-icons/lia";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../features/authSlice";
 import { cartActions } from "../../features/cartSlice";
+
 function DropdownItem(props) {
   if (props.text === "Logout") {
     return (
@@ -127,14 +131,21 @@ const MainNavigation = () => {
                     <IoLocationOutline />
                   </div>
                 </IconContext.Provider>
-                <Link to={'/profile/#address'}  className="main-navigation__location-text">
+                <Link
+                  to={"/profile/#address"}
+                  className="main-navigation__location-text"
+                >
                   <p className="main-navigation__location-text-dimmed">
                     Location
                   </p>
-                  <p style={{
-                    color:"white",
-                    textDecoration:"none",
-                  }} >{data?.address[0].city || "No Address"}</p>
+                  <p
+                    style={{
+                      color: "white",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {data?.address[0].city || "No Address"}
+                  </p>
                 </Link>
               </div>
             </div>
@@ -191,7 +202,11 @@ const MainNavigation = () => {
                     text={"Categories"}
                   />
                   {token && (
-                    <DropdownItem to={"/profile"} img={""} text={"Orders"} />
+                    <DropdownItem
+                      to={"/profile"}
+                      img={<GiShoppingCart />}
+                      text={"Orders"}
+                    />
                   )}
                   {token && (
                     <DropdownItem
@@ -201,11 +216,15 @@ const MainNavigation = () => {
                     />
                   )}
                   {!token ? (
-                    <DropdownItem to={"/auth/login"} img={""} text={"Login"} />
+                    <DropdownItem
+                      to={"/auth/login"}
+                      img={<CgLogIn />}
+                      text={"Login"}
+                    />
                   ) : (
                     <DropdownItem
                       to={""}
-                      img={""}
+                      img={<BiLogOut />}
                       text={"Logout"}
                       onClick={logoutHandler}
                     />

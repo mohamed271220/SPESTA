@@ -18,11 +18,13 @@ export default function Product(props) {
         src={props.url ? `http://localhost:8080/uploads${props.url}` : fillUrl}
         alt="product image"
       />
-      <h4>{props.name}</h4>
-      <p className="price">
-        <span>{Math.round(props.sale * 100)}%</span> {props.price.toFixed(2)}$
-      </p>
-      <p className="description">{props.description}</p>
+      <div>
+        <h4>{props.name}</h4>
+        <p className="price">
+          <span>{Math.round(props.sale * 100)}%</span> {props.price.toFixed(2)}$
+        </p>
+        <p className="description">{props.description}</p>
+      </div>
     </Link>
   );
 }

@@ -298,6 +298,7 @@ const Cart = () => {
                   id={item._id}
                   key={item.name}
                   name={item.name}
+                  sale={item.sale}
                   url={item.images[0]}
                   price={item.price}
                   description={item.description}

@@ -84,14 +84,11 @@ const Product = ({
             ${Number(price).toFixed(2)}
           </Typography>
           <Rating value={rating} readOnly />
-
-          <Typography variant="body2">{description}</Typography>
         </CardContent>
         <CardActions
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            
           }}
         >
           <Button
@@ -134,6 +131,12 @@ const Product = ({
               sx={{ color: theme.palette.secondary[400] }}
             >
               status: {status}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: theme.palette.secondary[100] }}
+            >
+              Description: {description}
             </Typography>
           </CardContent>
         </Collapse>
@@ -190,19 +193,20 @@ const Products = () => {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-           
             }}
             onClick={handleOpen}
           >
             {/* <CardContent
             
             > */}
-             <ProductPic   sx={{
+            <ProductPic
+              sx={{
                 display: "flex",
                 borderRadius: "0.55rem",
                 alignItems: "center",
                 justifyContent: "center",
-              }}/>
+              }}
+            />
             {/* </CardContent> */}
           </Card>
           {data.products.map(

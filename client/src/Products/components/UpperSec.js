@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { FaRegCircleDot } from "react-icons/fa6";
@@ -16,6 +16,10 @@ const UpperSec = ({ productData }) => {
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
+  const [defaultImg, setDefalutImg] = useState("");
+  useEffect(() => {
+    setDefalutImg(productData?.images[0]);
+  }, []);
   const addItemToCartHandler = async () => {
     if (!token) {
       return toast.warn("you must login first", {
@@ -131,16 +135,34 @@ const UpperSec = ({ productData }) => {
       });
     }
   };
-
+  const [style, setStyle] = useState(``);
   return (
     <>
       <div className="product-upper-section">
         <div className="photos-slider">
           <img
-            src={"http://localhost:8080/uploads" + productData?.images[0]}
+            src={"http://localhost:8080/uploads" + defaultImg}
             alt="hp"
-            className="photos-slider__photo"
+            className={`photos-slider__photo photos-slider__photo_main`}
           />
+          <div className="alt-container">
+            {productData?.images.length > 1 &&
+              productData.images.map((image, index) => (
+                <div
+                  className={`image-border ${style === image && "active"}`}
+                  onClick={() => {
+                    setDefalutImg(image);
+                    setStyle(image);
+                  }}
+                >
+                  <img
+                    src={"http://localhost:8080/uploads" + image}
+                    alt={index}
+                    className="photos-slider__photo"
+                  />
+                </div>
+              ))}
+          </div>
         </div>
         <div className="product-info">
           <div className="product-info__name">{productData?.name}</div>

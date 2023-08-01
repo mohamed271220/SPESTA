@@ -93,9 +93,7 @@ I hope this helps! Let me know if you have any other questions.
     if (category) {
       category.forEach(async (cat) => {
         try {
-          const category = await Category.findById(cat).session({
-            session: session,
-          });
+          const category = await Category.findById(cat);
           category.products.push(product);
           await category.save({ session: session });
         } catch (err) {
@@ -106,9 +104,7 @@ I hope this helps! Let me know if you have any other questions.
 
     if (tag) {
       tag.forEach(async (tagId) => {
-        const tagItem = await Tag.findById(tagId).session({
-          session: session,
-        });
+        const tagItem = await Tag.findById(tagId);
         tagItem.products.push(product);
         await tagItem.save({ session: session });
       });
@@ -120,7 +116,6 @@ I hope this helps! Let me know if you have any other questions.
     await session.commitTransaction();
     res.status(201).json({ message: "Product Added Successfully", product });
   } catch (error) {
-    await session.abortTransaction();
     const err = new Error("Something went wrong " + error);
     err.statusCode = 500;
     return next(err);

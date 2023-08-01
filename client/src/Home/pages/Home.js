@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useGetProductsQuery } from "../../shared/features/SpestaSlice";
 import gaming from "../assets/gaming.jpg";
+import Skeleton from "../../shared/Loading/SkeletonTwo/Skeleton";
+
 const Home = () => {
   const [categories, setCategories] = React.useState([]);
   const [loading, setIsLoading] = React.useState(false);
@@ -69,18 +71,7 @@ const Home = () => {
   return (
     <>
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            height: "100vh",
-            justifyContent: "center",
-            alignItems: "center",
-            // margin: "50%",
-          }}
-        >
-          <LoadingSpinner />
-        </div>
+        <Skeleton type="feed" />
       ) : (
         <div className="home-container">
           {/* TODO: PUT IN IT'S OWN COMPONENT */}
