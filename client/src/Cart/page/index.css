@@ -161,9 +161,10 @@
 @media (max-width: 860px) {
   .cart-container {
     flex-direction: column;
+  }
+  .last-in-page {
     margin-bottom: 3rem;
   }
-
   .row-container,
   .cart-items-container,
   .checkout-container {
@@ -256,7 +257,8 @@
   .checkout-body {
     flex-wrap: wrap;
   }
-  .checkout-body-right,.checkout-body-left{
+  .checkout-body-right,
+  .checkout-body-left {
     width: 100%;
   }
 }

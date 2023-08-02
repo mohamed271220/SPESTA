@@ -84,7 +84,7 @@ const Product = () => {
 
               <div className="product-section-container">
                 {!prodIsLoading && !isError && !isLoading ? (
-                  <div className="product-section">
+                  <div className="product-section last-in-page">
                     <h1>Recommended Products</h1>
                     <Carousel
                       removeArrowOnDeviceType={["tablet", "mobile"]}

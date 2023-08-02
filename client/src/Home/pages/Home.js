@@ -102,6 +102,32 @@ const Home = () => {
                 </Link>
               </div>
             </div>
+            <div className="category-container-mobile">
+              {categories
+                .map((item) => (
+                  <Link
+                    to={`/categories/${item._id}`}
+                    className="category-box-mobile"
+                  >
+                    <div>
+                      <img
+                        src={`http://localhost:8080/${item.image}`}
+                        alt="ex"
+                      />
+                      <h4 className="category-box-name-mobile">{item.name}</h4>
+                    </div>
+                  </Link>
+                ))
+                .sort(() => (Math.random() > 0.5 ? 1 : -1))
+                .slice(0, 8)}
+
+              <div className="category-box-mobile special-mobile">
+                <Link to={"/categories"}>
+                  <img src={Cat} alt="checkMoreCategories" />
+                  <h4 className="category-box-name-mobile">+More</h4>
+                </Link>
+              </div>
+            </div>
           </div>
           {/* TODO: PUT IN IT'S OWN COMPONENT */}
           <div className="product-section-container">

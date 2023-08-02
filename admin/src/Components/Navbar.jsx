@@ -81,9 +81,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
               <LightModeOutlined />
             )}
           </IconButton>
-          <IconButton>
-            <SettingsOutlined />
-          </IconButton>
+      
           <FlexBetween>
             <Button
               variant="text"

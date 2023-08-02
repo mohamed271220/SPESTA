@@ -215,13 +215,13 @@ const Cart = () => {
                   })
                 )}
                 <hr className="line-cart" />
-                <p className="cart-total">Subtotal : ${total} </p>
+                <p className="cart-total">Subtotal : ${total.toFixed(2)} </p>
               </div>
             </div>
             <div className="row-container">
               <div className="checkout-container">
                 <p>
-                  Total Items : <span> ${total} </span>
+                  Total Items : <span> ${total.toFixed(2)} </span>
                 </p>
                 <button
                   // disabled={cartItems.length === 0 || !token}
@@ -243,7 +243,7 @@ const Cart = () => {
                 </button>
               </div>
               <div className="recommendation-container">
-                <p>Also checkout</p>
+                <p>Also check</p>
                 <div>
                   {products.products
                     ?.map((product) => (
@@ -286,7 +286,7 @@ const Cart = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="product-section">
+        <div className="product-section last-in-page">
           <h1>Recommended Products</h1>
           <Carousel
             removeArrowOnDeviceType={["tablet", "mobile"]}

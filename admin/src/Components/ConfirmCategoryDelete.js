@@ -83,7 +83,7 @@ const ConfirmDelete = (props) => {
             gap: "1rem",
           }}
         >
-          <Typography sx={{ color: theme.palette.primary.main }} variant="h6">
+          <Typography sx={{ color: theme.palette.primary[100] }} variant="h6">
             Confirm Delete?
           </Typography>
           <Box>
